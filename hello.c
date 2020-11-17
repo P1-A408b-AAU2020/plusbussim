@@ -1,7 +1,7 @@
 /* Hello from the other siiide! lul*/
-#include<stdio.h>
-#include<stdlib.h>
-#include<time.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 #define ROAD_SIZE 50
 #define AMOUNT_VEHICLES 10
@@ -20,9 +20,13 @@ void move(int* link, int len, struct vehicle* actors);
 
 int main(void){
   int i;
+  
   /* Main setup */
   int* link = (int*)calloc(ROAD_SIZE, sizeof(int));
-  struct vehicle* actors = (struct vehicle*)calloc(ROAD_SIZE + 1, sizeof(struct vehicle)); /* + 1 because idx 0 is reserved for empty grid */
+  
+  /* + 1 because idx 0 is reserved for empty grid */
+  struct vehicle* actors = (struct vehicle*)calloc(ROAD_SIZE + 1, sizeof(struct vehicle)); 
+
   srand(time(NULL));
   initactors(link, ROAD_SIZE, actors);
 
@@ -34,7 +38,7 @@ int main(void){
 }
 
 void initactors(int* link, int len, struct vehicle* actors){
-  int i, j = AMOUNT_VEHICLES, r = 0;
+  int i, j = AMOUNT_VEHICLES, pos = 0;
 
   /* Generate actors _WORK IN PROGRESS_ */
   for(i = 1; i <= AMOUNT_VEHICLES; i++){
@@ -44,11 +48,11 @@ void initactors(int* link, int len, struct vehicle* actors){
   
   /* Place actors on road */
   for(i = 0; i < AMOUNT_VEHICLES; i++){
-    r = rand()%len;
-    if(link[r] != 0)
+    pos = rand()%len;
+    if(link[pos] != 0)
       i--;
     else
-      link[r] = actors[j--].id;
+      link[pos] = actors[j--].id;
   }
 }
 
@@ -67,7 +71,7 @@ void acc(int* link, int len, struct vehicle* actors){
 
 void move(int* link, int len, struct vehicle* actors){
   int i, a;
-  for(i = len; i > 0; i--){
+  for(i = len; i >= 0; i--){
     a = link[i];
     if (link[i] > 0)
       if(actors[a].v > 0){
