@@ -3,20 +3,23 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define ROAD_SIZE 50
-#define AMOUNT_VEHICLES 10
+#define ROAD_SIZE 100
+#define AMOUNT_VEHICLES 20
 #define V_MAX 5
+#define TIME_STEPS 20
 
 struct vehicle{
   int id;
   int v;
 };
 
-void printlane(int*, int, struct vehicle*);
-void initactors(int*, int, struct vehicle*);
-void tstep(int*, int, struct vehicle*);
-void acc(int* link, int len, struct vehicle* actors);
-void move(int* link, int len, struct vehicle* actors);
+void print_lane(int*, int, struct vehicle*);
+void init_actors(int*, int, struct vehicle*);
+void time_step(int*, int, struct vehicle*);
+void accellerate(int*, int, struct vehicle*);
+void decellerate(int*, int, struct vehicle*);
+void move(int*, int, struct vehicle*);
+int lead_gap(int*, int, int);
 
 int main(void){
   int i;
@@ -28,26 +31,26 @@ int main(void){
   struct vehicle* actors = (struct vehicle*)calloc(ROAD_SIZE + 1, sizeof(struct vehicle)); 
 
   srand(time(NULL));
-  initactors(link, ROAD_SIZE, actors);
+  init_actors(link, ROAD_SIZE, actors);
 
   /* Print initial lane */
-  printlane(link, ROAD_SIZE, actors);
+  print_lane(link, ROAD_SIZE, actors);
 
-  for(i = 0; i < 10; i++){
-    /*printf("first for loop\n"); */
-    tstep(link, ROAD_SIZE, actors);
+  for(i = 0; i < TIME_STEPS; i++){
+    time_step(link, ROAD_SIZE, actors);
   }
+  
   free(link);
   free(actors);
   return EXIT_SUCCESS;
 }
 
-void initactors(int* link, int len, struct vehicle* actors){
+void init_actors(int* link, int len, struct vehicle* actors){
   int i, j = AMOUNT_VEHICLES, pos = 0;
 
   /* Generate actors _WORK IN PROGRESS_ */
   for(i = 1; i <= AMOUNT_VEHICLES; i++){
-    actors[i].id = i - 1;
+    actors[i].id = i;
     actors[i].v = 0;
   }
   
@@ -61,20 +64,49 @@ void initactors(int* link, int len, struct vehicle* actors){
   }
 }
 
-void tstep(int* link, int len, struct vehicle* actors){
-  /*printf("tstep start\n"); */
-  acc(link, len, actors);
+void time_step(int* link, int len, struct vehicle* actors){
   move(link, len, actors);
-  printlane(link, ROAD_SIZE, actors);
-  /* printf("tstep done\n"); */
+  accellerate(link, len, actors);
+  decellerate(link, len, actors);
+  print_lane(link, ROAD_SIZE, actors);
 }
 
-void acc(int* link, int len, struct vehicle* actors){
-  int i;
-  for(i = 0; i < AMOUNT_VEHICLES; i++){
-    if (actors[i].v < V_MAX)
-      actors[i].v++;
+/* Accellerates all vehicles */
+/* Could this be more efficient using pointers for v? */
+void accellerate(int* link, int len, struct vehicle* actors){
+  int i, v, gap;
+  for(i = 0; i < len; i++){
+    v = actors[link[i]].v;
+    gap = lead_gap(link, len, i);
+
+    if(v < V_MAX && gap > v + 1)
+      actors[link[i]].v++;
   }
+}
+
+void decellerate(int* link, int len, struct vehicle* actors){
+  int i, v, gap;
+  for(i = 0; i < len; i++){
+    v = actors[link[i]].v;
+    gap = lead_gap(link, len, i);
+
+    if(gap < v)
+      actors[link[i]].v = gap;
+  }
+}
+
+/* Returns the lead gap in front of position */
+int lead_gap(int* link, int len, int pos){
+  int i, gap = 0;
+  for(i = pos + 1; i < len; i++){
+    if(link[i] == 0)
+      gap++;
+    else
+      return gap;
+    if(gap > V_MAX)
+      return V_MAX;
+  }
+  return gap;
 }
 
 void move(int* link, int len, struct vehicle* actors){
@@ -93,7 +125,7 @@ void move(int* link, int len, struct vehicle* actors){
   }
 }
 
-void printlane(int* link, int len, struct vehicle* actors){
+void print_lane(int* link, int len, struct vehicle* actors){
   int i;
   char prnt;
   for(i = 0; i < len; i++){
