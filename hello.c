@@ -4,9 +4,9 @@
 #include <time.h>
 
 #define ROAD_SIZE 100
-#define AMOUNT_VEHICLES 20
+#define AMOUNT_VEHICLES 40
 #define V_MAX 5
-#define TIME_STEPS 20
+#define TIME_STEPS 100
 
 struct vehicle{
   int id;
