@@ -64,7 +64,7 @@ void tstep(int* link, int len, struct vehicle* actors){
   acc(link, len, actors);
   move(link, len, actors);
   printlane(link, ROAD_SIZE, actors);
- // printf("tstep done\n");
+  /* printf("tstep done\n"); */
 }
 
 void acc(int* link, int len, struct vehicle* actors){
