@@ -12,7 +12,7 @@ struct vehicle{
   int v;
 };
 
-void printlane(int*, int, struct vehicle* );
+void printlane(int*, int, struct vehicle*);
 void initactors(int*, int, struct vehicle*);
 void tstep(int*, int, struct vehicle*);
 void acc(int* link, int len, struct vehicle* actors);
@@ -33,8 +33,11 @@ int main(void){
   /* Print initial lane */
   printlane(link, ROAD_SIZE, actors);
 
-  for(i = 0; i < 10; i++)
+  for(i = 0; i < 10; i++){
+    //printf("first for loop\n");
     tstep(link, ROAD_SIZE, actors);
+  }
+  return EXIT_SUCCESS;
 }
 
 void initactors(int* link, int len, struct vehicle* actors){
@@ -57,27 +60,31 @@ void initactors(int* link, int len, struct vehicle* actors){
 }
 
 void tstep(int* link, int len, struct vehicle* actors){
+  //printf("tstep start\n");
   acc(link, len, actors);
   move(link, len, actors);
   printlane(link, ROAD_SIZE, actors);
+ // printf("tstep done\n");
 }
 
 void acc(int* link, int len, struct vehicle* actors){
   int i;
-  for(i = 0; i < AMOUNT_VEHICLES; i++)
+  for(i = 0; i < AMOUNT_VEHICLES; i++){
     if (actors[i].v < V_MAX)
       actors[i].v++;
+  }
 }
 
 void move(int* link, int len, struct vehicle* actors){
   int i, a;
   for(i = len; i >= 0; i--){
     a = link[i];
-    if (link[i] > 0)
+    if (link[i] > 0){
       if(actors[a].v > 0){
-	link[i] = 0;
-	link[i + actors[a].v] = a;
+	      link[i] = 0;
+      	link[i + actors[a].v] = a;
       }
+    }  
   }
 }
 
