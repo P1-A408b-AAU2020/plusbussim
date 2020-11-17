@@ -37,6 +37,8 @@ int main(void){
     //printf("first for loop\n");
     tstep(link, ROAD_SIZE, actors);
   }
+  free(link);
+  free(actors);
   return EXIT_SUCCESS;
 }
 
