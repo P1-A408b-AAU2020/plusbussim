@@ -62,7 +62,7 @@ void initactors(int* link, int len, struct vehicle* actors){
 }
 
 void tstep(int* link, int len, struct vehicle* actors){
-  //printf("tstep start\n");
+  /*printf("tstep start\n"); */
   acc(link, len, actors);
   move(link, len, actors);
   printlane(link, ROAD_SIZE, actors);
