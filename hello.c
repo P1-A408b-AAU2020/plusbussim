@@ -78,13 +78,16 @@ void acc(int* link, int len, struct vehicle* actors){
 }
 
 void move(int* link, int len, struct vehicle* actors){
-  int i, a;
+  int i, a, mov;
   for(i = len; i >= 0; i--){
     a = link[i];
     if (link[i] > 0){
       if(actors[a].v > 0){
-	      link[i] = 0;
-      	link[i + actors[a].v] = a;
+        link[i] = 0;
+	mov = i + actors[a].v;
+	if(mov < len){
+	  link[mov] = a;
+	}
       }
     }  
   }
