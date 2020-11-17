@@ -25,12 +25,11 @@ void move(int*, int, struct vehicle*);
 int lead_gap(int*, int, int);
 
 int main(void){
-  int i;
+  int i, active = 0, disabled = 0;
   
   /* Main setup */
   int* link = (int*)calloc(ROAD_SIZE, sizeof(int));
-  int* objpool = (int*)calloc(ROAD_SIZE/4, sizeof(int));
-  
+   
   /* + 1 because idx 0 is reserved for empty grid */
   struct vehicle* actors = (struct vehicle*)calloc(ROAD_SIZE + 1, sizeof(struct vehicle)); 
 
@@ -43,6 +42,15 @@ int main(void){
   for(i = 0; i < TIME_STEPS; i++){
     time_step(link, ROAD_SIZE, actors);
   }
+
+  for(i = 1; i < ROAD_SIZE + 1; i++){
+    if(actors[i].active == 1)
+      active++;
+    else
+      disabled++;
+  }
+  printf("%s %s %s\n%-9s%-10d%-7d%-2c%-d\n", "Status: ", "Runtime: ", "Active / disabled vehicles: ",
+	 "OK", TIME_STEPS, active, '/', disabled); 
   
   free(link);
   free(actors);
@@ -52,10 +60,11 @@ int main(void){
 void init_actors(int* link, int len, struct vehicle* actors){
   int i, j = AMOUNT_VEHICLES, pos = 0;
 
-  /* Generate actors _WORK IN PROGRESS_ */
+  /* Generate actors */
   for(i = 1; i <= AMOUNT_VEHICLES; i++){
     actors[i].id = i;
     actors[i].v = 0;
+    actors[i].active = 1;
   }
   
   /* Place actors on road */
@@ -127,8 +136,11 @@ void move(int* link, int len, struct vehicle* actors){
 	if(mov < len){
 	  link[mov] = a;
 	}
-      }
-    }  
+	else{
+	  actors[a].active = 0;
+	}
+      }  
+    }
   }
 }
 
