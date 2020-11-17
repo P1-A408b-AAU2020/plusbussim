@@ -34,7 +34,7 @@ int main(void){
   printlane(link, ROAD_SIZE, actors);
 
   for(i = 0; i < 10; i++){
-    //printf("first for loop\n");
+    /*printf("first for loop\n"); */
     tstep(link, ROAD_SIZE, actors);
   }
   free(link);
