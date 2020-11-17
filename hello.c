@@ -7,10 +7,13 @@
 #define AMOUNT_VEHICLES 20
 #define V_MAX 5
 #define TIME_STEPS 20
+#define DECCELLERATE_CHANCE 20
+#define MIN_SPEED_RANDOM_DECELLERATE 2
 
 struct vehicle{
-  int id;
+  int id;     /* could be removed? (Unused field) */
   int v;
+  int active; /* could be char to save space */
 };
 
 void print_lane(int*, int, struct vehicle*);
@@ -26,6 +29,7 @@ int main(void){
   
   /* Main setup */
   int* link = (int*)calloc(ROAD_SIZE, sizeof(int));
+  int* objpool = (int*)calloc(ROAD_SIZE/4, sizeof(int));
   
   /* + 1 because idx 0 is reserved for empty grid */
   struct vehicle* actors = (struct vehicle*)calloc(ROAD_SIZE + 1, sizeof(struct vehicle)); 
@@ -79,7 +83,7 @@ void accellerate(int* link, int len, struct vehicle* actors){
     v = actors[link[i]].v;
     gap = lead_gap(link, len, i);
 
-    if(v < V_MAX && gap > v + 1)
+    if(v < V_MAX && gap > v)
       actors[link[i]].v++;
   }
 }
@@ -92,6 +96,9 @@ void decellerate(int* link, int len, struct vehicle* actors){
 
     if(gap < v)
       actors[link[i]].v = gap;
+    if(rand() % 100 <= DECCELLERATE_CHANCE && v > MIN_SPEED_RANDOM_DECELLERATE)
+      actors[link[i]].v--;    
+
   }
 }
 
@@ -106,7 +113,7 @@ int lead_gap(int* link, int len, int pos){
     if(gap > V_MAX)
       return V_MAX;
   }
-  return gap;
+  return V_MAX; /* If the car reaches the end of the road */ 
 }
 
 void move(int* link, int len, struct vehicle* actors){
