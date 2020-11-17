@@ -47,7 +47,7 @@ void initactors(int* link, int len, struct vehicle* actors){
 
   /* Generate actors _WORK IN PROGRESS_ */
   for(i = 1; i <= AMOUNT_VEHICLES; i++){
-    actors[i].id = i - 1;
+    actors[i].id = i;
     actors[i].v = 0;
   }
   
@@ -71,7 +71,7 @@ void tstep(int* link, int len, struct vehicle* actors){
 
 void acc(int* link, int len, struct vehicle* actors){
   int i;
-  for(i = 0; i < AMOUNT_VEHICLES; i++){
+  for(i = 0; i <= AMOUNT_VEHICLES; i++){
     if (actors[i].v < V_MAX)
       actors[i].v++;
   }
