@@ -11,9 +11,9 @@
 #define MIN_SPEED_RANDOM_DECELLERATE 2
 
 struct vehicle{
-  int id;     /* could be removed? (Unused field) */
+  int id;
   int v;
-  int active; /* could be char to save space */
+  int active;
 };
 
 void print_lane(int*, int, struct vehicle*);
@@ -29,9 +29,7 @@ int main(void){
   
   /* Main setup */
   int* link = (int*)calloc(ROAD_SIZE, sizeof(int));
-   
-  /* + 1 because idx 0 is reserved for empty grid */
-  struct vehicle* actors = (struct vehicle*)calloc(ROAD_SIZE + 1, sizeof(struct vehicle)); 
+  struct vehicle* actors = (struct vehicle*)calloc(ROAD_SIZE + 1, sizeof(struct vehicle));  
 
   srand(time(NULL));
   init_actors(link, ROAD_SIZE, actors);
@@ -57,6 +55,7 @@ int main(void){
   return EXIT_SUCCESS;
 }
 
+/* Places vehicles on the road. The vehicles are randomly generated and placed. */
 void init_actors(int* link, int len, struct vehicle* actors){
   int i, j = AMOUNT_VEHICLES, pos = 0;
 
@@ -77,6 +76,7 @@ void init_actors(int* link, int len, struct vehicle* actors){
   }
 }
 
+/* Each time step of the simulation, this is run. */
 void time_step(int* link, int len, struct vehicle* actors){
   move(link, len, actors);
   accellerate(link, len, actors);
@@ -97,6 +97,7 @@ void accellerate(int* link, int len, struct vehicle* actors){
   }
 }
 
+/* Deccellerates all vehicles */
 void decellerate(int* link, int len, struct vehicle* actors){
   int i, v, gap;
   for(i = 0; i < len; i++){
@@ -105,13 +106,12 @@ void decellerate(int* link, int len, struct vehicle* actors){
 
     if(gap < v)
       actors[link[i]].v = gap;
-    if(rand() % 100 <= DECCELLERATE_CHANCE && v > MIN_SPEED_RANDOM_DECELLERATE)
+    else if(rand() % 100 <= DECCELLERATE_CHANCE && v > MIN_SPEED_RANDOM_DECELLERATE)
       actors[link[i]].v--;    
-
   }
 }
 
-/* Returns the lead gap in front of position */
+/* Returns the lead gap in front of given position */
 int lead_gap(int* link, int len, int pos){
   int i, gap = 0;
   for(i = pos + 1; i < len; i++){
@@ -122,9 +122,11 @@ int lead_gap(int* link, int len, int pos){
     if(gap > V_MAX)
       return V_MAX;
   }
-  return V_MAX; /* If the car reaches the end of the road */ 
+  /* If the car reaches the end of the road */
+  return V_MAX; 
 }
 
+/* Moves all vehicles by their speed. Removes them from the road if they reach the end. */
 void move(int* link, int len, struct vehicle* actors){
   int i, a, mov;
   for(i = len; i >= 0; i--){
@@ -144,6 +146,7 @@ void move(int* link, int len, struct vehicle* actors){
   }
 }
 
+/* Prints out A SINGLE LANE of the simulation. */
 void print_lane(int* link, int len, struct vehicle* actors){
   int i;
   char prnt;
@@ -153,4 +156,3 @@ void print_lane(int* link, int len, struct vehicle* actors){
   }
   printf("\n");
 }
-
