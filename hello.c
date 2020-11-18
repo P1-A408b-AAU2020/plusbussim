@@ -16,6 +16,7 @@ struct vehicle{
   int active;
 };
 
+void print_actors(struct vehicle* actors);
 void print_lane(int*, int, struct vehicle*);
 void init_actors(int*, int, struct vehicle*);
 void time_step(int*, int, struct vehicle*);
@@ -129,9 +130,9 @@ int lead_gap(int* link, int len, int pos){
 /* Moves all vehicles by their speed. Removes them from the road if they reach the end. */
 void move(int* link, int len, struct vehicle* actors){
   int i, a, mov;
-  for(i = len; i >= 0; i--){
+  for(i = len-1; i >= 0; i--){
     a = link[i];
-    if (link[i] > 0){
+    if (a > 0){  
       if(actors[a].v > 0){
         link[i] = 0;
 	mov = i + actors[a].v;
@@ -143,6 +144,13 @@ void move(int* link, int len, struct vehicle* actors){
 	}
       }  
     }
+  }
+}
+
+void print_actors(struct vehicle* actors){
+  int i;
+  for(i = 1; i < AMOUNT_VEHICLES+1; i++){
+    printf("Car %d:\n  v: %d\n", actors[i].id, actors[i].v);
   }
 }
 
