@@ -14,7 +14,7 @@ int main(void){
     int* link = (int*)calloc(ROAD_SIZE, sizeof(int));
     struct vehicle* actors = (struct vehicle*)calloc(ROAD_SIZE + 1, sizeof(struct vehicle));
 
-    long int seed = time(NULL);
+    time_t seed = time(NULL);
     srand(seed);
     init_actors(link, ROAD_SIZE, actors);
 
