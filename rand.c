@@ -5,6 +5,7 @@ int my_prob(int i, int prob){
     return 0;
 }
 
+
 void turn_off_lane(int* link, struct vehicle* actors, int prob, int len){
   int r = rand() % 100;
   int i = (rand() % AMOUNT_VEHICLES) +1;
