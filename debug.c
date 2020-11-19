@@ -11,7 +11,7 @@ void print_actors(struct vehicle* actors){
 }
 
 /* Prints out A SINGLE LANE of the simulation. */
-void print_lane(int* link, int len, struct vehicle* actors){
+void print_lane(const int* link, int len, struct vehicle* actors){
     int i;
     char print;
     for(i = 0; i < len; i++){
