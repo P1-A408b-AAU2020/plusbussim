@@ -55,3 +55,49 @@ dkms.conf
 cmake-build-debug
 .idea
 
+/out/build/x64-Debug (default)/VSInheritEnvironments.txt
+/out/build/x64-Debug (default)/Testing/Temporary/LastTest.log
+/out/build/x64-Debug (default)/Testing/Temporary
+/out/build/x64-Debug (default)/cmake_install.cmake
+/out/build/x64-Debug (default)/CMakeFiles/TargetDirectories.txt
+/out/build/x64-Debug (default)/CMakeFiles/ShowIncludes/main.c
+/out/build/x64-Debug (default)/CMakeFiles/ShowIncludes/foo.h
+/out/build/x64-Debug (default)/CMakeFiles/ShowIncludes
+/out/build/x64-Debug (default)/CMakeFiles/rules.ninja
+/out/build/x64-Debug (default)/CMakeFiles/CMakeOutput.log
+/out/build/x64-Debug (default)/CMakeFiles/cmake.check_cache
+/out/build/x64-Debug (default)/CMakeFiles/3.18.20081302-MSVC_2/CompilerIdCXX/CMakeCXXCompilerId.cpp
+/out/build/x64-Debug (default)/CMakeFiles/3.18.20081302-MSVC_2/CompilerIdCXX
+/out/build/x64-Debug (default)/CMakeFiles/3.18.20081302-MSVC_2/CompilerIdC/CMakeCCompilerId.c
+/out/build/x64-Debug (default)/CMakeFiles/3.18.20081302-MSVC_2/CompilerIdC
+/out/build/x64-Debug (default)/CMakeFiles/3.18.20081302-MSVC_2/CMakeSystem.cmake
+/out/build/x64-Debug (default)/CMakeFiles/3.18.20081302-MSVC_2/CMakeRCCompiler.cmake
+/out/build/x64-Debug (default)/CMakeFiles/3.18.20081302-MSVC_2/CMakeDetermineCompilerABI_CXX.bin
+/out/build/x64-Debug (default)/CMakeFiles/3.18.20081302-MSVC_2/CMakeDetermineCompilerABI_C.bin
+/out/build/x64-Debug (default)/CMakeFiles/3.18.20081302-MSVC_2/CMakeCXXCompiler.cmake
+/out/build/x64-Debug (default)/CMakeFiles/3.18.20081302-MSVC_2/CMakeCCompiler.cmake
+/out/build/x64-Debug (default)/CMakeFiles/3.18.20081302-MSVC_2
+/out/build/x64-Debug (default)/CMakeFiles
+/out/build/x64-Debug (default)/CMakeCache.txt
+/out/build/x64-Debug (default)/build.ninja
+/out/build/x64-Debug (default)/.cmake/api/v1/reply/target-Cmake-Debug-7ec358d357fa0eec39b3.json
+/out/build/x64-Debug (default)/.cmake/api/v1/reply/index-2020-11-19T13-48-43-0786.json
+/out/build/x64-Debug (default)/.cmake/api/v1/reply/codemodel-v2-d713705eda664b6422b7.json
+/out/build/x64-Debug (default)/.cmake/api/v1/reply/cmakeFiles-v1-e11f7fef30da8d2c7629.json
+/out/build/x64-Debug (default)/.cmake/api/v1/reply/cache-v2-e0311e98b0204ca18aa6.json
+/out/build/x64-Debug (default)/.cmake/api/v1/reply
+/out/build/x64-Debug (default)/.cmake/api/v1/query/client-MicrosoftVS/query.json
+/out/build/x64-Debug (default)/.cmake/api/v1/query/client-MicrosoftVS
+/out/build/x64-Debug (default)/.cmake/api/v1
+/out/build/x64-Debug (default)
+/.vs/slnx.sqlite-journal
+/.vs/slnx.sqlite
+/.vs/ProjectSettings.json
+/.vs/plusbussim/v16/Browse.VC.opendb
+/.vs/plusbussim/v16/Browse.VC.db-wal
+/.vs/plusbussim/v16/Browse.VC.db-shm
+/.vs/plusbussim/v16/Browse.VC.db
+/.vs/plusbussim/v16/.suo
+/.vs/plusbussim/v16
+/.vs/CMake Overview
+/.vs
