@@ -1,9 +1,5 @@
-struct vehicle{
-    int id;
-    int v;
-    int active;
-};
-
+#pragma once
+#include "datatypes.h"
 void init_actors(int*, int, struct vehicle*);
 void time_step(int*, int, struct vehicle*);
 void accellerate(int*, int, struct vehicle*);

@@ -1,3 +1,4 @@
+#pragma once
 #define ROAD_SIZE 100
 #define AMOUNT_VEHICLES 20
 #define V_MAX 5

@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "simulation.h"
+#include "datatypes.h"
 #include "variables.h"
 #include "debug.h"
 
@@ -19,4 +19,15 @@ void print_lane(int* link, int len, struct vehicle* actors){
         printf("%c", print);
     }
     printf("\n");
+}
+
+void print_status(struct vehicle* actors, long int seed) {
+    int i, active = 0;
+
+    for (i = 1; i < ROAD_SIZE + 1; i++) {
+        if (actors[i].active == 1)
+            active++;
+    }
+    printf("%s %s %s %s\n%-9s%-10d%-7d%-2c%-20d%ld\n", "Status: ", "Runtime: ", "Active / disabled vehicles: ", "Seed:",
+           "OK", TIME_STEPS, active, '/', AMOUNT_VEHICLES-active, seed);
 }
