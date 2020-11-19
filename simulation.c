@@ -1,10 +1,4 @@
 /* Hello from the other siiide! lul*/
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include "debug.h"
-#include "variables.h"
-#include "datatypes.h"
 #include "simulation.h"
 
 int main(void){
