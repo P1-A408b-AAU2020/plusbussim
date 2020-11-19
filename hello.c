@@ -16,6 +16,7 @@ struct vehicle{
   int active;
 };
 
+void print_status(struct vehicle*, long int seed);
 void print_actors(struct vehicle* actors);
 void print_lane(int*, int, struct vehicle*);
 void init_actors(int*, int, struct vehicle*);
@@ -26,8 +27,7 @@ void move(int*, int, struct vehicle*);
 int lead_gap(int*, int, int);
 
 int main(void){
-  int i, active = 0, disabled = 0;
-  
+  int i;
   /* Main setup */
   int* link = (int*)calloc(ROAD_SIZE, sizeof(int));
   struct vehicle* actors = (struct vehicle*)calloc(ROAD_SIZE + 1, sizeof(struct vehicle));  
@@ -42,18 +42,22 @@ int main(void){
     time_step(link, ROAD_SIZE, actors);
   }
 
-  for(i = 1; i < ROAD_SIZE + 1; i++){
-    if(actors[i].active == 1)
-      active++;
-    else
-      disabled++;
-  }
-  printf("%s %s %s \n%-9s%-10d%-7d%-2c%-d\n", "Status: ", "Runtime: ", "Active / disabled vehicles: ",
-	 "OK", TIME_STEPS, active, '/', disabled); 
-  
+  print_status(actors, seed);
   free(link);
   free(actors);
   return EXIT_SUCCESS;
+}
+
+void print_status(struct vehicle* actors, long int seed){
+  int i, active = 0;
+
+  for(i = 1; i < ROAD_SIZE + 1; i++){
+    if(actors[i].active == 1)
+      active++;
+  }
+
+  printf("%s %s %s %s\n%-9s%-10d%-7d%-2c%-20d%ld\n", "Status: ", "Runtime: ", "Active / disabled vehicles: ", "Seed:",
+	 "OK", TIME_STEPS, active, '/', AMOUNT_VEHICLES-active, seed); 
 }
 
 /* Places vehicles on the road. The vehicles are randomly generated and placed. */
