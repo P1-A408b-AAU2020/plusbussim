@@ -4,7 +4,7 @@
 #include <time.h>
 
 #define ROAD_SIZE 100
-#define AMOUNT_VEHICLES 40
+#define AMOUNT_VEHICLES 10
 #define V_MAX 5
 #define TIME_STEPS 20
 #define DECELERATE_CHANCE 20
@@ -31,8 +31,8 @@ int main(void){
   /* Main setup */
   int* link = (int*)calloc(ROAD_SIZE, sizeof(int));
   struct vehicle* actors = (struct vehicle*)calloc(ROAD_SIZE + 1, sizeof(struct vehicle));  
-
-  srand(time(NULL));
+  long int seed = time(NULL);
+  srand(seed);
   init_actors(link, ROAD_SIZE, actors);
 
   /* Print initial lane */
@@ -48,7 +48,7 @@ int main(void){
     else
       disabled++;
   }
-  printf("%s %s %s\n%-9s%-10d%-7d%-2c%-d\n", "Status: ", "Runtime: ", "Active / disabled vehicles: ",
+  printf("%s %s %s \n%-9s%-10d%-7d%-2c%-d\n", "Status: ", "Runtime: ", "Active / disabled vehicles: ",
 	 "OK", TIME_STEPS, active, '/', disabled); 
   
   free(link);
