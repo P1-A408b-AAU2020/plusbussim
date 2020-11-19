@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include "datatypes.h"
-#include "variables.h"
 #include "debug.h"
 
 void print_actors(struct vehicle* actors){
@@ -11,7 +8,7 @@ void print_actors(struct vehicle* actors){
 }
 
 /* Prints out A SINGLE LANE of the simulation. */
-void print_lane(int* link, int len, struct vehicle* actors){
+void print_lane(const int* link, int len, struct vehicle* actors){
     int i;
     char print;
     for(i = 0; i < len; i++){
@@ -22,12 +19,13 @@ void print_lane(int* link, int len, struct vehicle* actors){
 }
 
 void print_status(struct vehicle* actors, long int seed) {
-    int i, active = 0;
+    int i, active = 0, disabled;
 
     for (i = 1; i < ROAD_SIZE + 1; i++) {
         if (actors[i].active == 1)
             active++;
     }
+    disabled = AMOUNT_VEHICLES-active;
     printf("%s %s %s %s\n%-9s%-10d%-7d%-2c%-20d%ld\n", "Status: ", "Runtime: ", "Active / disabled vehicles: ", "Seed:",
-           "OK", TIME_STEPS, active, '/', AMOUNT_VEHICLES-active, seed);
+           "OK", TIME_STEPS, active, '/', disabled, seed);
 }
