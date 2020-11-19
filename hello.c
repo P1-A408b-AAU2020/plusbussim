@@ -7,8 +7,8 @@
 #define AMOUNT_VEHICLES 20
 #define V_MAX 5
 #define TIME_STEPS 20
-#define DECCELLERATE_CHANCE 20
-#define MIN_SPEED_RANDOM_DECELLERATE 2
+#define DECELERATE_CHANCE 20
+#define MIN_SPEED_RANDOM_DECELERATE 2
 
 struct vehicle{
   int id;
@@ -21,7 +21,7 @@ void print_lane(int*, int, struct vehicle*);
 void init_actors(int*, int, struct vehicle*);
 void time_step(int*, int, struct vehicle*);
 void accellerate(int*, int, struct vehicle*);
-void decellerate(int*, int, struct vehicle*);
+void decelerate(int*, int, struct vehicle*);
 void move(int*, int, struct vehicle*);
 int lead_gap(int*, int, int);
 
@@ -81,11 +81,11 @@ void init_actors(int* link, int len, struct vehicle* actors){
 void time_step(int* link, int len, struct vehicle* actors){
   move(link, len, actors);
   accellerate(link, len, actors);
-  decellerate(link, len, actors);
+  decelerate(link, len, actors);
   print_lane(link, ROAD_SIZE, actors);
 }
 
-/* Accellerates all vehicles */
+/* Accelerates all vehicles */
 /* Could this be more efficient using pointers for v? */
 void accellerate(int* link, int len, struct vehicle* actors){
   int i, v, gap;
@@ -98,8 +98,8 @@ void accellerate(int* link, int len, struct vehicle* actors){
   }
 }
 
-/* Deccellerates all vehicles */
-void decellerate(int* link, int len, struct vehicle* actors){
+/* Decelerates all vehicles */
+void decelerate(int* link, int len, struct vehicle* actors){
   int i, v, gap;
   for(i = 0; i < len; i++){
     v = actors[link[i]].v;
@@ -107,7 +107,7 @@ void decellerate(int* link, int len, struct vehicle* actors){
 
     if(gap < v)
       actors[link[i]].v = gap;
-    else if(rand() % 100 <= DECCELLERATE_CHANCE && v > MIN_SPEED_RANDOM_DECELLERATE)
+    else if(rand() % 100 <= DECELERATE_CHANCE && v > MIN_SPEED_RANDOM_DECELERATE)
       actors[link[i]].v--;    
   }
 }
@@ -157,10 +157,10 @@ void print_actors(struct vehicle* actors){
 /* Prints out A SINGLE LANE of the simulation. */
 void print_lane(int* link, int len, struct vehicle* actors){
   int i;
-  char prnt;
+  char print;
   for(i = 0; i < len; i++){
-    prnt = link[i] > 0? actors[link[i]].v + '0' : '.';
-    printf("%c", prnt);
+      print = link[i] > 0 ? actors[link[i]].v + '0' : '.';
+      printf("%c", print);
   }
   printf("\n");
 }
