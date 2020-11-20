@@ -5,8 +5,6 @@ typedef struct vehicle{
     int v;
     int active;
     int is_plusbus;
-};
-
 } vehicle;
 
 typedef struct link{
