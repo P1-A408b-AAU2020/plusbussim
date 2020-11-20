@@ -4,10 +4,9 @@ typedef struct vehicle{
     int id;
     int v;
     int active;
-<<<<<<< HEAD
     int is_plusbus;
 };
-=======
+
 } vehicle;
 
 typedef struct link{
@@ -27,4 +26,3 @@ typedef struct node {
     int links[8];
 
 }node;
->>>>>>> 0b3b23a29d0f07c3dee9c31db054ff113c80540f

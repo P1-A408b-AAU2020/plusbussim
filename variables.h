@@ -5,11 +5,9 @@
 #define TIME_STEPS 20
 #define DECELERATE_CHANCE 20
 #define MIN_SPEED_RANDOM_DECELERATE 2
-<<<<<<< HEAD
 #define PLUSBUS_LENGTH 5
-=======
 #define AMOUNT_ROADS 5
 #define AMOUNT_NODES 10
 #define AMOUNT_LINKS 10
 #define NODE_NAME_MAX_SIZE 10
->>>>>>> 0b3b23a29d0f07c3dee9c31db054ff113c80540f
+
