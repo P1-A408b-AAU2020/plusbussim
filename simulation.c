@@ -1,8 +1,12 @@
 /* Hello from the other siiide! lul*/
 #include "simulation.h"
+#include "node.h"
 
 int main(void){
-    int i;
+    int i, x, y;
+    link links[16];
+    node nodes[2];
+    build_network(links, nodes);
 
     /* Main setup */
     int* link = (int*)calloc(ROAD_SIZE, sizeof(int));
