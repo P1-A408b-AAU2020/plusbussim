@@ -1,4 +1,7 @@
 #include "debug.h"
+#include <stdio.h>
+#include "datatypes.h"
+#include "variables.h"
 
 void print_actors(struct vehicle* actors){
     int i;

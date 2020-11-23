@@ -1,6 +1,7 @@
 #include "node.h"
 #include <string.h>
 #include <stdio.h>
+
 #define RIGHT 1
 #define LEFT 5
 #define FORWARD 3
@@ -73,3 +74,6 @@ int forward(int lnk_id, node *n) {
     return n->links[(link_index_of(lnk_id, n) + FORWARD) % 7];
 }
 
+/* int* new_link(int road_size) {
+    return (int*)calloc(road_size, sizeof(int));
+} */

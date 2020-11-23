@@ -28,3 +28,5 @@ int right_turn(int lnk_id, node *n);
 
 /* Given a road, returns the forward road at the next node*/
 int forward(int lnk_id, node *n);
+
+/* int* new_link(int road_size); */
