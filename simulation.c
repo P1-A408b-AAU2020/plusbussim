@@ -1,6 +1,11 @@
 /* Hello from the other siiide! lul*/
 #include "simulation.h"
 #include "node.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include "debug.h"
+#include "variables.h"
 
 int main(void){
     int i, x, y;
@@ -9,7 +14,10 @@ int main(void){
     build_network(links, nodes);
 
     /* Main setup */
+
     int* link = (int*)calloc(ROAD_SIZE, sizeof(int));
+    /* int* link = new_link(ROAD_SIZE); */
+
     struct vehicle* actors = (struct vehicle*)calloc(ROAD_SIZE + 1, sizeof(struct vehicle));
 
     time_t seed = time(NULL);

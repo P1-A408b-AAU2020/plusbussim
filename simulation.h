@@ -1,9 +1,5 @@
 #include "datatypes.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include "debug.h"
-#include "variables.h"
+/* Note til senere: filen med main() skal ikke have en h fil! */
 
 void init_actors(int*, int, struct vehicle*);
 void time_step(int*, int, struct vehicle*);
