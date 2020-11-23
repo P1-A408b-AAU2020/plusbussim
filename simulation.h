@@ -1,4 +1,3 @@
-#pragma once
 #include "datatypes.h"
 #include <stdio.h>
 #include <stdlib.h>
