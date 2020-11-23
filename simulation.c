@@ -1,8 +1,12 @@
 /* Hello from the other siiide! lul*/
 #include "simulation.h"
+#include "node.h"
 
 int main(void){
-    int i;
+    int i, x, y;
+    link links[16];
+    node nodes[2];
+    build_network(links, nodes);
 
     /* Main setup */
     int* link = (int*)calloc(ROAD_SIZE, sizeof(int));
@@ -28,13 +32,20 @@ int main(void){
 
 /* Places vehicles on the road. The vehicles are randomly generated and placed. */
 void init_actors(int* link, int len, struct vehicle* actors){
-    int i, j = AMOUNT_VEHICLES, pos = 0;
+    int i, k, j = 1, pos = 0, plusbus_assigned = 0;
 
     /* Generate actors */
     for(i = 1; i <= AMOUNT_VEHICLES; i++){
         actors[i].id = i;
         actors[i].v = 0;
         actors[i].active = 1;
+
+        if (!plusbus_assigned){
+            actors[i].is_plusbus = 1;
+            plusbus_assigned = 1;
+        }
+        else
+            actors[i].is_plusbus = 0;
     }
 
     /* Place actors on road */
@@ -42,8 +53,16 @@ void init_actors(int* link, int len, struct vehicle* actors){
         pos = rand()%len;
         if(link[pos] != 0)
             i--;
-        else
-            link[pos] = actors[j--].id;
+        else{
+            if (actors[j].is_plusbus){
+                for (k = 0; k < PLUSBUS_LENGTH; k++)
+                    link[pos +k] = actors[j].id;
+            }
+            else{
+                link[pos] = actors[j].id;
+            }
+            j++;
+        }
     }
 }
 
@@ -59,26 +78,37 @@ void time_step(int* link, int len, struct vehicle* actors){
 /* Could this be more efficient using pointers for v? */
 void accellerate(int* link, int len, struct vehicle* actors){
     int i, v, gap;
-    for(i = 0; i < len; i++){
+    for(i = len - 1; i >= 0; i--){
         v = actors[link[i]].v;
         gap = lead_gap(link, len, i);
 
-        if(v < V_MAX && gap > v)
+        if(v < V_MAX && gap > v){
             actors[link[i]].v++;
+            if (actors[link[i]].is_plusbus)
+                i -= PLUSBUS_LENGTH-1;
+        }
     }
 }
 
 /* Decelerates all vehicles */
 void decelerate(int* link, int len, struct vehicle* actors){
     int i, v, gap;
-    for(i = 0; i < len; i++){
+    for(i = len - 1; i >= 0; i--){
         v = actors[link[i]].v;
         gap = lead_gap(link, len, i);
 
-        if(gap < v)
+        if(gap < v){
             actors[link[i]].v = gap;
-        else if(rand() % 100 <= DECELERATE_CHANCE && v > MIN_SPEED_RANDOM_DECELERATE)
+            if (actors[link[i]].is_plusbus == 1)
+                i -= PLUSBUS_LENGTH - 1;
+        }
+        else if(rand() % 100 <= DECELERATE_CHANCE && v > MIN_SPEED_RANDOM_DECELERATE){
             actors[link[i]].v--;
+            if (actors[link[i]].is_plusbus)
+                i -= PLUSBUS_LENGTH - 1;
+        }
+        if (actors[link[i]].is_plusbus)
+            i -= PLUSBUS_LENGTH - 1;
     }
 }
 
