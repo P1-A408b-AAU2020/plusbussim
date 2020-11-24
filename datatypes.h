@@ -1,5 +1,6 @@
 #pragma once
 #include "variables.h"
+
 typedef struct vehicle{
     int id;
     int v;
