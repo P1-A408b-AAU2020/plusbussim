@@ -20,7 +20,6 @@ void print_lane(int* link, int len, struct vehicle* actors){
     }
     printf("\n");
 }
-
 void print_status(struct vehicle* actors, long int seed) {
     int i, active = 0;
 
