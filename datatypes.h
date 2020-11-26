@@ -10,7 +10,7 @@ typedef struct vehicle{
 
 typedef struct link{
     int id;
-    int* road;
+    int *road;
     int len;
 } link;
 
