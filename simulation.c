@@ -1,29 +1,58 @@
 /* Hello from the other siiide! lul*/
-#include "simulation.h"
 #include "node.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include "debug.h"
+#include "variables.h"
+
+#define AMOUNT_ROADS 16
+
+void init_actors(int*, int, struct vehicle*);
+void time_step(int*, int, struct vehicle*);
+void accellerate(int*, int, struct vehicle*);
+void decelerate(int*, int, struct vehicle*);
+void move(int*, int, struct vehicle*);
+int lead_gap(int*, int, int);
+
 
 int main(void){
     int i, x, y;
-    link links[16];
-    node nodes[2];
-    build_network(links, nodes);
+    time_t seed = time(NULL);
+    srand(seed);
+
+    link links[AMOUNT_ROADS];
+    intersection nodes[2];
+    vehicle vehicles[CARS];
+    build_network(nodes, links);
+    initialize_actors(vehicles, links, 16);
+    printf("%d\n", left_turn(nodes, 6));
+    printf("%d\n", left_turn(nodes+1, 3));
 
     /* Main setup */
     int* link = (int*)calloc(ROAD_SIZE, sizeof(int));
     struct vehicle* actors = (struct vehicle*)calloc(ROAD_SIZE + 1, sizeof(struct vehicle));
 
-    time_t seed = time(NULL);
-    srand(seed);
     init_actors(link, ROAD_SIZE, actors);
 
+    print_vehicles(vehicles, CARS);
+    /*for (int j = 0; j < 16; ++j) {
+        print_link(&links[j], vehicles);
+    }*/
     /* Print initial lane */
-    print_lane(link, ROAD_SIZE, actors);
+    /*print_lane(link, ROAD_SIZE, actors);*/
 
     for(i = 0; i < TIME_STEPS; i++){
-        time_step(link, ROAD_SIZE, actors);
+        time_step(links->road, 25, vehicles);
+        print_link(links, vehicles);
+
     }
 
     print_status(actors, seed);
+
+    for (int j = 0; j < AMOUNT_ROADS; ++j) {
+        free(links[j].road);
+    }
 
     free(link);
     free(actors);
@@ -71,7 +100,6 @@ void time_step(int* link, int len, struct vehicle* actors){
     move(link, len, actors);
     accellerate(link, len, actors);
     decelerate(link, len, actors);
-    print_lane(link, ROAD_SIZE, actors);
 }
 
 /* Accelerates all vehicles */
@@ -128,7 +156,7 @@ int lead_gap(int* link, int len, int pos){
 }
 
 /* Moves all vehicles by their speed. Removes them from the road if they reach the end. */
-void move(int* link, int len, struct vehicle* actors){
+void move(int* link, int len, vehicle* actors){
     int i, a, mov;
     for(i = len-1; i >= 0; i--){
         a = link[i];

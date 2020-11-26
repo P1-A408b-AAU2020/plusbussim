@@ -1,30 +1,63 @@
 #pragma once
-#include "datatypes.h"
+#define CARS 20
+typedef struct vehicle{
+    int id;
+    int v;
+    int active;
+    int is_plusbus;
+} vehicle;
 
-void build_network(link* links, node* n);
+typedef struct link{
+    int id;
+    int* road;
+    int len;
+} link;
 
-/* Does out continue in? I.e can you drive from in to out? */
-int continues(int out, int in, node *n);
+typedef struct cross_intersection{
+    int links[8];
+} type_a;
 
-/* Returns the internal index of the id in the node*/
-int link_index_of(int id, node* n);
+typedef struct t_intersection {
+    int links[6];
+} type_b;
 
-/* Returns the id of the link that is the next turn in direction dir. */
-int search_matrix(int lnk_id, int dir, matrix* m);
+typedef union intersection_types{
+    type_a type_a;
+    type_b type_b;
+} intersection_types;
 
-/* sets up a node correctly if given the correct input. */
-void construct_node(node* n, int id, char* name, int primary1_enter, int primary1_exit,
-                    int primary2_enter, int primary2_exit, int secondary1_enter,
-                    int secondary1_exit, int secondary2_enter, int secondary2_exit);
+typedef struct intersection{
+    char type;
+    int id;
+    intersection_types layout;
+} intersection;
 
-/* Adds a given node to a given node matrix */
-void add_node_to_matrix(node* n, matrix* m);
+void build_network(intersection* intersections, link* links);
 
-/* Given a road, returns the left road at the next node*/
-int left_turn(int lnk_id, node *n);
+void construct_type_a(intersection* intersection, int id, int primary1_enter, int primary1_exit, int primary2_enter,
+                      int primary2_exit, int secondary1_enter, int secondary1_exit, int secondary2_enter,
+                      int secondary2_exit);
 
-/* Given a road, returns the right road at the next node*/
-int right_turn(int lnk_id, node *n);
+void construct_type_b(intersection* intersection, int id, int primary1_enter, int primary1_exit, int primary2_enter,
+                      int primary2_exit, int secondary1_enter, int secondary1_exit);
 
-/* Given a road, returns the forward road at the next node*/
-int forward(int lnk_id, node *n);
+int right_turn_type_a(intersection* intersection, int link_id);
+int right_turn_type_b(intersection* intersection, int link_id);
+
+int internal_index(intersection* intersection, int link_id);
+
+int right_turn_type_a(intersection* intersection, int link_id);
+int left_turn_type_a(intersection* intersection, int link_id);
+int forward_type_a(intersection* intersection, int link_id);
+
+int right_turn_type_b(intersection* intersection, int link_id);
+int left_turn_type_b(intersection* intersection, int link_id);
+int forward_type_b(intersection* intersection, int link_id);
+
+int left_turn(intersection* intersection, int link_id);
+int forward(intersection* intersection, int link_id);
+int right_turn(intersection* intersection, int link_id);
+
+void initialize_actors(vehicle* actors, link* links, int len);
+void print_link(link* link, vehicle* vehicles);
+void print_vehicles(vehicle* vehicles, int len);

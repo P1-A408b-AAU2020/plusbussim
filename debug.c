@@ -1,6 +1,7 @@
 #include "debug.h"
+#include "variables.h"
 
-void print_actors(struct vehicle* actors){
+void print_actors(vehicle* actors){
     int i;
     for(i = 1; i < AMOUNT_VEHICLES+1; i++){
         printf("Car %d:\n  v: %d\n", actors[i].id, actors[i].v);
