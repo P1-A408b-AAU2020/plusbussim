@@ -1,6 +1,6 @@
-#pragma once
 #include "node.h"
 #include <stdio.h>
-void print_actors(vehicle* actors);
-void print_lane(const int*, int, struct vehicle*);
-void print_status(struct vehicle*, long int);
+void print_link(link* link, vehicle* vehicles);
+void print_vehicles(vehicle* vehicles, int len);
+
+void print_status(vehicle*, long int);

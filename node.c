@@ -7,23 +7,22 @@
 #define RIGHT 1
 #define LEFT 5
 #define FORWARD 3
-#define ROAD_LENGTH 25
 
 /* The contents of this function are predefined. Make changes to how network here. */
 void build_network(intersection* intersections, link* links){
     int i;
 
-    for(i = 0; i < 8; i++){
+    for(i = 0; i < AMOUNT_LINKS/2; i++){
         links[i].id = i;
         links[i].road = (int*)calloc(ROAD_LENGTH, sizeof(int));
-        links[i].len = 25;
+        links[i].len = ROAD_LENGTH;
     }
     construct_type_a(intersections, 0,0,3,4,7,2,5,6,1);
 
-    for(i = 8; i < 16; i++){
+    for(i = AMOUNT_LINKS/2; i < AMOUNT_LINKS; i++){
         links[i].id = i;
         links[i].road = (int*)calloc(ROAD_LENGTH, sizeof(int));
-        links[i].len = 25;
+        links[i].len = ROAD_LENGTH;
     }
     construct_type_a(intersections + 1, 1,3,11,12,4,10,13,14,9);
 
@@ -110,26 +109,85 @@ void initialize_actors(vehicle* actors, link* links, int len){
         actors[i].id = i;
         actors[i].v = 0;
         actors[i].active = 1;
+        actors[i].is_plusbus = 0;
         int l = rand()%len;
         links[l].road[rand()%links[l].len] = i;
     }
 }
 
-void print_link(link *link, vehicle *vehicles) {
-    int i;
-    char print;
-    for(i = 0; i < link->len; i++){
-        print = link->road[i] > 0 ? vehicles[link->road[i]].v + '0' : '.';
-        printf("%c", print);
+void move_link(link *link, vehicle *vehicles) {
+    int i, a, mov;
+    for(i = link->len-1; i >= 0; i--){
+        a = link->road[i];
+        if (a > 0){
+            if(vehicles[a].v > 0){
+                link->road[i] = 0;
+                mov = i + vehicles[a].v;
+                if(mov < link->len){
+                    link->road[mov] = a;
+                }
+                else{
+                    vehicles[a].active = 0;
+                }
+            }
+        }
     }
-    printf("\n");
 }
 
-void print_vehicles(vehicle *vehicles, int len) {
-    for (int i = 0; i < len; ++i) {
-        printf("%d ", vehicles[i].id);
+void decelerate_link(link *link, vehicle *vehicles) {
+    int i, v, gap;
+    for(i = link->len - 1; i >= 0; i--){
+        v = vehicles[link->road[i]].v;
+        gap = lead_gap(link, i);
+
+        if(gap < v){
+            vehicles[link->road[i]].v = gap;
+            if (vehicles[link->road[i]].is_plusbus == 1)
+                i -= PLUS_BUS_LENGTH - 1;
+        }
+        else if(rand() % 100 <= DECELERATE_CHANCE && v > MIN_SPEED_RANDOM_DECELERATE){
+            vehicles[link->road[i]].v--;
+            if (vehicles[link->road[i]].is_plusbus)
+                i -= PLUS_BUS_LENGTH - 1;
+        }
+        if (vehicles[link->road[i]].is_plusbus)
+            i -= PLUS_BUS_LENGTH - 1;
     }
-    printf("\n");
 }
 
+void accelerate_link(link *link, vehicle *vehicles) {
+    int i, v, gap;
+    for(i = link->len - 1; i >= 0; i--){
+        v = vehicles[link->road[i]].v;
+        gap = lead_gap(link, i);
+
+        if(v < V_MAX && gap > v){
+            vehicles[link->road[i]].v++;
+            if (vehicles[link->road[i]].is_plusbus)
+                i -= PLUS_BUS_LENGTH-1;
+        }
+    }
+}
+
+void time_step(link *links, vehicle *vehicles) {
+    for (int i = 0; i < AMOUNT_LINKS; ++i) {
+        move_link(&links[i], vehicles);
+        accelerate_link(&links[i], vehicles);
+        decelerate_link(&links[i], vehicles);
+    }
+}
+
+int lead_gap(link *link, int pos) {
+    int i, gap = 0;
+    for(i = pos + 1; i < link->len; i++){
+        if(link->road[i] == 0)
+            gap++;
+        else
+            return gap;
+        if(gap > V_MAX)
+            return V_MAX;
+    }
+    /* If the car reaches the end of the road */
+    return V_MAX;
+}
 

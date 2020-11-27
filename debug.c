@@ -1,20 +1,19 @@
 #include "debug.h"
-#include "variables.h"
+#include "node.h"
 
-void print_actors(vehicle* actors){
-    int i;
-    for(i = 1; i < AMOUNT_VEHICLES+1; i++){
-        printf("Car %d:\n  v: %d\n", actors[i].id, actors[i].v);
-    }
-}
-
-/* Prints out A SINGLE LANE of the simulation. */
-void print_lane(const int* link, int len, struct vehicle* actors){
+void print_link(link *link, vehicle *vehicles) {
     int i;
     char print;
-    for(i = 0; i < len; i++){
-        print = link[i] > 0 ? actors[link[i]].v + '0' : '.';
+    for(i = 0; i < link->len; i++){
+        print = link->road[i] > 0 ? vehicles[link->road[i]].v + '0' : '.';
         printf("%c", print);
+    }
+    printf("\n");
+}
+
+void print_vehicles(vehicle *vehicles, int len) {
+    for (int i = 0; i < len; ++i) {
+        printf("%d ", vehicles[i].id);
     }
     printf("\n");
 }
@@ -22,7 +21,7 @@ void print_lane(const int* link, int len, struct vehicle* actors){
 void print_status(struct vehicle* actors, long int seed) {
     int i, active = 0, disabled;
 
-    for (i = 1; i < ROAD_SIZE + 1; i++) {
+    for (i = 1; i < ROAD_LENGTH + 1; i++) {
         if (actors[i].active == 1)
             active++;
     }
