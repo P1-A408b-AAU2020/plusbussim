@@ -25,7 +25,7 @@ int check_plusbus(int r, link link, vehicle *actor){
 void change_lights(node *node, vehicle *actor, link *link){
     int id, count = 0;
     /*Checks if the plusbus is in radius for prioritization*/
-    if(check_plusbus(RADIUS, *link, actor) == 1 && node.state == Green && counter < RADIUS){
+    if(check_plusbus(RADIUS, *link, actor) == 1 && node.state == Green && count < RADIUS){
         count += 5;
     }else if(check_plusbus(RADIUS, *link, actor) == 1 && node.state == Red){
         count = 5;
