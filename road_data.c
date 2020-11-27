@@ -59,20 +59,26 @@ typedef enum roadid {jylgade_1_east, jylgade_1_west_plusbus, jylgade_1_east_plus
     sghsvej_2_north_plusbus, sghsvej_2_north, bernstorffsgade_east, bernstorffsgade_west
 } roadid;
 
+typedef struct pocket {
+    int id;
+    int* road;
+    int len;
+} pocket;
+
 typedef struct link{
     int id;
     int *road;
     int len;
-    int right_pocket_lane;
-    int left_pocket_lane;
+    pocket right_pocket_lane;
+    pocket left_pocket_lane;
 } link;
-
 
 int main(void) {
     link links[NUM_OF_LINKS];
     int i = 0;
     int j = 0;
     int k = 0;
+    /* Måske tilføj definiation af længde af gader */
     int link_length[NUM_OF_LINKS] = {JYLGADE_1_LEN, JYLGADE_1_LEN, JYLGADE_1_LEN, JYLGADE_2_LEN, JYLGADE_2_LEN,
                                      JYLGADE_2_LEN, JYLGADE_2_LEN, AAGADE_LEN, AAGADE_LEN, JYLGADE_1_LEN,
 

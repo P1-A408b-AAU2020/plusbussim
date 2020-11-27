@@ -7,6 +7,8 @@
 #include "debug.h"
 #include "variables.h"
 
+void lane_change(offset);
+
 int main(void){
     int i, x, y;
     link links[16];
@@ -76,6 +78,8 @@ void init_actors(int* link, int len, struct vehicle* actors){
 
 /* Each time step of the simulation, this is run. */
 void time_step(int* link, int len, struct vehicle* actors){
+    int *offset;
+    lane_change(offset);
     move(link, len, actors);
     accellerate(link, len, actors);
     decelerate(link, len, actors);
@@ -155,4 +159,7 @@ void move(int* link, int len, struct vehicle* actors){
     }
 }
 
+void lane_change(offset) {
 
+
+}
