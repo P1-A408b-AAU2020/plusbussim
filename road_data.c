@@ -60,7 +60,7 @@ typedef enum roadid {jylgade_1_east, jylgade_1_west_plusbus, jylgade_1_east_plus
 } roadid;
 
 typedef struct pocket {
-    int id;
+    int pos;
     int* road;
     int len;
 } pocket;
@@ -73,7 +73,7 @@ typedef struct link{
     pocket left_pocket_lane;
 } link;
 
-int main(void) {
+int init_road_data() {
     link links[NUM_OF_LINKS];
     int i = 0;
     int j = 0;
@@ -111,16 +111,17 @@ int main(void) {
     int left_pocket_lane[5] = {dag_ham_gade_1_north, dag_ham_gade_2_south, kjellerupsgade_south,
                                karolinelundsvej_south, oester_alle_2_west};
 
-
     for (i = jylgade_1_east; i <= bernstorffsgade_west; i++) {
         links[i].id = i;
         links[i].len = link_length[i];
 
         if (links[i].id == right_pocket_lane[j]){
+            /* set this to a pocket lane */
             links[i].right_pocket_lane = 1;
             j++;
         }
         else
+            /* default value for no pocket lane */
             links[i].right_pocket_lane = 0;
 
         if (links[i].id == left_pocket_lane[k]){
@@ -135,5 +136,6 @@ int main(void) {
         printf("LINK %d\nid = %d \nlength = %d \nright pocket lane = %d\nleft pocket lane = %d\n\n",
                i+1, links[i].id, links[i].len, links[i].right_pocket_lane, links[i].left_pocket_lane);
     }
+
     return EXIT_SUCCESS;
 }

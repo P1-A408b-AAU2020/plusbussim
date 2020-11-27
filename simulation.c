@@ -80,6 +80,7 @@ void init_actors(int* link, int len, struct vehicle* actors){
 void time_step(int* link, int len, struct vehicle* actors){
     int *offset;
     lane_change(offset);
+
     move(link, len, actors);
     accellerate(link, len, actors);
     decelerate(link, len, actors);
@@ -145,9 +146,9 @@ void move(int* link, int len, struct vehicle* actors){
     for(i = len-1; i >= 0; i--){
         a = link[i];
         if (a > 0){
-            if(actors[a].v > 0){
+            if(actors[a].v - offset > 0){
                 link[i] = 0;
-                mov = i + actors[a].v;
+                mov = i + actors[a].v - offset;
                 if(mov < len){
                     link[mov] = a;
                 }
@@ -159,7 +160,25 @@ void move(int* link, int len, struct vehicle* actors){
     }
 }
 
-void lane_change(offset) {
+void lane_change(link *l_link, int *offset) {
+    int i;
 
+    const pocket left_pocket = l_link->left_pocket_lane;
+    const pocket right_pocket = l_link->right_pocket_lane;
 
+    if (left_pocket != NULL) {
+        for (i = left_pocket.pos ; i > left_pocket.pos-V_MAX; --i) {
+            if (l_link->road[i] != NULL) {
+                if (car.turn_left == 1) {
+                    
+                }
+            }
+        }
+    }
+    else if (right_pocket != NULL) {
+
+    }
+    else {
+        return;
+    }
 }
