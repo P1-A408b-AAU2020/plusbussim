@@ -1,9 +1,6 @@
-//
-// Created by Magnus on 27-11-2020.
-//
+/*TODO add "trafficlights.c trafficlights.h" to CMakeLists.txt when this library is done*/
 #include "trafficlights.h"
-#include "variables.h"
-#include "datatypes.h"
+#include "node.h"
 
 #define RADIUS 10
 
@@ -40,11 +37,21 @@ void change_lights(node *node, vehicle *actor, link *link){
         node.state = Red;
     }
 
-    /*if its red then stop the last car*/
+    /*
+     * if its red then stop the cars stop
+     * Red light means that one direction stops and the other drives
+     * and vise versa
+     */
     if(node.state = Red){
         id = link->road[link->len-1];
         actor[id].v = 0;
+        /*
+         * Cars on the prioritization road stops for red
+         */
+    } else{
+        /*
+         * Cars on the non prioritization road stops for red
+         */
     }
-
     count++;
 }
