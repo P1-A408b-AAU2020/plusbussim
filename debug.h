@@ -1,6 +1,6 @@
-#pragma once
-#include "datatypes.h"
+#include "node.h"
+#include <stdio.h>
+void print_link(link* link, vehicle* vehicles);
+void print_vehicles(vehicle* vehicles, int len);
 
-void print_actors(struct vehicle* actors);
-void print_lane(const int*, int, struct vehicle*);
-void print_status(struct vehicle*, long int);
+void print_status(vehicle*, long int);

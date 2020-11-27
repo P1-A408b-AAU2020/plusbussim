@@ -1,79 +1,191 @@
 #include "node.h"
-#include <string.h>
-#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 #define RIGHT 1
 #define LEFT 5
 #define FORWARD 3
 
 /* The contents of this function are predefined. Make changes to how network here. */
-void build_network(link* links, node* n){
-    int a[25], b[25], c[25], d[25], e[25], f[25], g[25], h[25], j[25], k[25], l[25], m[25], o[25], p[25], q[25], r[25];
-    int* A[25] ={a, b, c, d, e, f, g, h, j, k, l, m, o, p, q, r};
+void build_network(intersection* intersections, link* links){
     int i;
 
-    for(i = 0; i < 8; i++){
-        links[i].id = 0;
-        links[i].road = A[i];
-        links[i].len = 25;
+    for(i = 0; i < AMOUNT_LINKS/2; i++){
+        links[i].id = i;
+        links[i].road = (int*)calloc(ROAD_LENGTH, sizeof(int));
+        links[i].len = ROAD_LENGTH;
     }
-    construct_node(n, 0, "TEST_NODE_1",0,3,4,7,2,5,6,1);
+    construct_type_a(intersections, 0,0,3,4,7,2,5,6,1);
 
-    for(i = 8; i < 16; i++){
-        links[i].id = 0;
-        links[i].road = A[i];
-        links[i].len = 25;
+    for(i = AMOUNT_LINKS/2; i < AMOUNT_LINKS; i++){
+        links[i].id = i;
+        links[i].road = (int*)calloc(ROAD_LENGTH, sizeof(int));
+        links[i].len = ROAD_LENGTH;
     }
-    construct_node(n, 1, "TEST_NODE_2",3,11,12,4,10,13,14,9);
+    construct_type_a(intersections + 1, 1,3,11,12,4,10,13,14,9);
 
 }
-
-/* TODO: This should be cleaned up */
-void construct_node(node *n, int id, char *name, int primary1_enter, int primary1_exit, int primary2_enter,
-                    int primary2_exit, int secondary1_enter, int secondary1_exit, int secondary2_enter,
-                    int secondary2_exit) {
-    (n+id)->id = id;
-    strcpy(n[id].name, name);
-    n[id].links[0] = primary1_enter;
-    n[id].links[1] = secondary2_exit;
-    n[id].links[2] = secondary1_enter;
-    n[id].links[3] = primary1_exit;
-    n[id].links[4] = primary2_enter;
-    n[id].links[5] = secondary1_exit;
-    n[id].links[6] = secondary2_enter;
-    n[id].links[7] = primary2_exit;
+/* Pointer to the intersection. */
+void construct_type_a(intersection* intersection, int id, int primary1_enter, int primary1_exit, int primary2_enter,
+                      int primary2_exit, int secondary1_enter, int secondary1_exit, int secondary2_enter,
+                      int secondary2_exit){
+    intersection->id = id;
+    intersection->type = 'a';
+    int* p= intersection->layout.type_a.links;
+    p[0] = primary1_enter;
+    p[1] = secondary2_exit;
+    p[2] = secondary1_enter;
+    p[3] = primary1_exit;
+    p[4] = primary2_enter;
+    p[5] = secondary1_exit;
+    p[6] = secondary2_enter;
+    p[7] = primary2_exit;
+}
+void construct_type_b(intersection* intersection, int id, int primary1_enter, int primary1_exit, int primary2_enter,
+                      int primary2_exit, int secondary1_enter, int secondary1_exit){
+    intersection->id = id;
+    intersection->type = 'b';
+    int* p= intersection->layout.type_a.links;
+    p[0] = primary1_enter;
+    p[2] = secondary1_enter;
+    p[3] = primary1_exit;
+    p[4] = primary2_enter;
+    p[5] = secondary1_exit;
+    p[7] = primary2_exit;
 }
 
-int continues(int out, int in, node *n) {
-    int idx_in = link_index_of(in, n), idx_out = link_index_of(out, n);
-    if(idx_in == -1 || idx_out == -1 || (idx_in + idx_out) % 7 == 0)
-        return 0;
-    else
-        return !(out % 2);
+int forward_type_a(intersection *intersection, int link_id) {
+    return intersection->layout.type_a.links[(internal_index(intersection, link_id) + FORWARD) % 7];
 }
 
-int link_index_of(int id, node *n) {
+int left_turn_type_a(intersection *intersection, int link_id) {
+    return intersection->layout.type_a.links[(internal_index(intersection, link_id) +1 + LEFT) % 8 - 1];
+}
+
+int right_turn_type_a(intersection *intersection, int link_id) {
+    return intersection->layout.type_a.links[(internal_index(intersection, link_id) + RIGHT) % 7];
+}
+
+int internal_index(intersection* intersection, int link_id){
     int i;
     for (i = 0; i < 8; ++i) {
-        if(n->links[i] == id)
-            return i;
+        if(intersection->layout.type_a.links[i] == link_id)
+            break;
     }
-    return -1;
+    return i;
 }
 
-int right_turn(int lnk_id, node *n) {
-    return n->links[(link_index_of(lnk_id, n) + RIGHT) % 7];
+int right_turn(intersection *intersection, int link_id) {
+    int result = 0;
+    switch (intersection->type) {
+        case 'a': result = right_turn_type_a(intersection, link_id);
+    }
+    return result;
 }
 
-int left_turn(int lnk_id, node *n) {
-    int res = (link_index_of(lnk_id, n) + LEFT) % 7;
-    return 0 ? n->links[7] : n->links[res];
+int left_turn(intersection *intersection, int link_id) {
+    int result = 0;
+    switch (intersection->type) {
+        case 'a': result = left_turn_type_a(intersection, link_id);
+    }
+    return result;
 }
 
-int forward(int lnk_id, node *n) {
-    return n->links[(link_index_of(lnk_id, n) + FORWARD) % 7];
+int forward(intersection *intersection, int link_id) {
+    int result = 0;
+    switch (intersection->type) {
+        case 'a': result = forward_type_a(intersection, link_id);
+    }
+    return result;
 }
 
-/* int* new_link(int road_size) {
-    return (int*)calloc(road_size, sizeof(int));
-} */
+void initialize_actors(vehicle* actors, link* links, int len){
+    srand(time(NULL));
+    /* generate actors */
+    /* Place actors */
+    for (int i = 0; i < CARS; ++i) {
+        actors[i].id = i;
+        actors[i].v = 0;
+        actors[i].active = 1;
+        actors[i].is_plusbus = 0;
+        int l = rand()%len;
+        links[l].road[rand()%links[l].len] = i;
+    }
+}
+
+void move_link(link *link, vehicle *vehicles) {
+    int i, a, mov;
+    for(i = link->len-1; i >= 0; i--){
+        a = link->road[i];
+        if (a > 0){
+            if(vehicles[a].v > 0){
+                link->road[i] = 0;
+                mov = i + vehicles[a].v;
+                if(mov < link->len){
+                    link->road[mov] = a;
+                }
+                else{
+                    vehicles[a].active = 0;
+                }
+            }
+        }
+    }
+}
+
+void decelerate_link(link *link, vehicle *vehicles) {
+    int i, v, gap;
+    for(i = link->len - 1; i >= 0; i--){
+        v = vehicles[link->road[i]].v;
+        gap = lead_gap(link, i);
+
+        if(gap < v){
+            vehicles[link->road[i]].v = gap;
+            if (vehicles[link->road[i]].is_plusbus == 1)
+                i -= PLUS_BUS_LENGTH - 1;
+        }
+        else if(rand() % 100 <= DECELERATE_CHANCE && v > MIN_SPEED_RANDOM_DECELERATE){
+            vehicles[link->road[i]].v--;
+            if (vehicles[link->road[i]].is_plusbus)
+                i -= PLUS_BUS_LENGTH - 1;
+        }
+        if (vehicles[link->road[i]].is_plusbus)
+            i -= PLUS_BUS_LENGTH - 1;
+    }
+}
+
+void accelerate_link(link *link, vehicle *vehicles) {
+    int i, v, gap;
+    for(i = link->len - 1; i >= 0; i--){
+        v = vehicles[link->road[i]].v;
+        gap = lead_gap(link, i);
+
+        if(v < V_MAX && gap > v){
+            vehicles[link->road[i]].v++;
+            if (vehicles[link->road[i]].is_plusbus)
+                i -= PLUS_BUS_LENGTH-1;
+        }
+    }
+}
+
+void time_step(link *links, vehicle *vehicles) {
+    for (int i = 0; i < AMOUNT_LINKS; ++i) {
+        move_link(&links[i], vehicles);
+        accelerate_link(&links[i], vehicles);
+        decelerate_link(&links[i], vehicles);
+    }
+}
+
+int lead_gap(link *link, int pos) {
+    int i, gap = 0;
+    for(i = pos + 1; i < link->len; i++){
+        if(link->road[i] == 0)
+            gap++;
+        else
+            return gap;
+        if(gap > V_MAX)
+            return V_MAX;
+    }
+    /* If the car reaches the end of the road */
+    return V_MAX;
+}
+
