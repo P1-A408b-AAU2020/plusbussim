@@ -9,6 +9,8 @@
 #define AMOUNT_VEHICLES 20
 #define TIME_STEPS 20
 
+typedef enum turn_dir{forward, right, left} turn_dir;
+
 /* Data type for all the different vehicle types. */
 typedef struct vehicle{
     int id;
@@ -21,6 +23,9 @@ typedef struct link{
     int id;
     int* road;
     int len;
+    int right_chance;
+    int left_chance;
+    int forward_chance = 100 - (right_chance + left_chance);
 } link;
 
 typedef struct cross_intersection{
@@ -74,7 +79,7 @@ int left_turn(intersection* intersection, int link_id);
 
 /* If you arrive at the given intersection on the given link,
  * returns the road you land on if you don't turn at the intersection */
-int forward(intersection* intersection, int link_id);
+int go_forward(intersection* intersection, int link_id);
 
 /* If you arrive at the given intersection on the given link,
  * returns the road you land on if you turn right at the intersection */
