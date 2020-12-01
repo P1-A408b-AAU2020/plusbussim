@@ -1,4 +1,6 @@
 /*TODO add "trafficlights.c trafficlights.h" to CMakeLists.txt when this library is done*/
+/*TODO change all link link to intersection intersection in function parameters*/
+/*TODO fix links til intersection->layout.type_a.links*/
 #include "trafficlights.h"
 #include "node.h"
 
@@ -8,7 +10,7 @@
 enum light_state {Red, Green};
 
 /*Checks if the plusbus is near intersection*/
-int check_plusbus(int r, link link, vehicle *actor){
+int check_plusbus(int r, intersection *intersection, vehicle *actor){
     int i, run = 0, radius;
     radius = link.len - r;
     for(i = 1; i <= AMOUNT_VEHICLES; i++){
@@ -19,7 +21,7 @@ int check_plusbus(int r, link link, vehicle *actor){
 }
 
 /*changes traffic lights from green to red and vise versa*/
-void change_lights(node *node, vehicle *actor, link *link){
+void change_lights(intersection *intersection, vehicle *actor){
     int id, count = 0;
     /*Checks if the plusbus is in radius for prioritization*/
     if(check_plusbus(RADIUS, *link, actor) == 1 && node.state == Green && count < RADIUS){
