@@ -11,7 +11,7 @@ int main(void) {
     intersection nodes[2];
     vehicle vehicles[CARS];
     build_network(nodes, links);
-    initialize_actors(vehicles, links, AMOUNT_LINKS);
+    initialize_actors(vehicles, links, 16);
 
     for (int j = 0; j < TIME_STEPS; ++j) {
         print_link(links, vehicles);

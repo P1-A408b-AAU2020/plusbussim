@@ -29,6 +29,8 @@ typedef struct link{
     int len;
     pocket left_pocket;
     pocket right_pocket;
+    int spawn_lane;
+    double spawn_chance;
 } link;
 
 typedef struct cross_intersection{
@@ -122,3 +124,6 @@ void decelerate_link(link* link, vehicle* vehicles);
 
 /* Runs the next time step. */
 void time_step(link* links, vehicle* vehicles);
+
+/* Spawns a car at spawn lanes */
+void spawn_car(link* link, vehicle* vehicles);
