@@ -17,10 +17,18 @@ typedef struct vehicle{
     int is_plusbus;
 } vehicle;
 
+typedef struct pocket {
+    int pos;
+    int* road;
+    int len;
+} pocket;
+
 typedef struct link{
     int id;
     int* road;
     int len;
+    pocket left_pocket;
+    pocket right_pocket;
 } link;
 
 typedef struct cross_intersection{
@@ -31,9 +39,15 @@ typedef struct t_intersection {
     int links[6];
 } type_b;
 
+typedef struct plusbus_cross_intersection {
+    int links[12];
+    int state;
+} type_c;
+
 typedef union intersection_types{
     type_a type_a;
     type_b type_b;
+    type_c type_c;
 } intersection_types;
 
 typedef struct intersection{
@@ -54,11 +68,17 @@ void construct_type_a(intersection* intersection, int id, int primary1_enter, in
 void construct_type_b(intersection* intersection, int id, int primary1_enter, int primary1_exit, int primary2_enter,
                       int primary2_exit, int secondary1_enter, int secondary1_exit);
 
+/* Constructs a typical four way intersection with traffic light and with separate plusbus lanes*/
+void construct_type_c(intersection* intersection, int id, int primary1_enter, int primary1_exit, int primary2_enter,
+                      int primary2_exit, int secondary1_enter, int secondary1_exit, int secondary2_enter,
+                      int secondary2_exit, int plusbus1_enter, int plusbus1_exit, int plusbus2_enter, int plusbus2_exit);
+
 int right_turn_type_a(intersection* intersection, int link_id);
 int right_turn_type_b(intersection* intersection, int link_id);
 
 /* Returns the internal index in the node of the road that has the given id*/
-int internal_index(intersection* intersection, int link_id);
+int internal_index_a(intersection* intersection, int link_id);
+int internal_index_c(intersection* intersection, int link_id);
 
 int right_turn_type_a(intersection* intersection, int link_id);
 int left_turn_type_a(intersection* intersection, int link_id);
@@ -67,6 +87,11 @@ int forward_type_a(intersection* intersection, int link_id);
 int right_turn_type_b(intersection* intersection, int link_id);
 int left_turn_type_b(intersection* intersection, int link_id);
 int forward_type_b(intersection* intersection, int link_id);
+
+int plusbus_type_c(intersection *intersection, int link_id);
+int forward_type_c(intersection *intersection, int link_id);
+int left_turn_type_c(intersection *intersection, int link_id);
+int right_turn_type_c(intersection *intersection, int link_id);
 
 /* If you arrive at the given intersection on the given link,
  * returns the road you land on if you turn left at the intersection */
