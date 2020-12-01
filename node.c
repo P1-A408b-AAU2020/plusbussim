@@ -196,7 +196,7 @@ void lane_change(link *_link, vehicle *vehicles) {
     link pass_link;
 
     int car_id, sim_done = 0;
-    
+   
     if (left_pocket.len) {
         for (size_t i = 0; i < V_MAX; ++i) {
             car_id = _link->road[left_pocket.pos - i];
@@ -230,9 +230,12 @@ void lane_change(link *_link, vehicle *vehicles) {
             }
         }       
     }    
+    /* assumes that the length would be 0 if there is no pocket lane */
     else if (right_pocket.len) {
-        /* assumes that the length would be 0 if there is no pocket lane */
+        /* correct velocity of cars */
+
         /* calc propability here */
+
         for (size_t i = 0; i < V_MAX; ++i) {
             /* check on pocket position */
             car_id = _link->road[right_pocket.pos - i];
@@ -259,7 +262,7 @@ void lane_change(link *_link, vehicle *vehicles) {
                             vehicles[car_id].v = NULL;
                         }
                         else {
-                            /* create temporary link to pass pocket */
+                            /* set temporary link to pass pocket */
                             pass_link.len = right_pocket.len;
                             pass_link.road = right_pocket.road;
 
