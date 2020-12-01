@@ -1,2 +1,2 @@
-void change_lights(node *node, vehicle *actor, link *link);
-int check_plusbus(int r, link link, vehicle *actor);
+void change_lights(intersection *intersection, vehicle *actor, link links);
+int check_plusbus(int r, intersection *intersection, vehicle *actor, link links);

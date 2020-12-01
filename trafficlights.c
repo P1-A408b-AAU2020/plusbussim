@@ -1,6 +1,6 @@
 /*TODO add "trafficlights.c trafficlights.h" to CMakeLists.txt when this library is done*/
-/*TODO change all link link to intersection intersection in function parameters*/
-/*TODO fix links til intersection->layout.type_a.links*/
+/*DONE change all link link to intersection intersection in function parameters*/
+
 #include "trafficlights.h"
 #include "node.h"
 
@@ -10,33 +10,36 @@
 enum light_state {Red, Green};
 
 /*Checks if the plusbus is near intersection*/
-int check_plusbus(int r, intersection *intersection, vehicle *actor){
+int check_plusbus(int r, intersection *intersection, vehicle *actor, link *links){
     int i, run = 0, radius;
-    radius = link.len - r;
+    int *p = intersection->layout.type_c.links;
+    radius = links[p[0]].len - r;
     for(i = 1; i <= AMOUNT_VEHICLES; i++){
-        if(actor[i].is_plusbus == 1 && link.road[radius] == actor[i].id)
+        if(actor[i].is_plusbus == 1 && links[p[0]].road[radius] == actor[i].id)
             run = 1;
     }
     return run;
 }
 
 /*changes traffic lights from green to red and vise versa*/
-void change_lights(intersection *intersection, vehicle *actor){
-    int id, count = 0;
+void change_lights(intersection *intersection, vehicle *actor, link *links){
+    int id;
+    int *p = intersection->layout.type_c.links;
+    static int count = 0;
     /*Checks if the plusbus is in radius for prioritization*/
-    if(check_plusbus(RADIUS, *link, actor) == 1 && node.state == Green && count < RADIUS){
+    if(check_plusbus(RADIUS, intersection, actor, links) == 1 && intersection->layout.type_c.state == Green && count < RADIUS){
         count += 5;
-    }else if(check_plusbus(RADIUS, *link, actor) == 1 && node.state == Red){
+    }else if(check_plusbus(RADIUS, intersection, actor, links) == 1 && intersection->layout.type_c.state == Red){
         count = 5;
     }
 
     /*How much time before it should be red/green*/
-    if(count == 10 && node.state == Red){
+    if(count == 10 && intersection->layout.type_c.state == Red){
         count = 0;
-        node.state = Green;
-    }else if(count == 10 && node.state == Green){
+        intersection->layout.type_c.state = Green;
+    }else if(count == 10 && intersection->layout.type_c.state == Green){
         count = 0;
-        node.state = Red;
+        intersection->layout.type_c.state = Red;
     }
 
     /*
@@ -44,8 +47,9 @@ void change_lights(intersection *intersection, vehicle *actor){
      * Red light means that one direction stops and the other drives
      * and vise versa
      */
-    if(node.state = Red){
-        id = link->road[link->len-1];
+    if(intersection->layout.type_c.state == Red){
+        //id = link->road[links[0].len-1];
+        id = links[p[0]].len -1;
         actor[id].v = 0;
         /*
          * Cars on the prioritization road stops for red
