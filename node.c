@@ -189,3 +189,32 @@ int lead_gap(link *link, int pos) {
     return V_MAX;
 }
 
+void lane_change(link *link, vehicle *vehicles) {
+    const pocket left_pocket = link->left_pocket;
+    const pocket right_pocket = link->right_pocket;
+
+    int car_id;
+
+    if (left_pocket.len) {
+
+
+    }
+    else if (right_pocket.len) {
+        for (size_t i = 0; i < V_MAX; ++i) {
+            /* check on pocket position */
+            car_id = link->road[right_pocket.pos - i];
+            /* is there a car? */
+            if (car_id > 0) {
+                /* will car reach turn? */
+                if (i - vehicles[car_id].v <= 0) {
+                    if (1) {
+
+                    }
+                    else if (1) {
+
+                    }
+                }
+            }
+        }
+    }
+}
