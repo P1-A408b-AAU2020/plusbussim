@@ -154,7 +154,7 @@ int left_turn(intersection *intersection, int link_id) {
     return result;
 }
 
-int forward(intersection *intersection, int link_id) {
+int go_forward(intersection *intersection, int link_id) {
     int result = 0;
     switch (intersection->type) {
         case 'a': result = forward_type_a(intersection, link_id);
