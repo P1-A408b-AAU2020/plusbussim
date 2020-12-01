@@ -17,10 +17,18 @@ typedef struct vehicle{
     int is_plusbus;
 } vehicle;
 
+typedef struct pocket {
+    int pos;
+    int* road;
+    int len;
+} pocket;
+
 typedef struct link{
     int id;
     int* road;
     int len;
+    pocket left_pocket;
+    pocket right_pocket;
 } link;
 
 typedef struct cross_intersection{
