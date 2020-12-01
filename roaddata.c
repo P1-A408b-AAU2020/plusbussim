@@ -62,14 +62,15 @@ typedef enum roadid {
 
 typedef struct pocket {
     int pos;
-    int* road;
     int len;
+    int* road;
+    int* offset;
 } pocket;
 
 typedef struct link {
     int id;
-    int* road;
     int len;
+    int* road;
     pocket right_pocket_lane;
     pocket left_pocket_lane;
 } link;

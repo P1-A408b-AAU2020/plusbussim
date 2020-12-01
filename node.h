@@ -19,16 +19,17 @@ typedef struct vehicle{
 
 typedef struct pocket {
     int pos;
-    int* road;
     int len;
+    int* road;
+    int* offset;
 } pocket;
 
-typedef struct link{
+typedef struct link {
     int id;
-    int* road;
     int len;
-    pocket left_pocket;
-    pocket right_pocket;
+    int* road;
+    pocket right_pocket_lane;
+    pocket left_pocket_lane;
 } link;
 
 typedef struct cross_intersection{

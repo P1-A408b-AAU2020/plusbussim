@@ -189,32 +189,87 @@ int lead_gap(link *link, int pos) {
     return V_MAX;
 }
 
-void lane_change(link *link, vehicle *vehicles) {
-    const pocket left_pocket = link->left_pocket;
-    const pocket right_pocket = link->right_pocket;
+void lane_change(link *_link, vehicle *vehicles) {
+    const pocket left_pocket = _link->left_pocket_lane;
+    const pocket right_pocket = _link->right_pocket_lane;
 
-    int car_id;
+    link pass_link;
 
+    int car_id, sim_done = 0;
+    
     if (left_pocket.len) {
+        for (size_t i = 0; i < V_MAX; ++i) {
+            car_id = _link->road[left_pocket.pos - i];
+            if (car_id > 0) {
+                if (i - vehicles[car_id].v <= 0) {
+                    if (!left_pocket.road[vehicles[car_id].v - i]) {
+                        _link->road[right_pocket.pos - i] = NULL;
 
+                        left_pocket.road[vehicles[car_id].v - i] = car_id;
 
-    }
+                        left_pocket.offset[vehicles[car_id].v - i] = vehicles[car_id].v;
+
+                        vehicles[car_id].v -= i;
+                    }
+                    else {
+                        if (sim_done) {
+                            _link->road[left_pocket.pos - i] = NULL;
+
+                            _link->road[left_pocket.pos] = car_id;
+
+                            vehicles[car_id].v = NULL;
+                        }
+                        else {
+                            pass_link.len = left_pocket.len;
+                            pass_link.road = left_pocket.road;
+
+                            move_link(&pass_link, vehicles);
+                        }
+                    }
+                }
+            }
+        }       
+    }    
     else if (right_pocket.len) {
+        /* assumes that the length would be 0 if there is no pocket lane */
+        /* calc propability here */
         for (size_t i = 0; i < V_MAX; ++i) {
             /* check on pocket position */
-            car_id = link->road[right_pocket.pos - i];
+            car_id = _link->road[right_pocket.pos - i];
             /* is there a car? */
             if (car_id > 0) {
                 /* will car reach turn? */
                 if (i - vehicles[car_id].v <= 0) {
-                    if (1) {
-
+                    /* car not in way? */
+                    if (!right_pocket.road[vehicles[car_id].v - i]) {
+                        /* delete car from old place */
+                        _link->road[right_pocket.pos - i] = NULL;
+                        /* place car on pocket lane */
+                        right_pocket.road[vehicles[car_id].v - i] = car_id;
+                        /* keep track of speed */
+                        right_pocket.offset[vehicles[car_id].v - i] = vehicles[car_id].v;
+                        /* decrease speed to not apply velocity again in move() */
+                        vehicles[car_id].v -= i;
                     }
-                    else if (1) {
+                    else {
+                        if (sim_done) {
+                            _link->road[right_pocket.pos - i] = NULL;
+                            /* place at the start of pocket lane on original road */
+                            _link->road[right_pocket.pos] = car_id;
+                            vehicles[car_id].v = NULL;
+                        }
+                        else {
+                            /* create temporary link to pass pocket */
+                            pass_link.len = right_pocket.len;
+                            pass_link.road = right_pocket.road;
 
+                            /* simulate lane */
+                            move_link(&pass_link, vehicles);
+                        }
                     }
                 }
             }
         }
     }
+
 }
