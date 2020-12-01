@@ -11,8 +11,4 @@ turn_dir decide_turn_dir(link* link){
   else
     return forward
   }
-
-
-
-  return dir;
 }

@@ -29,8 +29,8 @@ typedef struct link{
     int len;
     pocket left_pocket;
     pocket right_pocket;
-    int right_chance;
-    int left_chance;
+    float right_chance;
+    float left_chance;
 } link;
 
 typedef struct cross_intersection{
