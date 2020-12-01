@@ -9,6 +9,8 @@
 #define AMOUNT_VEHICLES 20
 #define TIME_STEPS 20
 
+typedef enum turn_dir{forward, right, left} turn_dir;
+
 /* Data type for all the different vehicle types. */
 typedef struct vehicle{
     int id;
