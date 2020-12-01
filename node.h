@@ -29,6 +29,8 @@ typedef struct link{
     int len;
     pocket left_pocket;
     pocket right_pocket;
+    int right_chance;
+    int left_chance;
 } link;
 
 typedef struct cross_intersection{
@@ -99,7 +101,7 @@ int left_turn(intersection* intersection, int link_id);
 
 /* If you arrive at the given intersection on the given link,
  * returns the road you land on if you don't turn at the intersection */
-int forward(intersection* intersection, int link_id);
+int go_forward(intersection* intersection, int link_id);
 
 /* If you arrive at the given intersection on the given link,
  * returns the road you land on if you turn right at the intersection */
