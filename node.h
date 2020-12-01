@@ -25,7 +25,6 @@ typedef struct link{
     int len;
     int right_chance;
     int left_chance;
-    int forward_chance = 100 - (right_chance + left_chance);
 } link;
 
 typedef struct cross_intersection{
