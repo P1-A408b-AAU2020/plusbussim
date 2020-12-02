@@ -1,41 +1,36 @@
 /*TODO add "trafficlights.c trafficlights.h" to CMakeLists.txt when this library is done
  *TODO make it work on more than one road and fix hardcoded solution(may need recursive functions)
- *TODO finish the red checker
- *TODO move radius in node.h
- *
+ *TODO make case in check_plusbus for the types of intersections.
+ * 
+ *DONE finish the red checker
+ *DONE move radius in node.h
  *DONE change all link link to intersection intersection in function parameters*/
 
 #include "trafficlights.h"
 #include "node.h"
 
-#define RADIUS 10
-
-
 enum light_state {Red, Green};
 
-/*Checks if the plusbus is near intersection*/
-int check_plusbus(int r, intersection *intersection, vehicle *actor, link *links){
+
+int check_plusbus(int r, intersection *intersection, vehicle *actor, link *links, int lane){
     int i, run = 0, radius;
     int *p = intersection->layout.type_c.links;
-    radius = links[p[0]].len - r;
+    radius = links[p[lane]].len - r;
     for(i = 1; i <= AMOUNT_VEHICLES; i++){
-        if(actor[i].is_plusbus == 1 && links[p[0]].road[radius] == actor[i].id)
+        if(actor[i].is_plusbus == 1 && links[p[lane]].road[radius] == actor[i].id)
             run = 1;
     }
     return run;
 }
 
-
-
-/*changes traffic lights from green to red and vise versa*/
-void change_lights(intersection *intersection, vehicle *actor, link *links){
-    int id;
+void change_lights(intersection *intersection, vehicle *actor, link *links, int lane){
     int *p = intersection->layout.type_c.links;
     static int count = 0;
+
     /*Checks if the plusbus is in radius for prioritization*/
-    if(check_plusbus(RADIUS, intersection, actor, links) == 1 && intersection->layout.type_c.state == Green && count < RADIUS){
+    if(check_plusbus(PLUSBUSRADIUS, intersection, actor, links, lane) == 1 && intersection->layout.type_c.state == Green && count < PLUSBUSRADIUS){
         count += 5;
-    }else if(check_plusbus(RADIUS, intersection, actor, links) == 1 && intersection->layout.type_c.state == Red){
+    }else if(check_plusbus(PLUSBUSRADIUS, intersection, actor, links, lane) == 1 && intersection->layout.type_c.state == Red){
         count = 5;
     }
 
@@ -55,15 +50,19 @@ void change_lights(intersection *intersection, vehicle *actor, link *links){
      */
     if(intersection->layout.type_c.state == Red){
         //id = link->road[links[0].len-1];
-        id = links[p[0]].len -1;
-        actor[id].v = 0;
-        /*
-         * Cars on the prioritization road stops for red
-         */
+        actor[links[p[0]].len -1].v = 0;
+        actor[links[p[4]].len -1].v = 0;
+        actor[links[p[9]].len -1].v = 0;
+        actor[links[p[11]].len -1].v = 0;
+        /*Cars on the prioritization road stops for red*/
     } else{
-        /*
-         * Cars on the non prioritization road stops for red
-         */
+        actor[links[p[2]].len -1].v = 0;
+        actor[links[p[6]].len -1].v = 0;
+        /*Cars on the non prioritization road stops for red*/
     }
     count++;
+}
+
+void light_control(intersection *intersection, vehicle *actor, link *links){
+    /*5 change_lights functions should be called in this function*/
 }

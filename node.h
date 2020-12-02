@@ -8,6 +8,7 @@
 #define AMOUNT_LINKS 16
 #define AMOUNT_VEHICLES 20
 #define TIME_STEPS 20
+#define PLUSBUSRADIUS 10
 
 /* Data type for all the different vehicle types. */
 typedef struct vehicle{
