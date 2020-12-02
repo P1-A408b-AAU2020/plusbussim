@@ -9,9 +9,12 @@
 #define AMOUNT_VEHICLES 20
 #define TIME_STEPS 20
 #define PLUSBUSRADIUS 10
+#define REDTIME 1
+#define GREENTIME 1
 
 typedef enum turn_dir{forward, right, left} turn_dir;
-
+typedef enum light_state {Red, Green}light_state;
+typedef enum intersection_type{A, B, C, D, E, F, G, H}intersection_type;
 /* Data type for all the different vehicle types. */
 typedef struct vehicle{
     int id;
@@ -48,7 +51,7 @@ typedef struct t_intersection {
 
 typedef struct plusbus_cross_intersection {
     int links[12];
-    int state;
+    enum light_state state;
 } type_c;
 
 typedef union intersection_types{
