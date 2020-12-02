@@ -271,12 +271,11 @@ void spawn_car(link* link, vehicle* vehicles) {
                     vehicles[i].v = V_MAX;
                     car_spawned = 1;
                 }
-                break;
             }
+            break;
        }
        if (i > CARS)
            break;
        i++;
-
     }
 }
