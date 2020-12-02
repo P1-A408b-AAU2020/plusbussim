@@ -1,5 +1,9 @@
-/*TODO add "trafficlights.c trafficlights.h" to CMakeLists.txt when this library is done*/
-/*DONE change all link link to intersection intersection in function parameters*/
+/*TODO add "trafficlights.c trafficlights.h" to CMakeLists.txt when this library is done
+ *TODO make it work on more than one road and fix hardcoded solution(may need recursive functions)
+ *TODO finish the red checker
+ *TODO move radius in node.h
+ *
+ *DONE change all link link to intersection intersection in function parameters*/
 
 #include "trafficlights.h"
 #include "node.h"
@@ -20,6 +24,8 @@ int check_plusbus(int r, intersection *intersection, vehicle *actor, link *links
     }
     return run;
 }
+
+
 
 /*changes traffic lights from green to red and vise versa*/
 void change_lights(intersection *intersection, vehicle *actor, link *links){
