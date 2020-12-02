@@ -10,6 +10,8 @@
 #define TIME_STEPS 20
 #define PLUSBUSRADIUS 10
 
+typedef enum turn_dir{forward, right, left} turn_dir;
+
 /* Data type for all the different vehicle types. */
 typedef struct vehicle{
     int id;
@@ -30,6 +32,10 @@ typedef struct link{
     int len;
     pocket left_pocket;
     pocket right_pocket;
+    int spawn_lane;
+    double spawn_chance;
+    float right_chance;
+    float left_chance;
 } link;
 
 typedef struct cross_intersection{
@@ -100,7 +106,7 @@ int left_turn(intersection* intersection, int link_id);
 
 /* If you arrive at the given intersection on the given link,
  * returns the road you land on if you don't turn at the intersection */
-int forward(intersection* intersection, int link_id);
+int go_forward(intersection* intersection, int link_id);
 
 /* If you arrive at the given intersection on the given link,
  * returns the road you land on if you turn right at the intersection */
@@ -123,3 +129,6 @@ void decelerate_link(link* link, vehicle* vehicles);
 
 /* Runs the next time step. */
 void time_step(link* links, vehicle* vehicles);
+
+/* Spawns a car at spawn lanes */
+void spawn_car(link* link, vehicle* vehicles);

@@ -1,17 +1,25 @@
 #include "node.h"
 #include <stdlib.h>
 #include <time.h>
+#include <stdio.h>
 #define RIGHT 1
 #define LEFT 5
 #define FORWARD 3
+#define AMT_SPAWN_LANES 6
 
 /* The contents of this function are predefined. Make changes to how network here. */
 void build_network(intersection* intersections, link* links){
-    int i;
+    int spawn_lanes[AMT_SPAWN_LANES] = {0, 2, 6, 9, 11, 13};
+    double spawn_chances[AMT_SPAWN_LANES] = {25.3, 21.2, 15.7, 19.2, 8.5, 15.2};
+    int i, k = 0, j = 0;
     for(i = 0; i < AMOUNT_LINKS/2; i++){
         links[i].id = i;
         links[i].road = (int*)calloc(ROAD_LENGTH, sizeof(int));
         links[i].len = ROAD_LENGTH;
+        if (links[i].id == spawn_lanes[k]){
+            links[i].spawn_lane = 1;
+            j++;
+        }
     }
     construct_type_a(intersections, 0,0,3,4,7,2,5,6,1);
 
@@ -19,8 +27,18 @@ void build_network(intersection* intersections, link* links){
         links[i].id = i;
         links[i].road = (int*)calloc(ROAD_LENGTH, sizeof(int));
         links[i].len = ROAD_LENGTH;
+        if (links[i].id == spawn_lanes[k]){
+            links[i].spawn_lane = 1;
+        }
     }
     construct_type_a(intersections + 1, 1,3,11,12,4,10,13,14,9);
+
+    for (int i = 0; i < AMOUNT_LINKS; i++) {
+        if (links[i].spawn_lane) {
+            links[i].spawn_chance = spawn_chances[k];
+            k++;
+        }
+    }
 }
 /* Pointer to the intersection. */
 void construct_type_a(intersection* intersection, int id, int primary1_enter, int primary1_exit, int primary2_enter,
@@ -136,7 +154,7 @@ int left_turn(intersection *intersection, int link_id) {
     return result;
 }
 
-int forward(intersection *intersection, int link_id) {
+int go_forward(intersection *intersection, int link_id) {
     int result = 0;
     switch (intersection->type) {
         case 'a': result = forward_type_a(intersection, link_id);
@@ -151,7 +169,7 @@ void initialize_actors(vehicle* actors, link* links, int len){
     for (int i = 0; i < CARS; ++i) {
         actors[i].id = i;
         actors[i].v = 0;
-        actors[i].active = 1;
+        actors[i].active = (i < CARS/2) ? 1 : 0;
         actors[i].is_plusbus = 0;
         int l = rand()%len;
         links[l].road[rand()%links[l].len] = i;
@@ -213,11 +231,17 @@ void accelerate_link(link *link, vehicle *vehicles) {
 }
 
 void time_step(link *links, vehicle *vehicles) {
-    for (int i = 0; i < AMOUNT_LINKS; ++i) {
+    int i;
+    for (i = 0; i < AMOUNT_LINKS; ++i) {
         move_link(&links[i], vehicles);
+
+        if (links->spawn_lane)
+            spawn_car(&links[i], vehicles);
+
         accelerate_link(&links[i], vehicles);
         decelerate_link(&links[i], vehicles);
     }
+
 }
 
 int lead_gap(link *link, int pos) {
@@ -234,3 +258,24 @@ int lead_gap(link *link, int pos) {
     return V_MAX;
 }
 
+void spawn_car(link* link, vehicle* vehicles) {
+    int car_spawned = 0;
+    int i = 1;
+
+    while(!car_spawned){
+        if(!vehicles[i].active) {
+            if (!vehicles[link->road[0]].id) {
+                if (rand() % 100 <= link->spawn_chance) {
+                    link->road[0] = vehicles[i].id;
+                    vehicles[i].active = 1;
+                    vehicles[i].v = V_MAX;
+                    car_spawned = 1;
+                }
+            }
+            break;
+       }
+       if (i > CARS)
+           break;
+       i++;
+    }
+}
