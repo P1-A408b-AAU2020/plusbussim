@@ -11,13 +11,7 @@
 
 typedef enum turn_dir{forward, right, left} turn_dir;
 
-/* Data type for all the different vehicle types. */
-typedef struct vehicle{
-    int id;
-    int v;
-    int active;
-    int is_plusbus;
-} vehicle;
+typedef struct intersection intersection;
 
 typedef struct pocket {
     int pos;
@@ -25,26 +19,38 @@ typedef struct pocket {
     int len;
 } pocket;
 
-typedef struct link{
+typedef struct link {
     int id;
-    int* road;
+    int *road;
     int len;
+    int time_step;
+    intersection *intersection;
     pocket left_pocket;
     pocket right_pocket;
     float right_chance;
     float left_chance;
 } link;
 
+/* Data type for all the different vehicle types. */
+typedef struct vehicle{
+    int id;
+    int v;
+    int active;
+    int is_plusbus;
+    turn_dir turn_direction;
+} vehicle;
+
+
 typedef struct cross_intersection{
-    int links[8];
+    link links[8];
 } type_a;
 
 typedef struct t_intersection {
-    int links[6];
+    link links[6];
 } type_b;
 
 typedef struct plusbus_cross_intersection {
-    int links[12];
+    link links[12];
     int state;
 } type_c;
 
@@ -60,13 +66,14 @@ typedef struct intersection{
     intersection_types layout;
 } intersection;
 
+
 /* Builds the networks. Hardcoded to make the network we want to simulate. */
 void build_network(intersection* intersections, link* links);
 
 /* Constructs a typical four way intersection without traffic lights. */
-void construct_type_a(intersection* intersection, int id, int primary1_enter, int primary1_exit, int primary2_enter,
-                      int primary2_exit, int secondary1_enter, int secondary1_exit, int secondary2_enter,
-                      int secondary2_exit);
+void construct_type_a(intersection* intersection, int id, link* primary1_enter, link* primary1_exit, link* primary2_enter,
+                      link* primary2_exit, link* secondary1_enter, link* secondary1_exit, link* secondary2_enter,
+                      link* secondary2_exit);
 
 /* Constructs a T-cross intersection without traffic lights. */
 void construct_type_b(intersection* intersection, int id, int primary1_enter, int primary1_exit, int primary2_enter,
@@ -77,37 +84,36 @@ void construct_type_c(intersection* intersection, int id, int primary1_enter, in
                       int primary2_exit, int secondary1_enter, int secondary1_exit, int secondary2_enter,
                       int secondary2_exit, int plusbus1_enter, int plusbus1_exit, int plusbus2_enter, int plusbus2_exit);
 
-int right_turn_type_a(intersection* intersection, int link_id);
-int right_turn_type_b(intersection* intersection, int link_id);
-
 /* Returns the internal index in the node of the road that has the given id*/
 int internal_index_a(intersection* intersection, int link_id);
 int internal_index_c(intersection* intersection, int link_id);
 
-int right_turn_type_a(intersection* intersection, int link_id);
-int left_turn_type_a(intersection* intersection, int link_id);
-int forward_type_a(intersection* intersection, int link_id);
+link* turn(turn_dir dir, intersection* intersection, int link_id);
 
-int right_turn_type_b(intersection* intersection, int link_id);
-int left_turn_type_b(intersection* intersection, int link_id);
-int forward_type_b(intersection* intersection, int link_id);
+link* right_turn_type_a(intersection* intersection, int link_id);
+link* left_turn_type_a(intersection* intersection, int link_id);
+link* forward_type_a(intersection* intersection, int link_id);
 
-int plusbus_type_c(intersection *intersection, int link_id);
-int forward_type_c(intersection *intersection, int link_id);
-int left_turn_type_c(intersection *intersection, int link_id);
-int right_turn_type_c(intersection *intersection, int link_id);
+link* right_turn_type_b(intersection* intersection, int link_id);
+link* left_turn_type_b(intersection* intersection, int link_id);
+link* forward_type_b(intersection* intersection, int link_id);
+
+link* plusbus_type_c(intersection *intersection, int link_id);
+link* forward_type_c(intersection *intersection, int link_id);
+link* left_turn_type_c(intersection *intersection, int link_id);
+link* right_turn_type_c(intersection *intersection, int link_id);
 
 /* If you arrive at the given intersection on the given link,
  * returns the road you land on if you turn left at the intersection */
-int left_turn(intersection* intersection, int link_id);
+link* left_turn(intersection* intersection, int link_id);
 
 /* If you arrive at the given intersection on the given link,
  * returns the road you land on if you don't turn at the intersection */
-int go_forward(intersection* intersection, int link_id);
+link* go_forward(intersection* intersection, int link_id);
 
 /* If you arrive at the given intersection on the given link,
  * returns the road you land on if you turn right at the intersection */
-int right_turn(intersection* intersection, int link_id);
+link* right_turn(intersection* intersection, int link_id);
 
 /* Populates the roads with vehicles */
 void initialize_actors(vehicle* actors, link* links, int len);
@@ -118,8 +124,12 @@ int lead_gap(link* link, int pos);
 /* Accelerates all vehicles on the link. */
 void accelerate_link(link* link, vehicle* vehicles);
 
+int current_time_step(int increase);
+
+void simulate_all_links(link* links, vehicle* vehicles);
+
 /* Moves all vehicles on the link. */
-void move_link(link* link, vehicle* vehicles);
+/*void move_link(link* link, vehicle* vehicles);*/
 
 /* decelerates all vehicles on the link. */
 void decelerate_link(link* link, vehicle* vehicles);

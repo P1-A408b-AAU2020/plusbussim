@@ -1,6 +1,7 @@
 #include "node.h"
 #include "debug.h"
 #include <stdlib.h>
+#include <stdio.h>
 #include <time.h>
 
 int main(void) {
@@ -12,10 +13,9 @@ int main(void) {
     vehicle vehicles[CARS];
     build_network(nodes, links);
     initialize_actors(vehicles, links, AMOUNT_LINKS);
-
     for (int j = 0; j < TIME_STEPS; ++j) {
-        print_link(links, vehicles);
-        time_step(links, vehicles);
+        printf("\n");
+        simulate_all_links(links, vehicles);
     }
 
     for (int j = 0; j < AMOUNT_LINKS; ++j) {
