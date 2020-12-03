@@ -1,5 +1,7 @@
 #include "node.h"
 #include "debug.h"
+#include "trafficlights.h"
+
 #include <stdlib.h>
 #include <time.h>
 
@@ -8,12 +10,13 @@ int main(void) {
     srand(seed);
 
     link links[AMOUNT_LINKS];
-    intersection nodes[2];
+    intersection nodes[1];
     vehicle vehicles[CARS];
     build_network(nodes, links);
-    initialize_actors(vehicles, links, 16);
+    initialize_actors(vehicles, links, 12);
 
     for (int j = 0; j < TIME_STEPS; ++j) {
+        printf("seed: %-5d\n", seed);
         print_link(links, vehicles);
         time_step(links, vehicles);
     }

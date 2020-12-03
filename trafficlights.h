@@ -1,11 +1,13 @@
-/*Checks for all intersections in current simulation*/
+#include "node.h"
+#include <stdio.h>
+/*Checks and changes light states for all intersections in current simulation*/
 void light_control();
 
 /*Stops cars that have red*/
 void cars_stop(intersection *intersection, vehicle *actor, link *links, intersection_type type);
 
 /*Checks if the plusbus is near intersection*/
-int check_plusbus(int r, intersection *intersection, vehicle *actor, link *links, int lane, int *p);
+int check_plusbus(int r, intersection *intersection, vehicle *actor, link *links, int lane);
 
 /*Changes traffic lights from green to red and vise versa
   lane = where the plusbus is driving*/

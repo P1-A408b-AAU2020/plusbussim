@@ -5,15 +5,17 @@
 #define PLUS_BUS_LENGTH 5
 #define DECELERATE_CHANCE 20
 #define MIN_SPEED_RANDOM_DECELERATE 2
-#define AMOUNT_LINKS 16
+#define AMOUNT_LINKS 12
 #define AMOUNT_VEHICLES 20
 #define TIME_STEPS 20
-#define PLUSBUSRADIUS 10
-#define REDTIME 1
-#define GREENTIME 1
+#define PLUSBUS_RADIUS 10
+#define RED_TIME 5
+#define GREEN_TIME 5
+#define PLUSBUS_GREEN_ADJUST 1
+#define PLUSBUS_RED_ADJUST 1
 
 typedef enum turn_dir{forward, right, left} turn_dir;
-typedef enum light_state {Red, Green}light_state;
+typedef enum light_state{Red, Green}light_state;
 typedef enum intersection_type{A, B, C, D, E, F, G, H}intersection_type;
 /* Data type for all the different vehicle types. */
 typedef struct vehicle{

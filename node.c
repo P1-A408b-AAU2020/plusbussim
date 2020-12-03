@@ -5,14 +5,14 @@
 #define RIGHT 1
 #define LEFT 5
 #define FORWARD 3
-#define AMT_SPAWN_LANES 6
+#define AMT_SPAWN_LANES 4
 
 /* The contents of this function are predefined. Make changes to how network here. */
 void build_network(intersection* intersections, link* links){
-    int spawn_lanes[AMT_SPAWN_LANES] = {0, 2, 6, 9, 11, 13};
-    double spawn_chances[AMT_SPAWN_LANES] = {25.3, 21.2, 15.7, 19.2, 8.5, 15.2};
+    int spawn_lanes[AMT_SPAWN_LANES] = {0, 2, 4, 6};
+    double spawn_chances[AMT_SPAWN_LANES] = {25.3, 21.2, 15.7, 19.2};
     int i, k = 0, j = 0;
-    for(i = 0; i < AMOUNT_LINKS/2; i++){
+    for(i = 0; i < AMOUNT_LINKS; i++){
         links[i].id = i;
         links[i].road = (int*)calloc(ROAD_LENGTH, sizeof(int));
         links[i].len = ROAD_LENGTH;
@@ -21,18 +21,8 @@ void build_network(intersection* intersections, link* links){
             j++;
         }
     }
-    construct_type_a(intersections, 0,0,3,4,7,2,5,6,1);
-
-    for(i = AMOUNT_LINKS/2; i < AMOUNT_LINKS; i++){
-        links[i].id = i;
-        links[i].road = (int*)calloc(ROAD_LENGTH, sizeof(int));
-        links[i].len = ROAD_LENGTH;
-        if (links[i].id == spawn_lanes[k]){
-            links[i].spawn_lane = 1;
-        }
-    }
-    construct_type_a(intersections + 1, 1,3,11,12,4,10,13,14,9);
-
+ 
+    construct_type_c(intersections, 0, 0, 3, 4, 7, 2, 5, 6, 1, 10, 11, 8, 9);
     for (int i = 0; i < AMOUNT_LINKS; i++) {
         if (links[i].spawn_lane) {
             links[i].spawn_chance = spawn_chances[k];
@@ -73,6 +63,7 @@ void construct_type_b(intersection* intersection, int id, int primary1_enter, in
 void construct_type_c(intersection* intersection, int id, int primary1_enter, int primary1_exit, int primary2_enter,
                       int primary2_exit, int secondary1_enter, int secondary1_exit, int secondary2_enter,
                       int secondary2_exit, int plusbus1_enter, int plusbus1_exit, int plusbus2_enter, int plusbus2_exit) {
+    intersection->layout.type_c.state = 0;
     intersection->id = id;
     intersection->type = 'c';
     int* p = intersection->layout.type_c.links;
@@ -103,11 +94,11 @@ int right_turn_type_a(intersection *intersection, int link_id) {
 }
 
 int plusbus_type_c(intersection *intersection, int link_id) {
-    return intersection->layout.type_c.links[(internal_index_c(intersection, link_id) == 9) ? 10 : 8];
+    return intersection->layout.type_c.links[(internal_index_c(intersection, link_id) == 10) ? 11 : 9];
 }
 
 int forward_type_c(intersection *intersection, int link_id) {
-    return intersection->layout.type_c.links[(internal_index_c(intersection, link_id) + FORWARD) % 7];
+    return intersection->layout.type_c.links[(internal_index_c(intersection, link_id) == 6) ? ((internal_index_c(intersection, link_id) + 5) % 8) : ((internal_index_c(intersection, link_id) + FORWARD) % 8)];
 }
 
 int left_turn_type_c(intersection *intersection, int link_id) {
@@ -115,7 +106,7 @@ int left_turn_type_c(intersection *intersection, int link_id) {
 }
 
 int right_turn_type_c(intersection *intersection, int link_id) {
-    return intersection->layout.type_c.links[(internal_index_c(intersection, link_id) + RIGHT) % 7];
+    return intersection->layout.type_c.links[(internal_index_c(intersection, link_id) + RIGHT) % 8];
 }
 
 int internal_index_a(intersection* intersection, int link_id){
@@ -241,7 +232,6 @@ void time_step(link *links, vehicle *vehicles) {
         accelerate_link(&links[i], vehicles);
         decelerate_link(&links[i], vehicles);
     }
-
 }
 
 int lead_gap(link *link, int pos) {
