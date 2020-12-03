@@ -166,7 +166,7 @@ void initialize_actors(vehicle* actors, link* links, int len){
     srand(time(NULL));
     /* generate actors */
     /* Place actors */
-    for (int i = 0; i < CARS; ++i) {
+    for (int i = 0; i < CARS; i++) {
         actors[i].id = i;
         actors[i].v = 0;
         actors[i].active = (i < CARS/2) ? 1 : 0;
@@ -232,7 +232,7 @@ void accelerate_link(link *link, vehicle *vehicles) {
 
 void time_step(link *links, vehicle *vehicles) {
     int i;
-    for (i = 0; i < AMOUNT_LINKS; ++i) {
+    for (i = 0; i < AMOUNT_LINKS; i++) {
         move_link(&links[i], vehicles);
 
         if (links->spawn_lane)

@@ -30,6 +30,7 @@
 #define SGHSVEJ_2_LEN (int) (round(400/CELL_LEN))
 #define BERNSTFFGADE_LEN (int) (round(280/CELL_LEN))
 
+
 typedef enum roadid {
     jylgade_1_east, jylgade_1_west_plusbus, jylgade_1_east_plusbus,
     jylgade_2_east_plusbus, jylgade_2_west_plusbus, jylgade_2_east,
@@ -79,7 +80,7 @@ int init_road_data() {
     int i = 0;
     int j = 0;
     int k = 0;
-    /* Måske tilføj definiation af længde af gader */
+    /* Mï¿½ske tilfï¿½j definiation af lï¿½ngde af gader */
     int link_length[NUM_OF_LINKS] = { JYLGADE_1_LEN, JYLGADE_1_LEN, JYLGADE_1_LEN, JYLGADE_2_LEN, JYLGADE_2_LEN,
                                      JYLGADE_2_LEN, JYLGADE_2_LEN, AAGADE_LEN, AAGADE_LEN, JYLGADE_1_LEN,
 
@@ -112,7 +113,7 @@ int init_road_data() {
     int left_pocket_lane[5] = { dag_ham_gade_1_north, dag_ham_gade_2_south, kjellerupsgade_south,
                                karolinelundsvej_south, oester_alle_2_west };
 
-    for (i = jylgade_1_east; i <= bernstorffsgade_west; ++i) {
+    for (i = jylgade_1_east; i <= bernstorffsgade_west; i++) {
         links[i].id = i;
         links[i].len = link_length[i];
 

@@ -12,7 +12,7 @@ void print_link(link *link, vehicle *vehicles) {
 }
 
 void print_vehicles(vehicle *vehicles, int len) {
-    for (int i = 0; i < len; ++i) {
+    for (int i = 0; i < len; i++) {
         printf("%d ", vehicles[i].id);
     }
     printf("\n");
