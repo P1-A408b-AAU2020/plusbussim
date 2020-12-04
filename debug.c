@@ -4,7 +4,7 @@
 void print_link(link *link, vehicle *vehicles) {
     int i;
     char print;
-    printf("T: %d L%d: ", link->time_step, link->id);
+    printf("L%d: ", link->id);
     for(i = 0; i < link->len; i++){
         print = link->road[i] > 0 ? vehicles[link->road[i]].v + '0' : '.';
         printf("%c", print);

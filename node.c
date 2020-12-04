@@ -7,8 +7,6 @@
 #define LEFT 5
 #define FORWARD 3
 
-int timer = 0;
-
 /* The contents of this function are predefined. Make changes to how network here. */
 void build_network(intersection* intersections, link* links){
     int i;
@@ -18,6 +16,8 @@ void build_network(intersection* intersections, link* links){
         links[i].len = ROAD_LENGTH;
         links[i].time_step = 0;
         links[i].intersection = NULL;
+        links[i].left_chance = 33.3;
+        links[i].left_chance = 33.3;
     }
     construct_type_a(intersections, 0,links,links+3,links+4,links+7,links+2,links+5,links+6,links+1);
     construct_type_a(intersections + 1, 1,links+3,links+11,links+12,links+4,links+15,links+13,links+14,links+9);
@@ -93,9 +93,9 @@ link* left_turn_type_a(intersection *intersection, int link_id) {
 link* right_turn_type_a(intersection *intersection, int link_id) {
     return *intersection->layout.type_a.links + (internal_index_a(intersection, link_id) + RIGHT) % 7;
 }
-
+/*
 link* plusbus_type_c(intersection *intersection, int link_id) {
-    return &intersection->layout.type_c.links[(internal_index_c(intersection, link_id) == 9) ? 10 : 8];
+    return *intersection->layout.type_c.links + (internal_index_c(intersection, link_id) == 9) ? 10 : 8;
 }
 
 link* forward_type_c(intersection *intersection, int link_id) {
@@ -109,7 +109,7 @@ link* left_turn_type_c(intersection *intersection, int link_id) {
 link* right_turn_type_c(intersection *intersection, int link_id) {
     return &intersection->layout.type_c.links[(internal_index_c(intersection, link_id) + RIGHT) % 7];
 }
-
+*/
 int internal_index_a(intersection* intersection, int link_id){
     int i;
     link* link;
@@ -121,7 +121,7 @@ int internal_index_a(intersection* intersection, int link_id){
 
     return i;
 }
-
+/*
 int internal_index_c(intersection* intersection, int link_id){
     int i;
     for (i = 0; i < 12; i++) {
@@ -131,7 +131,7 @@ int internal_index_c(intersection* intersection, int link_id){
 
     return i;
 }
-
+*/
 link* right_turn(intersection *intersection, int link_id) {
     link* result;
     switch (intersection->type) {
@@ -156,85 +156,14 @@ link* go_forward(intersection *intersection, int link_id) {
     return result;
 }
 
-void initialize_actors(vehicle* actors, link* links, int len){
-    srand(time(NULL));
-    /* generate actors */
-    /* Place actors */
-    for (int i = 0; i < CARS; ++i) {
-        actors[i].id = i;
-        actors[i].v = 0;
-        actors[i].active = 1;
-        actors[i].is_plusbus = 0;
-        actors[i].turn_direction = left;
-        actors[i].has_moved = 0;
-        int l = rand()%len;
-        links[l].road[rand()%links[l].len] = i;
-    }
-}
-
-void move(link *link, vehicle *vehicles){
-    int a, v;
-    for (int i = link->len-1; i >= 0; --i) {
-        a = link->road[i];
-        v = vehicles[a].v;
-        if (a){
-            if(vehicles[a].has_moved == 0){
-                link->road[i] = 0;
-                if(link->len > i + v) /* if the vehicle does not exceed the end of the road */
-                    link->road[i + v] = a;
-                else if (link->intersection != NULL) {/*There is an intersection at the end of the link. */
-                    turn(vehicles[a].turn_direction, link->intersection, link->id)->road[i+v-link->len] = a; /* Place on new link */
-                    vehicles[a].has_moved = 1;
-                }
-                else
-                    vehicles[a].active = 0;
-            }
-            else
-                vehicles[a].has_moved = 0;
-        }
-    }
-}
-
-void change_speed(link* link, vehicle* vehicles){
-    int i, a, v, gap = 0, gap2 = 0;
-    struct link* new_link;
-    for(i = link->len - 1; i >= 0; i--) {
-        a = link->road[i];
-        if (a){
-            v = vehicles[a].v;
-            gap = lead_gap(link, i);
-
-            /* Is the car approaching an intersection? */
-            if (i + gap == link->len-1 && link->intersection != NULL) {
-                new_link = turn(vehicles[a].turn_direction, link->intersection, link->id);
-
-                if (new_link->time_step < timer)
-                    time_step(new_link, vehicles);
-
-                gap2 = lead_gap(new_link, -1);
-
-                /* Does the car have to decelerate to avoid collision? */
-                if (gap + gap2 < v)
-                    vehicles[a].v = gap + gap2;
-
-                else if (v < V_MAX && gap + gap2 > v)
-                    vehicles[a].v++;
-            }
-
-            /* There is no intersection */
-            else if (v < V_MAX && gap > v)
-                vehicles[a].v++;
-
-            else if (gap + gap2 < v)
-                vehicles[a].v = gap + gap2;
-
-
-            /* The plusbus is longer than a regular car. */
-            if (vehicles[link->road[i]].is_plusbus)
-                i -= PLUS_BUS_LENGTH - 1;
-
-        }
-    }
+turn_dir decide_turn_dir(link* link){
+    int dir = rand()%100 + 1;
+    if (dir < link->left_chance)
+        return left;
+    else if (dir < link->left_chance + link->right_chance)
+        return right;
+    else
+        return forward;
 }
 
 link* turn(turn_dir dir, intersection *intersection, int link_id) {
@@ -245,24 +174,6 @@ link* turn(turn_dir dir, intersection *intersection, int link_id) {
         case forward: result = go_forward(intersection, link_id);  break;
     }
     return result;
-}
-
-void time_step(link *link, vehicle *vehicles) {
-    move(link, vehicles);
-    change_speed(link, vehicles);
-    link->time_step++;
-    if(link->id == 0 || link->id==5)
-        print_link(link, vehicles);
-}
-
-void simulate_all_links(link *links, vehicle *vehicles) {
-    timer++;
-    printf("%d\n", timer);
-    for (int i = 0; i < AMOUNT_LINKS; ++i) {
-        if ((links + i)->time_step < timer)
-            time_step(links + i, vehicles);
-    }
-    printf("\n");
 }
 
 int lead_gap(link *link, int pos) {

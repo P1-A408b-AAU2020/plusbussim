@@ -1,12 +1,12 @@
 #pragma once
 #define CARS 40
-#define ROAD_LENGTH 25
+#define ROAD_LENGTH 50
 #define V_MAX 5
 #define PLUS_BUS_LENGTH 5
 #define DECELERATE_CHANCE 0
 #define MIN_SPEED_RANDOM_DECELERATE 2
 #define AMOUNT_LINKS 16
-#define AMOUNT_VEHICLES 20
+#define AMOUNT_VEHICLES 40
 #define TIME_STEPS 20
 
 typedef enum turn_dir{forward, right, left} turn_dir;
@@ -47,11 +47,11 @@ typedef struct cross_intersection{
 } type_a;
 
 typedef struct t_intersection {
-    link links[6];
+    link* links[6];
 } type_b;
 
 typedef struct plusbus_cross_intersection {
-    link links[12];
+    link* links[12];
     int state;
 } type_c;
 
@@ -76,14 +76,15 @@ void construct_type_a(intersection* intersection, int id, link* primary1_enter, 
                       link* primary2_exit, link* secondary1_enter, link* secondary1_exit, link* secondary2_enter,
                       link* secondary2_exit);
 
+
 /* Constructs a T-cross intersection without traffic lights. */
-void construct_type_b(intersection* intersection, int id, int primary1_enter, int primary1_exit, int primary2_enter,
-                      int primary2_exit, int secondary1_enter, int secondary1_exit);
+void construct_type_b(intersection* intersection, int id, link* primary1_enter, link* primary1_exit, link* primary2_enter,
+                      link* primary2_exit, link* secondary1_enter, link* secondary1_exit);
 
 /* Constructs a typical four way intersection with traffic light and with separate plusbus lanes*/
-void construct_type_c(intersection* intersection, int id, int primary1_enter, int primary1_exit, int primary2_enter,
-                      int primary2_exit, int secondary1_enter, int secondary1_exit, int secondary2_enter,
-                      int secondary2_exit, int plusbus1_enter, int plusbus1_exit, int plusbus2_enter, int plusbus2_exit);
+void construct_type_c(intersection* intersection, int id, link* primary1_enter, link* primary1_exit, link* primary2_enter,
+                      link* primary2_exit, link* secondary1_enter, link* secondary1_exit, link* secondary2_enter,
+                      link* secondary2_exit, link* plusbus1_enter, link* plusbus1_exit, link* plusbus2_enter, link* plusbus2_exit);
 
 /* Returns the internal index in the node of the road that has the given id*/
 int internal_index_a(intersection* intersection, int link_id);
@@ -116,24 +117,6 @@ link* go_forward(intersection* intersection, int link_id);
  * returns the road you land on if you turn right at the intersection */
 link* right_turn(intersection* intersection, int link_id);
 
-/* Populates the roads with vehicles */
-void initialize_actors(vehicle* actors, link* links, int len);
-
-/* Returns the gap between position and the vehicle in front with a range of V_MAX */
 int lead_gap(link* link, int pos);
 
-/* Accelerates all vehicles on the link. */
-void accelerate_link(link* link, vehicle* vehicles);
-
-int current_time_step(int increase);
-
-void simulate_all_links(link* links, vehicle* vehicles);
-
-/* Moves all vehicles on the link. */
-/*void move_link(link* link, vehicle* vehicles);*/
-
-/* decelerates all vehicles on the link. */
-void decelerate_link(link* link, vehicle* vehicles);
-
-/* Runs the next time step. */
-void time_step(link* links, vehicle* vehicles);
+turn_dir decide_turn_dir(link* link);
