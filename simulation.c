@@ -13,8 +13,9 @@ int main(void) {
     vehicle vehicles[CARS];
     build_network(nodes, links);
     initialize_actors(vehicles, links, AMOUNT_LINKS);
+
+    print_vehicles(vehicles, AMOUNT_VEHICLES);
     for (int j = 0; j < TIME_STEPS; ++j) {
-        printf("\n");
         simulate_all_links(links, vehicles);
     }
 

@@ -3,7 +3,7 @@
 #define ROAD_LENGTH 25
 #define V_MAX 5
 #define PLUS_BUS_LENGTH 5
-#define DECELERATE_CHANCE 20
+#define DECELERATE_CHANCE 0
 #define MIN_SPEED_RANDOM_DECELERATE 2
 #define AMOUNT_LINKS 16
 #define AMOUNT_VEHICLES 20
@@ -38,11 +38,12 @@ typedef struct vehicle{
     int active;
     int is_plusbus;
     turn_dir turn_direction;
+    int has_moved;
 } vehicle;
 
 
 typedef struct cross_intersection{
-    link links[8];
+    link* links[8];
 } type_a;
 
 typedef struct t_intersection {
