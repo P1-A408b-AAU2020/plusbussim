@@ -246,7 +246,7 @@ void lane_change(link *_link, vehicle *vehicles) {
                     /* car not in way? */
                     if (!right_pocket.road[vehicles[car_id].v - i]) {
                         /* delete car from old place */
-                        _link->road[right_pocket.pos - i] = NULL;
+                        _link->road[right_pocket.pos - i] = 0;
                         /* place car on pocket lane */
                         right_pocket.road[vehicles[car_id].v - i] = car_id;
                         /* keep track of speed */
@@ -255,20 +255,22 @@ void lane_change(link *_link, vehicle *vehicles) {
                         vehicles[car_id].v -= i;
                     }
                     else {
-                        if (sim_done) {
-                            _link->road[right_pocket.pos - i] = NULL;
-                            /* place at the start of pocket lane on original road */
-                            _link->road[right_pocket.pos] = car_id;
-                            vehicles[car_id].v = NULL;
-                        }
-                        else {
+                        if (!sim_done) {
                             /* set temporary link to pass pocket */
                             pass_link.len = right_pocket.len;
                             pass_link.road = right_pocket.road;
 
                             /* simulate lane */
                             move_link(&pass_link, vehicles);
+
                         }
+                        _link->road[right_pocket.pos - i] = 0;
+                        /* place at the start of pocket lane on original road */
+                        _link->road[right_pocket.pos] = car_id;
+                        vehicles[car_id].v = 0;
+
+                        /* also set offset here*/
+                        right_pocket.offset[vehicles[car_id].v - i - 1] = vehicles[car_id].v;
                     }
                 }
             }
