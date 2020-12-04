@@ -10,7 +10,9 @@
 
 /* The contents of this function are predefined. Make changes to how network here. */
 void build_network(intersection* intersections, link* links){
-    int i;
+    int spawn_lanes[AMT_SPAWN_LANES] = {0, 2, 6, 9, 11, 13};
+    double spawn_chances[AMT_SPAWN_LANES] = {25.3, 21.2, 15.7, 19.2, 8.5, 15.2};
+    int i, k = 0, j = 0;
     for(i = 0; i < AMOUNT_LINKS; i++){
         links[i].id = i;
         links[i].road = (int*)calloc(ROAD_LENGTH, sizeof(int));
@@ -19,6 +21,14 @@ void build_network(intersection* intersections, link* links){
         links[i].intersection = NULL;
         links[i].left_chance = 33.3;
         links[i].left_chance = 33.3;
+        if (links[i].id == spawn_lanes[k]){
+            links[i].spawn_lane = 1;
+            j++;
+        }
+        if (links[i].spawn_lane) {
+            links[i].spawn_chance = spawn_chances[k];
+            k++;
+        }
     }
     construct_type_a(intersections, 0,links,links+3,links+4,links+7,links+2,links+5,links+6,links+1);
     construct_type_a(intersections + 1, 1,links+3,links+11,links+12,links+4,links+15,links+13,links+14,links+9);
@@ -191,7 +201,7 @@ int lead_gap(link *link, int pos) {
     return gap;
 }
 
-void spawn_car(link* link, vehicle* vehicles) {
+void spawn_car(link *link, vehicle *vehicles) {
     int car_spawned = 0;
     int i = 1;
 
@@ -206,9 +216,9 @@ void spawn_car(link* link, vehicle* vehicles) {
                 }
             }
             break;
-       }
-       if (i > CARS)
-           break;
-       i++;
+        }
+        if (i > CARS)
+            break;
+        i++;
     }
 }

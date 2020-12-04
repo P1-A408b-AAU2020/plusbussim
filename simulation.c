@@ -54,18 +54,22 @@ void initialize_actors(vehicle* actors, link* links, int len){
 
 void simulate_all_links(link *links, vehicle *vehicles) {
     timer++;
-    printf("%d\n", timer);
+
     for (int i = 0; i < AMOUNT_LINKS; ++i) {
-        if ((links + i)->time_step < timer)
+        if ((links + i)->time_step < timer){
             time_step(links + i, vehicles);
+        }
     }
     printf("\n");
 }
 
 void time_step(link *link, vehicle *vehicles) {
     move(link, vehicles);
+    if (link->spawn_lane)
+        spawn_car(link, vehicles);
     change_speed(link, vehicles);
     link->time_step++;
+
     if(link->id == 0 || link->id==3 || link->id == 13)
         print_link(link, vehicles);
 }

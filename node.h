@@ -1,5 +1,5 @@
 #pragma once
-#define CARS 40
+#define CARS 90
 #define ROAD_LENGTH 50
 #define V_MAX 5
 #define PLUS_BUS_LENGTH 5
@@ -121,3 +121,4 @@ link* right_turn(intersection* intersection, int link_id);
 int lead_gap(link* link, int pos);
 
 turn_dir decide_turn_dir(link* link);
+void spawn_car(link* link, vehicle* vehicles);
