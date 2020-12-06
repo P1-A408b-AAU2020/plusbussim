@@ -10,8 +10,8 @@
 
 /* The contents of this function are predefined. Make changes to how network here. */
 void build_network(intersection* intersections, link* links){
-    int spawn_lanes[AMT_SPAWN_LANES] = {0, 2, 6, 9, 11, 13};
-    double spawn_chances[AMT_SPAWN_LANES] = {25.3, 21.2, 15.7, 19.2, 8.5, 15.2};
+    int spawn_lanes[AMT_SPAWN_LANES] = {0, 2, 6, 12, 14, 15};
+    double spawn_chances[AMT_SPAWN_LANES] = {100.0, 21.2, 15.7, 19.2, 8.5, 15.2};
     int i, k = 0, j = 0;
     for(i = 0; i < AMOUNT_LINKS; i++){
         links[i].id = i;
@@ -21,13 +21,15 @@ void build_network(intersection* intersections, link* links){
         links[i].intersection = NULL;
         links[i].left_chance = 33.3;
         links[i].left_chance = 33.3;
-        if (links[i].id == spawn_lanes[k]){
+        if (links[i].id == spawn_lanes[j]){
             links[i].spawn_lane = 1;
-            j++;
-        }
-        if (links[i].spawn_lane) {
             links[i].spawn_chance = spawn_chances[k];
             k++;
+            j++;
+        }
+        else {
+            links[i].spawn_lane = 0;
+            links[i].spawn_chance = 0.0;
         }
     }
     construct_type_a(intersections, 0,links,links+3,links+4,links+7,links+2,links+5,links+6,links+1);
@@ -206,12 +208,12 @@ void spawn_car(link *link, vehicle *vehicles) {
     int i = 1;
 
     while(!car_spawned){
-        if(!vehicles[i].active) {
-            if (!vehicles[link->road[0]].id) {
-                if (rand() % 100 <= link->spawn_chance) {
-                    link->road[0] = vehicles[i].id;
-                    vehicles[i].active = 1;
-                    vehicles[i].v = V_MAX;
+        if(!(vehicles+i)->active) {
+            if (!(vehicles+link->road[0])->id) {
+                if (rand() % 101 <= link->spawn_chance) {
+                    link->road[0] = (vehicles+i)->id;
+                    (vehicles+i)->active = 1;
+                    (vehicles+i)->v = V_MAX;
                     car_spawned = 1;
                 }
             }

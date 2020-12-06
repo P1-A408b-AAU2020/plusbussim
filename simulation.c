@@ -26,6 +26,7 @@ int main(void) {
 
     print_vehicles(vehicles, AMOUNT_VEHICLES);
     for (int j = 0; j < TIME_STEPS; ++j) {
+        printf("Timestep: %d\n", j+1);
         simulate_all_links(links, vehicles);
     }
 
@@ -39,16 +40,22 @@ void initialize_actors(vehicle* actors, link* links, int len){
     srand(time(NULL));
     /* generate actors */
     /* Place actors */
-    for (int i = 0; i < CARS; ++i) {
+    for (int i = 0; i < CARS; i++) {
         actors[i].id = i;
         actors[i].v = 0;
-        actors[i].active = 1;
+
         actors[i].is_plusbus = 0;
         actors[i].turn_direction = left;
         actors[i].has_moved = 0;
 
-        int l = rand()%len;
-        links[l].road[rand()%links[l].len] = i;
+        if (actors[i].id < CARS/2) {
+            actors[i].active = 1;
+            int l = rand()%len;
+            links[l].road[rand()%links[l].len] = i;
+        }
+        else
+            actors[i].active = 0;
+
     }
 }
 
