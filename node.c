@@ -1,7 +1,6 @@
 #include "node.h"
 #include <stdlib.h>
 #include <time.h>
-#include <stdio.h>
 #include "debug.h"
 #define RIGHT 1
 #define LEFT 5
@@ -62,53 +61,17 @@ void construct_type_a(intersection* intersection, int id, link* primary1_enter, 
     p[6] = secondary2_enter;
     p[7] = primary2_exit;
 }
-/*
-void construct_type_b(intersection* intersection, int id, int primary1_enter, int primary1_exit, int primary2_enter,
-                      int primary2_exit, int secondary1_enter, int secondary1_exit){
-    intersection->id = id;
-    intersection->type = 'b';
-    int* p= intersection->layout.type_a.links;
-    p[0] = primary1_enter;
-    p[2] = secondary1_enter;
-    p[3] = primary1_exit;
-    p[4] = primary2_enter;
-    p[5] = secondary1_exit;
-    p[7] = primary2_exit;
-}
-*/
-/* DETTE ER KRYDS 6, 7 og 10 PÅ BILLEDET */
-/*
-void construct_type_c(intersection* intersection, int id, int primary1_enter, int primary1_exit, int primary2_enter,
-                      int primary2_exit, int secondary1_enter, int secondary1_exit, int secondary2_enter,
-                      int secondary2_exit, int plusbus1_enter, int plusbus1_exit, int plusbus2_enter, int plusbus2_exit) {
-    intersection->id = id;
-    intersection->type = 'c';
-    int* p = intersection->layout.type_c.links;
-    p[0] = primary1_enter;
-    p[1] = secondary2_exit;
-    p[2] = secondary1_enter;
-    p[3] = primary1_exit;
-    p[4] = primary2_enter;
-    p[5] = secondary1_exit;
-    p[6] = secondary2_enter;
-    p[7] = primary2_exit;
-    p[8] = plusbus2_exit;
-    p[9] = plusbus1_enter;
-    p[10] = plusbus1_exit;
-    p[11] = plusbus2_enter;
-}
-*/
 link* forward_type_a(intersection *intersection, int link_id) {
-    return *intersection->layout.type_a.links + (internal_index_a(intersection, link_id) + FORWARD) % 8;
+    return intersection->layout.type_a.links[(internal_index_a(intersection, link_id) + FORWARD) % 8];
 }
 
 link* left_turn_type_a(intersection *intersection, int link_id) {
-    link* res = *intersection->layout.type_a.links + (internal_index_a(intersection, link_id) + LEFT) % 8;
+    link* res = intersection->layout.type_a.links[(internal_index_a(intersection, link_id) + LEFT) % 8];
     return res;
 }
 
 link* right_turn_type_a(intersection *intersection, int link_id) {
-    return *intersection->layout.type_a.links + (internal_index_a(intersection, link_id) + RIGHT) % 8;
+    return intersection->layout.type_a.links[(internal_index_a(intersection, link_id) + RIGHT) % 8];
 }
 /*
 link* plusbus_type_c(intersection *intersection, int link_id) {

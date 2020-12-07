@@ -12,7 +12,6 @@ void time_step(link* links, vehicle* vehicles);
 void move(link *link, vehicle *vehicles);
 void change_speed(link* link, vehicle* vehicles);
 
-
 int timer = 0;
 
 int main(void) {
@@ -34,6 +33,7 @@ int main(void) {
     for (int j = 0; j < AMOUNT_LINKS; j++) {
         free(links[j].road);
     }
+
     return EXIT_SUCCESS;
 }
 
@@ -87,6 +87,7 @@ void time_step(link *link, vehicle *vehicles) {
 
 void move(link *link, vehicle *vehicles) {
     int a, v;
+    struct link* new_link;
     for (int i = link->len-1; i >= 0; --i) {
         a = link->road[i];
         v = vehicles[a].v;
@@ -97,8 +98,9 @@ void move(link *link, vehicle *vehicles) {
                     link->road[i + v] = a;
                 }
                 else if (link->intersection != NULL) {/*There is an intersection at the end of the link. */
-                    vehicles[a].turn_direction = decide_turn_dir(link);
-                    turn(vehicles[a].turn_direction, link->intersection, link->id)->road[i+v-link->len] = a; /* Place on new link */
+                    new_link = turn(vehicles[a].turn_direction, link->intersection, link->id);
+                    new_link->road[i+v-link->len] = a; /* Place on new link */
+                    vehicles[a].turn_direction = decide_turn_dir(new_link);
                     vehicles[a].has_moved = 1;
                 }
             }
