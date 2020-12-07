@@ -9,8 +9,8 @@
 #define AMOUNT_VEHICLES 20
 #define TIME_STEPS 20
 #define PLUSBUS_RADIUS 10
-#define RED_TIME 5
-#define GREEN_TIME 5
+#define RED_TIME 20
+#define GREEN_TIME 0
 #define PLUSBUS_GREEN_ADJUST 1
 #define PLUSBUS_RED_ADJUST 1
 
@@ -133,7 +133,7 @@ void move_link(link* link, vehicle* vehicles);
 void decelerate_link(link* link, vehicle* vehicles);
 
 /* Runs the next time step. */
-void time_step(link* links, vehicle* vehicles);
+void time_step(link* links, vehicle* vehicles, intersection *intersection, intersection_type type);
 
 /* Spawns a car at spawn lanes */
 void spawn_car(link* link, vehicle* vehicles);

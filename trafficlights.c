@@ -1,7 +1,7 @@
 /*TODO add "trafficlights.c trafficlights.h" to CMakeLists.txt when this library is done
  *TODO make it work on more than one road and fix hardcoded solution(may need recursive functions)
  *TODO cars doesnt stop when traffic lights are red
- * 
+ *
  *DONE make case in check_plusbus for the types of intersections.
  *DONE finish the red checker
  *DONE move radius in node.h
@@ -24,13 +24,22 @@ int type_check(intersection *intersection, intersection_type type){
 }
 
 void car_stops(intersection *intersection, vehicle *actor, link *links, intersection_type type){
-    int i;
+    static int b, count;
+    b = 0;
+    count = 0;
     switch (type){
     case C:
         if(intersection->layout.type_c.state == Red){
             //id = link->road[links[0].len-1];
+            for (int i = ROAD_LENGTH-1; i <= ROAD_LENGTH -6; i--) {
+                if (count < 5){
+                    if(links[0].road[i] != 0)
+                        actor[links[0].road[i]].v = 1;
+                    count++;
+                }
+            }
 
-            actor[links[intersection->layout.type_c.links[0]].len -1].v = 0;
+            actor[links[0].road[24]].v = 0;
 
             /*actor[links[intersection->layout.type_c.links[4]].len -1].v = 0;
             actor[links[intersection->layout.type_c.links[9]].len -1].v = 0;
@@ -82,5 +91,5 @@ void change_lights(intersection *intersection, vehicle *actor, link *links, int 
 
     car_stops(intersection, actor, links, type);
     count++;
-    printf("\ncounter: %-5d state: %-5d speed: %-5d", count, intersection->layout.type_c.state, actor[links[intersection->layout.type_c.links[0]].len -1].v);
+    //printf("\ncounter: %-5d state: %-5d speed: %-5d", count, intersection->layout.type_c.state, actor[links[intersection->layout.type_c.links[0]].len -1].v);
 }
