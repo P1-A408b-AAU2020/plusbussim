@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+#include <assert.h>
 
 /* Populates the roads with vehicles */
 void initialize_actors(vehicle* actors, link* links, int len);
@@ -40,7 +41,7 @@ void initialize_actors(vehicle* actors, link* links, int len){
     srand(time(NULL));
     /* generate actors */
     /* Place actors */
-    for (int i = 0; i < CARS; i++) {
+    for (int i = 1; i < CARS; i++) {
         actors[i].id = i;
         actors[i].v = 0;
 
@@ -146,6 +147,7 @@ void change_speed(link *link, vehicle *vehicles) {
             if (vehicles[link->road[i]].is_plusbus)
                 i -= PLUS_BUS_LENGTH - 1;
 
+            assert(vehicles[a].v <= gap + gap2);
         }
     }
 }
