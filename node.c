@@ -231,7 +231,7 @@ void lane_change(link *_link, vehicle *vehicles) {
         }       
     }    
     /* assumes that the length would be 0 if there is no pocket lane */
-    else if (right_pocket.len) {
+   if (right_pocket.len) {
         /* correct velocity of cars */
 
         /* calc propability here */
@@ -276,5 +276,4 @@ void lane_change(link *_link, vehicle *vehicles) {
             }
         }
     }
-
 }
