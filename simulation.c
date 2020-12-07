@@ -74,6 +74,7 @@ void time_step(link *link, vehicle *vehicles) {
     move(link, vehicles);
     if (link->spawn_lane)
         spawn_car(link, vehicles);
+
     change_speed(link, vehicles);
     link->time_step++;
 
@@ -106,9 +107,10 @@ void move(link *link, vehicle *vehicles) {
 }
 
 void change_speed(link *link, vehicle *vehicles) {
-    int i, a, v, gap = 0, gap2 = 0;
+    int i, a, v, gap = 0, gap2;
     struct link* new_link;
     for(i = link->len - 1; i >= 0; i--) {
+        gap2 = 0;
         a = link->road[i];
         if (a){
             v = vehicles[a].v;
