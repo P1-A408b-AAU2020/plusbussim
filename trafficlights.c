@@ -47,8 +47,8 @@ void car_stops(intersection *intersection, vehicle *actor, link *links, intersec
 
             /*Cars on the prioritization road stops for red*/
         } else{
-            actor[links[intersection->layout.type_c.links[2]].len -1].v = 0;
-            actor[links[intersection->layout.type_c.links[6]].len -1].v = 0;
+            //actor[links[intersection->layout.type_c.links[2]].len -1].v = 0;
+            //actor[links[intersection->layout.type_c.links[6]].len -1].v = 0;
             /*Cars on the non prioritization road stops for red*/
         }
     break;

@@ -5,8 +5,6 @@
 #define PLUS_BUS_LENGTH 5
 #define DECELERATE_CHANCE 0
 #define MIN_SPEED_RANDOM_DECELERATE 2
-#define AMOUNT_LINKS 12
-#define AMOUNT_VEHICLES 20
 #define AMOUNT_LINKS 16
 #define AMOUNT_VEHICLES 300
 #define TIME_STEPS 20
@@ -16,10 +14,9 @@
 #define PLUSBUS_GREEN_ADJUST 1
 #define PLUSBUS_RED_ADJUST 1
 
-typedef enum turn_dir{forward, right, left} turn_dir;
 typedef enum light_state{Red, Green}light_state;
 typedef enum intersection_type{A, B, C, D, E, F, G, H}intersection_type;
-/* Data type for all the different vehicle types. */
+typedef enum turn_dir{forward, right, left} turn_dir;
 
 typedef struct intersection intersection;
 
@@ -64,7 +61,7 @@ typedef struct t_intersection {
 
 typedef struct plusbus_cross_intersection {
     link* links[12];
-    enum light_state state;
+    int state;
 } type_c;
 
 typedef union intersection_types{
@@ -130,20 +127,5 @@ link* right_turn(intersection* intersection, int link_id);
 
 int lead_gap(link* link, int pos);
 
-<<<<<<< HEAD
-/* Accelerates all vehicles on the link. */
-void accelerate_link(link* link, vehicle* vehicles);
-
-/* Moves all vehicles on the link. */
-void move_link(link* link, vehicle* vehicles);
-
-/* decelerates all vehicles on the link. */
-void decelerate_link(link* link, vehicle* vehicles);
-
-/* Runs the next time step. */
-void time_step(link* links, vehicle* vehicles, intersection *intersection, intersection_type type);
-
-/* Spawns a car at spawn lanes */
 turn_dir decide_turn_dir(link* link);
-
 void spawn_car(link* link, vehicle* vehicles);
