@@ -75,8 +75,8 @@ void time_step(link *link, vehicle *vehicles) {
     if (link->spawn_lane)
         spawn_car(link, vehicles);
 
-    change_speed(link, vehicles);
     link->time_step++;
+    change_speed(link, vehicles);
 
     if(link->id == 0 || link->id==3 || link->id == 13)
         print_link(link, vehicles);
