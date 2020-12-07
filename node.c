@@ -186,7 +186,7 @@ void spawn_car(link *link, vehicle *vehicles) {
             }
             break;
         }
-        if (i > CARS)
+        if (i > AMOUNT_VEHICLES)
             break;
         i++;
     }

@@ -20,7 +20,7 @@ int main(void) {
 
     link links[AMOUNT_LINKS];
     intersection nodes[2];
-    vehicle vehicles[CARS];
+    vehicle vehicles[AMOUNT_VEHICLES];
     build_network(nodes, links);
     initialize_actors(vehicles, links, AMOUNT_LINKS);
 
@@ -41,8 +41,8 @@ void initialize_actors(vehicle* actors, link* links, int len){
     srand(time(NULL));
     /* generate actors */
     /* Place actors */
-    for (int i = 1; i < CARS; i++) {
-        actors[i].id = i;
+    for (int i = 0; i < AMOUNT_VEHICLES; i++) {
+        actors[i].id = i+1;
         actors[i].v = 0;
 
         actors[i].is_plusbus = 0;
@@ -51,7 +51,7 @@ void initialize_actors(vehicle* actors, link* links, int len){
 
         links->road[rand()%links->len] = i;
 
-        /*if (actors[i].id < CARS/2) {
+        /*if (actors[i].id < AMOUNT_VEHICLES/2) {
             actors[i].active = 1;
             int l = rand()%len;
             links[l].road[rand()%links[l].len] = i;
@@ -91,7 +91,7 @@ void move(link *link, vehicle *vehicles) {
     for (int i = link->len-1; i >= 0; --i) {
         a = link->road[i];
         v = vehicles[a].v;
-        if (a){
+        if (a && v){
             if(vehicles[a].has_moved == 0){
                 link->road[i] = 0;
                 if(link->len > i + v) { /* if the vehicle does not exceed the end of the road */
@@ -137,7 +137,7 @@ void change_speed(link *link, vehicle *vehicles) {
                     vehicles[a].v++;
             }
 
-                /* There is no intersection */
+            /* There is no intersection */
             else if (v < V_MAX && gap > v)
                 vehicles[a].v++;
 
