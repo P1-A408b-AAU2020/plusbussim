@@ -31,10 +31,9 @@ void direction_stop(intersection *intersection, vehicle *actor, link *links, int
     case C:
         if(state_of_intersection(type, intersection) == Red){
             //id = link->road[links[0].len-1];
-                if(lead_gap(links, i) < 5 && actor[links[0].road[24]].v == 5)
-            links[0].len - 5;
-            actor[links[0].road[24]].v = 0;
 
+            
+            /*THIS SHOULD WORK TO STOP CARS      LOOK HERE!!!!!!!!!!!!!!*/
                 int car_found = 0;
                 int i = 2;
                 if(links[0].road[ROAD_LENGTH -1] == 0){
