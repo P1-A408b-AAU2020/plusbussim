@@ -19,11 +19,13 @@ void build_network(intersection* intersections, link* links){
         links[i].len = ROAD_LENGTH;
         links[i].time_step = 0;
         links[i].intersection = NULL;
-        links[i].left_chance = 33.3;
-        links[i].left_chance = 33.3;
+        links[i].left_chance = 0;
+        links[i].right_chance = 0;
+
+
         if (links[i].id == spawn_lanes[j]){
             links[i].spawn_lane = 1;
-            links[i].spawn_chance = spawn_chances[k];
+            links[i].spawn_chance = 0; /*spawn_chances[k]; */
             k++;
             j++;
         }
@@ -32,6 +34,8 @@ void build_network(intersection* intersections, link* links){
             links[i].spawn_chance = 0.0;
         }
     }
+    links[3].left_chance = 100;
+
     construct_type_a(intersections, 0,links,links+3,links+4,links+7,links+2,links+5,links+6,links+1);
     construct_type_a(intersections + 1, 1,links+3,links+11,links+12,links+4,links+15,links+13,links+14,links+9);
     links[0].intersection = intersections;
@@ -96,7 +100,7 @@ void construct_type_c(intersection* intersection, int id, int primary1_enter, in
 }
 */
 link* forward_type_a(intersection *intersection, int link_id) {
-    return *intersection->layout.type_a.links + (internal_index_a(intersection, link_id) + FORWARD) % 7;
+    return *intersection->layout.type_a.links + (internal_index_a(intersection, link_id) + FORWARD) % 8;
 }
 
 link* left_turn_type_a(intersection *intersection, int link_id) {
@@ -104,7 +108,7 @@ link* left_turn_type_a(intersection *intersection, int link_id) {
 }
 
 link* right_turn_type_a(intersection *intersection, int link_id) {
-    return *intersection->layout.type_a.links + (internal_index_a(intersection, link_id) + RIGHT) % 7;
+    return *intersection->layout.type_a.links + (internal_index_a(intersection, link_id) + RIGHT) % 8;
 }
 /*
 link* plusbus_type_c(intersection *intersection, int link_id) {
@@ -186,6 +190,7 @@ link* turn(turn_dir dir, intersection *intersection, int link_id) {
         case right:   result = right_turn(intersection, link_id);  break;
         case forward: result = go_forward(intersection, link_id);  break;
     }
+    printf("Turning from link %d to link %d\n", link_id ,result->id);
     return result;
 }
 

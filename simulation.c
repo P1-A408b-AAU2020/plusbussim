@@ -48,14 +48,16 @@ void initialize_actors(vehicle* actors, link* links, int len){
         actors[i].turn_direction = left;
         actors[i].has_moved = 0;
 
-        if (actors[i].id < CARS/2) {
+        links->road[rand()%links->len] = i;
+
+        /*if (actors[i].id < CARS/2) {
             actors[i].active = 1;
             int l = rand()%len;
             links[l].road[rand()%links[l].len] = i;
         }
         else
             actors[i].active = 0;
-
+        */
     }
 }
 
@@ -137,9 +139,8 @@ void change_speed(link *link, vehicle *vehicles) {
             else if (v < V_MAX && gap > v)
                 vehicles[a].v++;
 
-            else if (gap + gap2 < v)
-                vehicles[a].v = gap + gap2;
-
+            else if (gap < v)
+                vehicles[a].v = gap;
 
             /* The plusbus is longer than a regular car. */
             if (vehicles[link->road[i]].is_plusbus)
