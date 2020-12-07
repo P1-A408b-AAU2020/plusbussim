@@ -22,7 +22,6 @@ void build_network(intersection* intersections, link* links){
         links[i].left_chance = 0;
         links[i].right_chance = 0;
 
-
         if (links[i].id == spawn_lanes[j]){
             links[i].spawn_lane = 1;
             links[i].spawn_chance = 0; /*spawn_chances[k]; */
@@ -104,7 +103,8 @@ link* forward_type_a(intersection *intersection, int link_id) {
 }
 
 link* left_turn_type_a(intersection *intersection, int link_id) {
-    return *intersection->layout.type_a.links + (internal_index_a(intersection, link_id) + LEFT) % 8;
+    link* res = *intersection->layout.type_a.links + (internal_index_a(intersection, link_id) + LEFT) % 8;
+    return res;
 }
 
 link* right_turn_type_a(intersection *intersection, int link_id) {
@@ -184,13 +184,12 @@ turn_dir decide_turn_dir(link* link){
 }
 
 link* turn(turn_dir dir, intersection *intersection, int link_id) {
-    link* result;
+    link* result = 0;
     switch (dir) {
         case left:    result = left_turn(intersection, link_id);   break;
         case right:   result = right_turn(intersection, link_id);  break;
         case forward: result = go_forward(intersection, link_id);  break;
     }
-    printf("Turning from link %d to link %d\n", link_id ,result->id);
     return result;
 }
 

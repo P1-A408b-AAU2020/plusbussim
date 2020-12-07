@@ -45,7 +45,7 @@ void initialize_actors(vehicle* actors, link* links, int len){
         actors[i].v = 0;
 
         actors[i].is_plusbus = 0;
-        actors[i].turn_direction = left;
+        actors[i].turn_direction = forward;
         actors[i].has_moved = 0;
 
         links->road[rand()%links->len] = i;
@@ -92,15 +92,14 @@ void move(link *link, vehicle *vehicles) {
         if (a){
             if(vehicles[a].has_moved == 0){
                 link->road[i] = 0;
-                if(link->len > i + v) /* if the vehicle does not exceed the end of the road */
+                if(link->len > i + v) { /* if the vehicle does not exceed the end of the road */
                     link->road[i + v] = a;
+                }
                 else if (link->intersection != NULL) {/*There is an intersection at the end of the link. */
                     vehicles[a].turn_direction = decide_turn_dir(link);
                     turn(vehicles[a].turn_direction, link->intersection, link->id)->road[i+v-link->len] = a; /* Place on new link */
                     vehicles[a].has_moved = 1;
                 }
-                else
-                    vehicles[a].active = 0;
             }
             else
                 vehicles[a].has_moved = 0;
