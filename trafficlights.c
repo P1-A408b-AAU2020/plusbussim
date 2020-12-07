@@ -24,16 +24,31 @@ int type_check(intersection *intersection, intersection_type type){
 }
 
 void direction_stop(intersection *intersection, vehicle *actor, link *links, intersection_type type){
-    static int b, count;
-    b = 0;
+    static int h, count;
+    h = 0;
     count = 0;
     switch (type){
     case C:
         if(state_of_intersection(type, intersection) == Red){
             //id = link->road[links[0].len-1];
                 if(lead_gap(links, i) < 5 && actor[links[0].road[24]].v == 5)
-            links[0].len - 5
+            links[0].len - 5;
             actor[links[0].road[24]].v = 0;
+
+                int car_found = 0;
+                int i = 2;
+                if(links[0].road[ROAD_LENGTH -1] == 0){
+                    while (!car_found) {
+                        if(i <= 6) {
+                            h = links[0].road[ROAD_LENGTH - i];
+                            if (links[0].road[ROAD_LENGTH - i] != 0) {
+                                actor[h].v = gap;
+                                car_found = 1;
+                            }
+                        }
+                        i++;
+                    }
+                }
 
             /*actor[links[intersection->layout.type_c.links[4]].len -1].v = 0;
             actor[links[intersection->layout.type_c.links[9]].len -1].v = 0;
@@ -74,7 +89,7 @@ void change_lights(intersection *intersection, vehicle *actor, link *links, int 
     }else if(pb == 1 && state == Red){
         count = PLUSBUS_RED_ADJUST;
     }
-    
+
     state_counter(intersection, &count);
     direction_stop(intersection, actor, links, type);
     count++;
