@@ -8,9 +8,9 @@
 #define AMOUNT_LINKS 16
 #define AMOUNT_VEHICLES 300
 #define TIME_STEPS 20
-#define PLUSBUS_RADIUS 10
-#define RED_TIME 20
-#define GREEN_TIME 0
+#define PLUSBUS_R 10
+#define RED_T 20
+#define GREEN_T 0
 #define PLUSBUS_GREEN_ADJUST 1
 #define PLUSBUS_RED_ADJUST 1
 

@@ -4,11 +4,16 @@
 void light_control();
 
 /*Stops cars that have red*/
-void cars_stop(intersection *intersection, vehicle *actor, link *links, intersection_type type);
+void direction_stop(intersection *intersection, vehicle *actor, link *links, intersection_type type);
 
 /*Checks if the plusbus is near intersection*/
 int check_plusbus(int r, intersection *intersection, vehicle *actor, link *links, int lane);
 
-/*Changes traffic lights from green to red and vise versa
-  lane = where the plusbus is driving*/
+
 void change_lights(intersection *intersection, vehicle *actor, link *links, int lane, intersection_type type);
+
+/*Changes lights green/red and resets counter*/
+void state_counter(intersection *intersection, int *count);
+
+/*returns state of selected intersection*/
+int state_of_intersection(intersection_type type, struct intersection *intersection);

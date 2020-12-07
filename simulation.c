@@ -118,6 +118,10 @@ void change_speed(link *link, vehicle *vehicles) {
 
             /* Is the car approaching an intersection? */
             if (i + gap == link->len-1 && link->intersection != NULL) {
+
+
+
+
                 new_link = turn(vehicles[a].turn_direction, link->intersection, link->id);
 
                 if (new_link->time_step < timer)
