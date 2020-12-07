@@ -11,7 +11,7 @@
 /* The contents of this function are predefined. Make changes to how network here. */
 void build_network(intersection* intersections, link* links){
     int spawn_lanes[AMT_SPAWN_LANES] = {0, 2, 6, 12, 14, 15};
-    double spawn_chances[AMT_SPAWN_LANES] = {100.0, 21.2, 15.7, 19.2, 8.5, 15.2};
+    double spawn_chances[AMT_SPAWN_LANES] = {30.5, 21.2, 15.7, 19.2, 8.5, 15.2};
     int i, k = 0, j = 0;
     for(i = 0; i < AMOUNT_LINKS; i++){
         links[i].id = i;
