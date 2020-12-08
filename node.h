@@ -1,5 +1,4 @@
 #pragma once
-#define CARS 10
 #define ROAD_LENGTH 50
 #define V_MAX 5
 #define PLUS_BUS_LENGTH 5
@@ -7,7 +6,7 @@
 #define MIN_SPEED_RANDOM_DECELERATE 2
 #define AMOUNT_LINKS 16
 #define AMOUNT_VEHICLES 10
-#define TIME_STEPS 20
+#define TIME_STEPS 50
 
 typedef enum turn_dir{forward, right, left} turn_dir;
 

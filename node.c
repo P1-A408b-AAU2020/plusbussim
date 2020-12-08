@@ -1,7 +1,6 @@
 #include "node.h"
 #include <stdlib.h>
 #include <time.h>
-#include <stdio.h>
 #include "debug.h"
 #define RIGHT 1
 #define LEFT 5
@@ -22,10 +21,9 @@ void build_network(intersection* intersections, link* links){
         links[i].left_chance = 0;
         links[i].right_chance = 0;
 
-
         if (links[i].id == spawn_lanes[j]){
             links[i].spawn_lane = 1;
-            links[i].spawn_chance = 0; /*spawn_chances[k]; */
+            links[i].spawn_chance = 0; /* spawn_chances[k]; */
             k++;
             j++;
         }
@@ -37,15 +35,15 @@ void build_network(intersection* intersections, link* links){
     links[3].left_chance = 100;
 
     construct_type_a(intersections, 0,links,links+3,links+4,links+7,links+2,links+5,links+6,links+1);
-    construct_type_a(intersections + 1, 1,links+3,links+11,links+12,links+4,links+15,links+13,links+14,links+9);
+    construct_type_a(intersections + 1, 1,links+3,links+10,links+11,links+4,links+9,links+12,links+13,links+8);
     links[0].intersection = intersections;
     links[2].intersection = intersections;
     links[4].intersection = intersections;
     links[6].intersection = intersections;
     links[3].intersection = intersections + 1;
-    links[15].intersection = intersections + 1;
-    links[12].intersection = intersections + 1;
-    links[14].intersection = intersections + 1;
+    links[9].intersection = intersections + 1;
+    links[11].intersection = intersections + 1;
+    links[13].intersection = intersections + 1;
 }
 /* Pointer to the intersection. */
 void construct_type_a(intersection* intersection, int id, link* primary1_enter, link* primary1_exit, link* primary2_enter,
@@ -63,52 +61,17 @@ void construct_type_a(intersection* intersection, int id, link* primary1_enter, 
     p[6] = secondary2_enter;
     p[7] = primary2_exit;
 }
-/*
-void construct_type_b(intersection* intersection, int id, int primary1_enter, int primary1_exit, int primary2_enter,
-                      int primary2_exit, int secondary1_enter, int secondary1_exit){
-    intersection->id = id;
-    intersection->type = 'b';
-    int* p= intersection->layout.type_a.links;
-    p[0] = primary1_enter;
-    p[2] = secondary1_enter;
-    p[3] = primary1_exit;
-    p[4] = primary2_enter;
-    p[5] = secondary1_exit;
-    p[7] = primary2_exit;
-}
-*/
-/* DETTE ER KRYDS 6, 7 og 10 PÅ BILLEDET */
-/*
-void construct_type_c(intersection* intersection, int id, int primary1_enter, int primary1_exit, int primary2_enter,
-                      int primary2_exit, int secondary1_enter, int secondary1_exit, int secondary2_enter,
-                      int secondary2_exit, int plusbus1_enter, int plusbus1_exit, int plusbus2_enter, int plusbus2_exit) {
-    intersection->id = id;
-    intersection->type = 'c';
-    int* p = intersection->layout.type_c.links;
-    p[0] = primary1_enter;
-    p[1] = secondary2_exit;
-    p[2] = secondary1_enter;
-    p[3] = primary1_exit;
-    p[4] = primary2_enter;
-    p[5] = secondary1_exit;
-    p[6] = secondary2_enter;
-    p[7] = primary2_exit;
-    p[8] = plusbus2_exit;
-    p[9] = plusbus1_enter;
-    p[10] = plusbus1_exit;
-    p[11] = plusbus2_enter;
-}
-*/
 link* forward_type_a(intersection *intersection, int link_id) {
-    return *intersection->layout.type_a.links + (internal_index_a(intersection, link_id) + FORWARD) % 8;
+    return intersection->layout.type_a.links[(internal_index_a(intersection, link_id) + FORWARD) % 8];
 }
 
 link* left_turn_type_a(intersection *intersection, int link_id) {
-    return *intersection->layout.type_a.links + (internal_index_a(intersection, link_id) + LEFT) % 8;
+    link* res = intersection->layout.type_a.links[(internal_index_a(intersection, link_id) + LEFT) % 8];
+    return res;
 }
 
 link* right_turn_type_a(intersection *intersection, int link_id) {
-    return *intersection->layout.type_a.links + (internal_index_a(intersection, link_id) + RIGHT) % 8;
+    return intersection->layout.type_a.links[(internal_index_a(intersection, link_id) + RIGHT) % 8];
 }
 /*
 link* plusbus_type_c(intersection *intersection, int link_id) {
@@ -175,22 +138,24 @@ link* go_forward(intersection *intersection, int link_id) {
 
 turn_dir decide_turn_dir(link* link){
     int dir = rand()%100 + 1;
-    if (dir < link->left_chance)
+
+    if (dir <= link->left_chance)
         return left;
-    else if (dir < link->left_chance + link->right_chance)
+
+    else if (dir <= link->left_chance + link->right_chance)
         return right;
+
     else
         return forward;
 }
 
 link* turn(turn_dir dir, intersection *intersection, int link_id) {
-    link* result;
+    link* result = 0;
     switch (dir) {
         case left:    result = left_turn(intersection, link_id);   break;
         case right:   result = right_turn(intersection, link_id);  break;
         case forward: result = go_forward(intersection, link_id);  break;
     }
-    printf("Turning from link %d to link %d\n", link_id ,result->id);
     return result;
 }
 
@@ -224,7 +189,7 @@ void spawn_car(link *link, vehicle *vehicles) {
             }
             break;
         }
-        if (i > CARS)
+        if (i > AMOUNT_VEHICLES)
             break;
         i++;
     }
