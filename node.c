@@ -56,7 +56,7 @@ void construct_type_a(intersection* intersection, int id, link* primary1_enter, 
     p[1] = secondary2_exit;
     p[2] = secondary1_enter;    /*  TYPE A ER KRYDS 3 OG 4 PÅ BILLEDET  */
     p[3] = primary1_exit;
-    p[4]= primary2_enter;
+    p[4] = primary2_enter;
     p[5] = secondary1_exit;
     p[6] = secondary2_enter;
     p[7] = primary2_exit;

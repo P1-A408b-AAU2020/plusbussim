@@ -23,7 +23,7 @@ void print_vehicles(vehicle *vehicles, int len) {
 void print_status(struct vehicle* actors, long int seed, link* link, int timer) {
     int i, active = 0, disabled;
 
-    for (i = 1; i < ROAD_LENGTH + 1; i++) {
+    for (i = 0; i < AMOUNT_VEHICLES; i++) {
         if (actors[i].active == 1)
             active++;
     }
