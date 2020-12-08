@@ -16,7 +16,7 @@ int timer = 0;
 
 int main(void) {
     time_t seed = time(NULL);
-    srand(1607349441);
+    srand(seed);
 
     link links[AMOUNT_LINKS];
     intersection nodes[2];

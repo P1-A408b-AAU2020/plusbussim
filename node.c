@@ -23,7 +23,7 @@ void build_network(intersection* intersections, link* links){
 
         if (links[i].id == spawn_lanes[j]){
             links[i].spawn_lane = 1;
-            links[i].spawn_chance = 0; /*spawn_chances[k]; */
+            links[i].spawn_chance = 0; /* spawn_chances[k]; */
             k++;
             j++;
         }
@@ -138,10 +138,13 @@ link* go_forward(intersection *intersection, int link_id) {
 
 turn_dir decide_turn_dir(link* link){
     int dir = rand()%100 + 1;
-    if (dir < link->left_chance)
+
+    if (dir <= link->left_chance)
         return left;
-    else if (dir < link->left_chance + link->right_chance)
+
+    else if (dir <= link->left_chance + link->right_chance)
         return right;
+
     else
         return forward;
 }
