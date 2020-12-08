@@ -35,15 +35,15 @@ void build_network(intersection* intersections, link* links){
     links[3].left_chance = 100;
 
     construct_type_a(intersections, 0,links,links+3,links+4,links+7,links+2,links+5,links+6,links+1);
-    construct_type_a(intersections + 1, 1,links+3,links+11,links+12,links+4,links+15,links+13,links+14,links+9);
+    construct_type_a(intersections + 1, 1,links+3,links+10,links+11,links+4,links+9,links+12,links+13,links+8);
     links[0].intersection = intersections;
     links[2].intersection = intersections;
     links[4].intersection = intersections;
     links[6].intersection = intersections;
     links[3].intersection = intersections + 1;
-    links[15].intersection = intersections + 1;
-    links[12].intersection = intersections + 1;
-    links[14].intersection = intersections + 1;
+    links[9].intersection = intersections + 1;
+    links[11].intersection = intersections + 1;
+    links[13].intersection = intersections + 1;
 }
 /* Pointer to the intersection. */
 void construct_type_a(intersection* intersection, int id, link* primary1_enter, link* primary1_exit, link* primary2_enter,

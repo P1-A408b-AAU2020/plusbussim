@@ -29,7 +29,7 @@ int main(void) {
         printf("Timestep: %d\n", j+1);
         simulate_all_links(links, vehicles);
     }
-    print_status(vehicles, seed, links + 13);
+    print_status(vehicles, seed, links + 12);
 
     for (int j = 0; j < AMOUNT_LINKS; j++) {
         free(links[j].road);
@@ -90,7 +90,7 @@ void time_step(link *link, vehicle *vehicles) {
     link->time_step++;
     change_speed(link, vehicles);
 
-    if(link->id == 0 || link->id==3 || link->id == 13)
+    if(link->id == 0 || link->id==3 || link->id == 12)
         print_link(link, vehicles);
 }
 
