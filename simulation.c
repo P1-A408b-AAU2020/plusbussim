@@ -91,9 +91,12 @@ void move(link *link, vehicle *vehicles) {
         if (a){
             if(vehicles[a].has_moved == 0){
                 link->road[i] = 0;
+
                 if(link->len > i + v) /* if the vehicle does not exceed the end of the road */
                     link->road[i + v] = a;
-                else if (link->intersection != NULL) {/*There is an intersection at the end of the link. */
+
+                else if (link->intersection != NULL) {
+                    /*There is an intersection at the end of the link. */
                     vehicles[a].turn_direction = decide_turn_dir(link);
                     turn(vehicles[a].turn_direction, link->intersection, link->id)->road[i+v-link->len] = a; /* Place on new link */
                     vehicles[a].has_moved = 1;
@@ -118,8 +121,6 @@ void change_speed(link *link, vehicle *vehicles) {
 
             /* Is the car approaching an intersection? */
             if (i + gap == link->len-1 && link->intersection != NULL) {
-
-
 
 
                 new_link = turn(vehicles[a].turn_direction, link->intersection, link->id);

@@ -8,6 +8,8 @@
 #define AMOUNT_LINKS 16
 #define AMOUNT_VEHICLES 300
 #define TIME_STEPS 20
+
+/////////////////////////////////////////////////////////////////////////
 #define PLUSBUS_R 10
 #define RED_T 20
 #define GREEN_T 0
@@ -15,7 +17,9 @@
 #define PLUSBUS_RED_ADJUST 1
 
 typedef enum light_state{Red, Green}light_state;
-typedef enum intersection_type{A, B, C, D, E, F, G, H}intersection_type;
+typedef enum intersection_type{A, B, C, D, E, F, G, H}i_type;
+/////////////////////////////////////////////////////////////////////////
+
 typedef enum turn_dir{forward, right, left} turn_dir;
 
 typedef struct intersection intersection;
@@ -59,10 +63,17 @@ typedef struct t_intersection {
     link* links[6];
 } type_b;
 
+/////////////////////////////////////////////////////////////////////////
+typedef struct light_data{
+    int state;
+    int counter;
+}light_data;
+
 typedef struct plusbus_cross_intersection {
     link* links[12];
-    int state;
+    light_data data;
 } type_c;
+/////////////////////////////////////////////////////////////////////////
 
 typedef union intersection_types{
     type_a type_a;

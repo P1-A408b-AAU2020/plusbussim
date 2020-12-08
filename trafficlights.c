@@ -1,116 +1,75 @@
-/*TODO add "trafficlights.c trafficlights.h" to CMakeLists.txt when this library is done
- *TODO make it work on more than one road and fix hardcoded solution(may need recursive functions)
- *TODO cars doesnt stop when traffic lights are red
- *
- *DONE make case in check_plusbus for the types of intersections.
- *DONE finish the red checker
- *DONE move radius in node.h
- *DONE change all link link to intersection intersection in function parameters*/
-
+/*TODO add "trafficlights.c trafficlights.h" to CMakeLists.txt when this library is done*/
 #include "trafficlights.h"
 
-
-void light_control(){
-    /*5 change_lights functions should be called in this function*/
-}
-
-int type_check(intersection *intersection, intersection_type type){
-    /*switch (type){
-        case C: return intersection->layout.type_c; break;
-        case D: return intersection->layout.type_d; break;
-        case E: return intersection->layout.type_e; break;
-        case F: return intersection->layout.type_f; break;
-    }*/
-}
-
-void direction_stop(intersection *intersection, vehicle *actor, link *links, intersection_type type){
-    static int h, count;
-    h = 0;
-    count = 0;
-    switch (type){
-    case C:
-        if(state_of_intersection(type, intersection) == Red){
-            //id = link->road[links[0].len-1];
-
-            
-            /*THIS SHOULD WORK TO STOP CARS      LOOK HERE!!!!!!!!!!!!!!*/
-                int car_found = 0;
-                int i = 2;
-                if(links[0].road[ROAD_LENGTH -1] == 0){
-                    while (!car_found) {
-                        if(i <= 6) {
-                            h = links[0].road[ROAD_LENGTH - i];
-                            if (links[0].road[ROAD_LENGTH - i] != 0) {
-                                actor[h].v = gap;
-                                car_found = 1;
-                            }
-                        }
-                        i++;
-                    }
+void link_stop(link *link, vehicle *vehicle){
+    int car_found = 0;
+    int i = 2, l;
+    if(link->road[link->len - 1] == 0){
+        while (!car_found) {
+            if(i <= 6) {
+                l = link->road[link->len - i];
+                if (l != 0) {
+                    vehicle[l].v = lead_gap(link, i);
+                    car_found = 1;
                 }
-
-            /*actor[links[intersection->layout.type_c.links[4]].len -1].v = 0;
-            actor[links[intersection->layout.type_c.links[9]].len -1].v = 0;
-            actor[links[intersection->layout.type_c.links[11]].len -1].v = 0;*/
-
-            /*Cars on the prioritization road stops for red*/
-        }else{
-            //actor[links[intersection->layout.type_c.links[2]].len -1].v = 0;
-            //actor[links[intersection->layout.type_c.links[6]].len -1].v = 0;
-            /*Cars on the non prioritization road stops for red*/
+            }
+            i++;
         }
-    break;
-    case D: break;
-    case E: break;
-    case F: break;
     }
 }
 
-int check_plusbus(int r, intersection *intersection, vehicle *actor, link *links, int lane){
-    int i, run = 0, radius;
-
-    radius = links[lane].len - r;
-    for(i = 1; i <= AMOUNT_VEHICLES; i++){
-        if(actor[i].is_plusbus == 1 && links[lane].road[radius] == actor[i].id)
-            run = 1;
+void direction_stop(intersection *intersection, vehicle *vehicle, link *link, i_type type){
+    if(i_data(type, intersection) == Red){
+        link_stop(link, vehicle);
+    }else {
+        link_stop(link, vehicle);
     }
+}
+
+int check_plusbus(int r, vehicle *vehicle, link *link){
+    int i, run = 0, radius, l;
+    radius = link->len - r;
+    l = link->road[link->len - i];
+
+    if(vehicle[l].is_plusbus == 1 && link->road[radius] == vehicle[l].id)
+        run = 1;
     return run;
 }
 
-void change_lights(intersection *intersection, vehicle *actor, link *links, int lane, intersection_type type){
-    static int count = 0;
-    int state = intersection->layout.type_c.state;
+void change_lights(intersection *intersection, vehicle *actor, link *link, i_type type){
+    int state = i_data(type, intersection)->state,
+      counter = i_data(type, intersection)->counter;
+    int pb = check_plusbus(PLUSBUS_R, actor, link);
 
-    /*Checks if the plusbus is in radius for prioritization*/
-    int pb = check_plusbus(PLUSBUS_R, intersection, actor, links, lane);
-    if(pb == 1 && state == Green && count < PLUSBUS_R){
-        count += PLUSBUS_GREEN_ADJUST;
+    if(pb == 1 && state == Green && counter < PLUSBUS_R){
+        i_data(type, intersection)->counter += PLUSBUS_GREEN_ADJUST;
     }else if(pb == 1 && state == Red){
-        count = PLUSBUS_RED_ADJUST;
+        i_data(type, intersection)->counter = PLUSBUS_RED_ADJUST;
     }
 
-    state_counter(intersection, &count);
-    direction_stop(intersection, actor, links, type);
-    count++;
+    change_state(intersection, type);
+    *counter++;
 }
 
-void state_counter(intersection *intersection, int *count){
-    int *state = intersection->layout.type_c.state;
-    if(count == RED_T && state == Red){
-        *count = 0;
-        *state = Green;
-    }else if(count == GREEN_T && state == Green){
-        *count = 0;
-        *state = Red;
+void change_state(intersection *intersection, i_type type){
+    int state = i_data(type, intersection)->state,
+      counter = i_data(type, intersection)->counter;
+
+    if(counter == RED_T && state == Red){
+        i_data(type, intersection)->counter = 0;
+        i_data(type, intersection)->state = Green;
+    }else if(counter == GREEN_T && state == Green){
+        i_data(type, intersection)->counter = 0;
+        i_data(type, intersection)->state = Red;
     }
 }
 
-int state_of_intersection(intersection_type type, struct intersection *intersection){
+light_data* i_data(i_type type, struct intersection *intersection){
     switch (type) {
-        case C:     return intersection->layout.type_c.state;
-        /*case D:   return intersection->layout.type_d.state;
-        case E:     return intersection->layout.type_e.state;
-        case F:     return intersection->layout.type_f.state;*/
+        case C: return &intersection->layout.type_c.data;
+        case D: return &intersection->layout.type_d.data;
+        case E: return &intersection->layout.type_e.data;
+        case F: return &intersection->layout.type_f.data;
     }
     return 0;
 }
