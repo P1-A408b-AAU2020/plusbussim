@@ -23,7 +23,6 @@ int main(void) {
     vehicle vehicles[AMOUNT_VEHICLES];
     build_network(nodes, links);
     initialize_actors(vehicles, links, AMOUNT_LINKS);
-    print_vehicles(vehicles, AMOUNT_VEHICLES);
 
     for (int j = 0; j < TIME_STEPS; ++j) {
         printf("Timestep: %d\n", j+1);
@@ -56,8 +55,6 @@ void initialize_actors(vehicle* actors, link* links, int len){
         while (links->road[n] != 0);
 
         links->road[n] = i + 1;
-
-        printf("   %d at %d ", i + 1, n);
 
         /*if (actors[i].id < AMOUNT_VEHICLES/2) {
             actors[i].active = 1;
