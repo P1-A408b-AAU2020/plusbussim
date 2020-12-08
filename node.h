@@ -6,7 +6,7 @@
 #define MIN_SPEED_RANDOM_DECELERATE 2
 #define AMOUNT_LINKS 16
 #define AMOUNT_VEHICLES 10
-#define TIME_STEPS 50
+#define END_LINK 12
 
 typedef enum turn_dir{forward, right, left} turn_dir;
 

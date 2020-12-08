@@ -7,17 +7,18 @@
 
 /* Populates the roads with vehicles */
 void initialize_actors(vehicle* actors, link* links, int len);
-void simulate_all_links(link* links, vehicle* vehicles);
+void simulate_all_links(link* links, vehicle* vehicles, int* done);
 void time_step(link* links, vehicle* vehicles);
 void move(link *link, vehicle *vehicles);
 void change_speed(link* link, vehicle* vehicles);
+int is_finished(vehicle* vehicle, link* links, int* done);
 
 int timer = 0;
 
 int main(void) {
     time_t seed = time(NULL);
     srand(seed);
-
+    int done = 0, i = 0, j;
     link links[AMOUNT_LINKS];
     intersection nodes[2];
     vehicle vehicles[AMOUNT_VEHICLES];
@@ -25,13 +26,15 @@ int main(void) {
     initialize_actors(vehicles, links, AMOUNT_LINKS);
     print_vehicles(vehicles, AMOUNT_VEHICLES);
 
-    for (int j = 0; j < TIME_STEPS; ++j) {
-        printf("Timestep: %d\n", j+1);
-        simulate_all_links(links, vehicles);
+    while (!done) {
+      printf("Timestep: %d\n", i + 1);
+      simulate_all_links(links, vehicles, &done);
+      ++i;
     }
-    print_status(vehicles, seed, links + 12);
 
-    for (int j = 0; j < AMOUNT_LINKS; j++) {
+    print_status(vehicles, seed, links + 12, timer);
+
+    for (j = 0; j < AMOUNT_LINKS; j++) {
         free(links[j].road);
     }
 
@@ -68,15 +71,19 @@ void initialize_actors(vehicle* actors, link* links, int len){
             actors[i].active = 0;
         */
     }
+    actors[0].is_plusbus = 1;
     printf("\n");
 }
 
-void simulate_all_links(link *links, vehicle *vehicles) {
+void simulate_all_links(link *links, vehicle *vehicles, int* done) {
     timer++;
 
     for (int i = 0; i < AMOUNT_LINKS; ++i) {
         if ((links + i)->time_step < timer){
             time_step(links + i, vehicles);
+            /*Check if the code is done*/
+            if(links[i].id == END_LINK)
+              is_finished(vehicles, links + i, done);
         }
     }
     printf("\n");
@@ -156,10 +163,22 @@ void change_speed(link *link, vehicle *vehicles) {
                 vehicles[index].v = gap;
 
             /* The plusbus is longer than a regular car. */
-            if (vehicles[index].is_plusbus)
-                i -= PLUS_BUS_LENGTH - 1;
+            /*if (vehicles[index].is_plusbus)
+                i -= PLUS_BUS_LENGTH - 1;*/
 
             assert(vehicles[index].v <= gap + gap2);
         }
     }
+}
+
+int is_finished(vehicle* vehicle, link* links, int* done){
+    int i, index;
+    /*Checks if the Plusbus has reached its destination */
+    for(i = links->len -1; i >= 0; i--){
+        index = links->road[i] - 1;
+        if(vehicle[index].is_plusbus && index >= 0){
+          *done = 1;
+        }
+    }
+
 }

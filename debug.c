@@ -1,6 +1,6 @@
 #include "debug.h"
 #include "node.h"
-#define SECONDS_PER_TIMESTEP 1.66
+#define SECONDS_PER_TIMESTEP 1.667
 
 void print_link(link *link, vehicle *vehicles) {
     int i;
@@ -20,7 +20,7 @@ void print_vehicles(vehicle *vehicles, int len) {
     printf("\n");
 }
 
-void print_status(struct vehicle* actors, long int seed, link* link) {
+void print_status(struct vehicle* actors, long int seed, link* link, int timer) {
     int i, active = 0, disabled;
 
     for (i = 1; i < ROAD_LENGTH + 1; i++) {
@@ -28,8 +28,10 @@ void print_status(struct vehicle* actors, long int seed, link* link) {
             active++;
     }
     disabled = AMOUNT_VEHICLES-active;
-    printf("%s %s %s %s\n%-9s%-lf%-7d%-2c%-20d%ld\n", "Status: ", "Runtime: ", "Active / disabled vehicles: ", "Seed:",
-           check_status(link, AMOUNT_VEHICLES)? "OK" : "FAIL", TIME_STEPS*SECONDS_PER_TIMESTEP, active, '/', disabled, seed);
+    printf("%s %s %s %s\n%-9s%-10.2lf%-7d%-2c%-20d%ld\n",
+           "Status: ", "Runtime: ", "Active / disabled vehicles: ", "Seed:",
+           check_status(link, AMOUNT_VEHICLES)? "OK" : "FAIL", timer*SECONDS_PER_TIMESTEP,
+           active, '/', disabled, seed);
 }
 
 
