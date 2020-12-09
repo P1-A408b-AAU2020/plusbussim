@@ -33,6 +33,17 @@
 #define SGHSVEJ_2_LEN (int) (round(400/CELL_LEN))
 #define BERNSTFFGADE_LEN (int) (round(280/CELL_LEN))
 
+/////////////////////////////////////////////////////////////////////////
+#define PLUSBUS_R 10
+#define RED_T 20
+#define GREEN_T 0
+#define PLUSBUS_GREEN_ADJUST 1
+#define PLUSBUS_RED_ADJUST 1
+
+typedef enum light_state{Red, Green}light_state;
+typedef enum intersection_type{A, B, C, D, E, F, G, H}i_type;
+/////////////////////////////////////////////////////////////////////////
+
 /* A enum on the different id's for the links */
 typedef enum roadid {jylgade_1_east, jylgade_1_west_plusbus, jylgade_1_east_plusbus,
     jylgade_2_east_plusbus, jylgade_2_west_plusbus, jylgade_2_east,
@@ -107,10 +118,17 @@ typedef struct plusbus_t_intersection {
     link* links[10];
 } type_b;
 
+/////////////////////////////////////////////////////////////////////////
+typedef struct light_data{
+    int state;
+    int counter;
+}light_data;
+
 typedef struct plusbus_cross_intersection_trafficlight {
     link* links[12];
-    int state;
+    light_data data;
 } type_c;
+/////////////////////////////////////////////////////////////////////////
 
 typedef struct plusbus_t_intersection_trafficlight {
     link* links[8];
