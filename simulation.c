@@ -148,9 +148,8 @@ void move(link *link, vehicle *vehicles) {
                     }
                     else {
                         vehicles[index].turn_direction = decide_turn_dir(new_link, vehicles[index].is_plusbus);
+                        vehicles[index].has_moved = 1;
                     }
-
-                    vehicles[index].has_moved = 1;
                 }
             }
             else
