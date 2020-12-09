@@ -206,6 +206,7 @@ void change_speed(link *link, vehicle *vehicles) {
         }
     }
 
+    printf("Number = %d\n", plusbus);
     /* spread plusbus speed from main cell */
     /* no protection of baby cells getting recalculated thier speed?*/
     if (plusbus != -1) {
