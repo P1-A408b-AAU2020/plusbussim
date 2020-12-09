@@ -437,7 +437,7 @@ link* turn(turn_dir dir, intersection *intersection, int link_id) {
         case left:    result = left_turn(intersection, link_id);   break;
         case right:   result = right_turn(intersection, link_id);  break;
         case forward: result = go_forward(intersection, link_id);  break;
-        case plusbus: result = plusbus_dec(intersection, link_id); break;
+        case plusbus: result = plusbus_dec(intersection, link_id); printf("%d", result->id); break;
     }
     return result;
 }

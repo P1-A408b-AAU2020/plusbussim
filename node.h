@@ -1,12 +1,11 @@
 #pragma once
-#define ROAD_LENGTH 50
 #define V_MAX 5
 #define PLUS_BUS_LENGTH 5
 #define DECELERATE_CHANCE 0
 #define MIN_SPEED_RANDOM_DECELERATE 2
 #define AMOUNT_LINKS 64
 #define AMOUNT_VEHICLES 10
-#define TIME_STEPS 70
+#define END_LINK 46
 #define CELL_LEN 4.629
 #define JYLGADE_1_LEN (int)(round(200/CELL_LEN))
 #define JYLGADE_2_LEN (int) (round(120/CELL_LEN))
