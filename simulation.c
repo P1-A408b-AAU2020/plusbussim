@@ -49,7 +49,14 @@ void initialize_actors(vehicle* actors, link* links, int len){
     for (int i = 0; i < PLUSBUS_LENGTH; i++) {
         actors[i].id = i + 1;
         actors[i].v = 0;
-        actors[i].is_plusbus = 1;
+
+        if (i == PLUSBUS_LENGTH-1) {
+            actors[i].is_plusbus = 1;
+        }
+        else {
+            actors[i].is_plusbus = 0;
+        }
+
         actors[i].turn_direction = plusbus;
         actors[i].has_moved = 0;
         actors[i].active = 1;
@@ -136,8 +143,8 @@ void move(link *link, vehicle *vehicles) {
                         turn_dir dir = decide_turn_dir(new_link, vehicles[index].is_plusbus);
                         
                         for (int j = 0; j < PLUSBUS_LENGTH; j++) {
-                            vehicles[index - i].turn_direction = dir;
-                            vehicles[index - i].has_moved = 1;
+                            vehicles[index - j].turn_direction = dir;
+                            vehicles[index - j].has_moved = 1;
                         }
                     }
                     else {
