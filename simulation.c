@@ -5,6 +5,8 @@
 #include <time.h>
 #include <assert.h>
 
+#define PLUSBUS_LENGTH 5
+
 /* Populates the roads with vehicles */
 void initialize_actors(vehicle* actors, link* links, int len);
 void simulate_all_links(link* links, vehicle* vehicles, int* done);
@@ -110,20 +112,33 @@ void time_step(link *link, vehicle *vehicles) {
 void move(link *link, vehicle *vehicles) {
     int id, v, index;
     struct link* new_link;
+    
     for (int i = link->len-1; i >= 0; --i) {
         id = link->road[i];
         index = id - 1;
         v = vehicles[index].v;
+
         if (id && v){
             if(vehicles[index].has_moved == 0){
                 link->road[i] = 0;
+
                 if(link->len > i + v) { /* if the vehicle does not exceed the end of the road */
                     link->road[i + v] = id;
                 }
                 else if (link->intersection != NULL) {/*There is an intersection at the end of the link. */
                     new_link = turn(vehicles[index].turn_direction, link->intersection, link->id);
                     new_link->road[i+v-link->len] = id; /* Place on new link */
-                    vehicles[index].turn_direction = decide_turn_dir(new_link, vehicles[index].is_plusbus);
+
+                    if (vehicles[index].is_plusbus) {
+                        int offset = index;
+
+                        for (; index < offset + PLUSBUS_LENGTH; index++)
+                            vehicles[index].turn_direction = decide_turn_dir(new_link, vehicles[index].is_plusbus);
+                    }
+                    else {
+                        vehicles[index].turn_direction = decide_turn_dir(new_link, vehicles[index].is_plusbus);
+                    }
+
                     vehicles[index].has_moved = 1;
                 }
             }
