@@ -11,14 +11,14 @@ void simulate_all_links(link* links, vehicle* vehicles, int* done);
 void time_step(link* links, vehicle* vehicles);
 void move(link *link, vehicle *vehicles);
 void change_speed(link* link, vehicle* vehicles);
-int is_finished(vehicle* vehicle, link* links, int* done);
+void is_finished(vehicle* vehicle, link* links, int* done);
 
 int timer = 0;
 
 int main(void) {
     time_t seed = time(NULL);
     srand(seed);
-    int done = 0, i = 0, j;
+    int done = 0, i = 0;
     link links[AMOUNT_LINKS];
     intersection nodes[9];
     vehicle vehicles[AMOUNT_VEHICLES];
@@ -60,7 +60,8 @@ void initialize_actors(vehicle* actors, link* links, int len){
         actors[i].has_moved = 0;
         actors[i].active = 1;
 
-        do n = rand() % links->len;
+        do 
+            n = rand() % links->len;
         while (links->road[n] != 0);
 
         links->road[n] = i + 1;
@@ -99,6 +100,7 @@ void time_step(link *link, vehicle *vehicles) {
     link->time_step++;
     change_speed(link, vehicles);
 
+    /* STOP */
     if(link->id == 0 || link->id == 5 || link->id == 12 || link->id == 2 || link->id == 3 || link->id == 10 || link->id == 18|| link->id == 26 || link->id == 20 || link->id == 28 || link->id == 32 || link->id == 38 || link->id == 46)
         print_link(link, vehicles);
 
@@ -171,7 +173,7 @@ void change_speed(link *link, vehicle *vehicles) {
     }
 }
 
-int is_finished(vehicle* vehicle, link* links, int* done){
+void is_finished(vehicle* vehicle, link* links, int* done){
     int i, index;
     /*Checks if the Plusbus has reached its destination */
     for(i = links->len -1; i >= 0; i--){
@@ -180,5 +182,4 @@ int is_finished(vehicle* vehicle, link* links, int* done){
           *done = 1;
         }
     }
-
 }
