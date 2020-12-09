@@ -319,9 +319,6 @@ int internal_index(intersection* intersection, int link_id){
                     break;
             }
             break;
-
-
-
     }
 
     return i;
@@ -344,9 +341,10 @@ link* right_turn(intersection *intersection, int link_id) {
 
         case 'e' : result = intersection->layout.type_e.links[(internal_index(intersection, link_id) + RIGHT) % 8];
             break;
+        default:
+            exit(EXIT_FAILURE);
+            break;
     }
-
-    /* returns garbage memory if a invalid type appears */
 
     return result;
 }
@@ -368,8 +366,10 @@ link* left_turn(intersection *intersection, int link_id) {
 
         case 'e' : result = intersection->layout.type_e.links[(internal_index(intersection, link_id) + LEFT) % 8];
             break;
+        default:
+            exit(EXIT_FAILURE);
+            break;
     }
-    /* returns garbage memory if a invalid type appears */
 
     return result;
 }
@@ -395,8 +395,10 @@ link* go_forward(intersection *intersection, int link_id) {
             else
                 result = intersection->layout.type_e.links[internal_index(intersection, link_id) + 1];
             break;
+        default:
+            exit(EXIT_FAILURE);
+            break;
     }
-    /* returns garbage memory if a invalid type appears */
 
     return result;
 }
@@ -418,8 +420,10 @@ link* plusbus_dec(intersection *intersection, int link_id) {
 
         case 'e' : result = intersection->layout.type_e.links[(internal_index(intersection, link_id) + 1)];
             break;
+        default:
+            exit(EXIT_FAILURE);
+            break;
     }
-    /* returns garbage memory if a invalid type appears */
 
     return result;
 }
