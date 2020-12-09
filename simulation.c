@@ -46,7 +46,7 @@ void initialize_actors(vehicle* actors, link* links, int len){
     actors->id = 1;
     actors->v  = 0;
     actors->is_plusbus = 1;
-    actors->turn_direction = forward;
+    actors->turn_direction = plusbus;
     actors->has_moved = 0;
     actors->active = 1;
     links[2].road[0] = 1;
@@ -75,7 +75,7 @@ void initialize_actors(vehicle* actors, link* links, int len){
             actors[i].active = 0;
         */
     }
-    actors[0].is_plusbus = 0;
+    actors[0].is_plusbus = 1;
     printf("\n");
 }
 
@@ -94,7 +94,6 @@ void simulate_all_links(link *links, vehicle *vehicles, int* done) {
 }
 
 void time_step(link *link, vehicle *vehicles) {
-    move(link, vehicles);
     /*if (link->spawn_lane)
         spawn_car(link, vehicles);*/
 
@@ -104,6 +103,8 @@ void time_step(link *link, vehicle *vehicles) {
     /* STOP */
     if(link->id == 0 || link->id == 5 || link->id == 12 || link->id == 2 || link->id == 3 || link->id == 10 || link->id == 18|| link->id == 26 || link->id == 20 || link->id == 28 || link->id == 32 || link->id == 38 || link->id == 46)
         print_link(link, vehicles);
+
+    move(link, vehicles);
 }
 
 void move(link *link, vehicle *vehicles) {

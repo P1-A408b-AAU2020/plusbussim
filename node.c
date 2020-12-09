@@ -243,39 +243,6 @@ void construct_type_e(intersection* intersection, int id, link* primary1_enter, 
     p[9] = plusbus1_exit;
 }
 
-
-
-/*
-link* forward_type_a(intersection *intersection, int link_id) {
-    return intersection->layout.type_a.links[(internal_index_a(intersection, link_id) + FORWARD) % 8];
-}
-
-link* left_turn_type_a(intersection *intersection, int link_id) {
-    link* res = intersection->layout.type_a.links[(internal_index_a(intersection, link_id) + LEFT) % 8];
-    return res;
-}
-
-link* right_turn_type_a(intersection *intersection, int link_id) {
-    return intersection->layout.type_a.links[(internal_index_a(intersection, link_id) + RIGHT) % 8];
-}
-
-link* plusbus_type_c(intersection *intersection, int link_id) {
-    return *intersection->layout.type_c.links + (internal_index_c(intersection, link_id) == 9) ? 10 : 8;
-}
-
-link* forward_type_c(intersection *intersection, int link_id) {
-    return &intersection->layout.type_c.links[(internal_index_c(intersection, link_id) + FORWARD) % 7];
-}
-
-link* left_turn_type_c(intersection *intersection, int link_id) {
-    return &intersection->layout.type_c.links[(internal_index_c(intersection, link_id) + LEFT) % 8];
-}
-
-link* right_turn_type_c(intersection *intersection, int link_id) {
-    return &intersection->layout.type_c.links[(internal_index_c(intersection, link_id) + RIGHT) % 7];
-}
-*/
-
 int internal_index(intersection* intersection, int link_id){
     int i = -1;
     link* link;
@@ -406,7 +373,7 @@ link* go_forward(intersection *intersection, int link_id) {
 link* plusbus_dec(intersection *intersection, int link_id) {
     link* result;
     switch (intersection->type) {
-        case 'a' : result = intersection->layout.type_a.links[((internal_index(intersection, link_id) == 6) ? 1 : 5)];
+        case 'a' : result = intersection->layout.type_a.links[((internal_index(intersection, link_id) == 0) ? 3 : 7)];
             break;
 
         case 'b' : result = intersection->layout.type_b.links[(internal_index(intersection, link_id) + 1)];
@@ -447,10 +414,10 @@ turn_dir decide_turn_dir(link* link, int is_plusbus){
 link* turn(turn_dir dir, intersection *intersection, int link_id) {
     link* result = 0;
     switch (dir) {
-        case left:    result = left_turn(intersection, link_id);   break;
-        case right:   result = right_turn(intersection, link_id);  break;
-        case forward: result = go_forward(intersection, link_id);  break;
-        case plusbus: result = plusbus_dec(intersection, link_id); printf("%d", result->id); break;
+        case left:    result = left_turn(intersection,   link_id);   break;
+        case right:   result = right_turn(intersection,  link_id);  break;
+        case forward: result = go_forward(intersection,  link_id);  break;
+        case plusbus: result = plusbus_dec(intersection, link_id); break;
     }
     return result;
 }
