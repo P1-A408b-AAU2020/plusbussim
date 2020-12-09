@@ -63,7 +63,7 @@ void build_network(intersection* intersections, link* links){
     links[bornholmsgade_2_south].left_chance = 100;
 
 
-    printf("længde af vej: %d", links[0].len);
+    printf("laengde af vej: %d", links[0].len);
 
 
 

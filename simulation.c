@@ -45,15 +45,18 @@ void initialize_actors(vehicle* actors, link* links, int len){
     int n;
     /* generate actors */
     /* Place actors */
-    actors->id = 1;
-    actors->v  = 0;
-    actors->is_plusbus = 1;
-    actors->turn_direction = plusbus;
-    actors->has_moved = 0;
-    actors->active = 1;
-    links[2].road[0] = 1;
 
-    for (int i = 1; i < AMOUNT_VEHICLES; i++) {
+    for (int i = 0; i < PLUSBUS_LENGTH; i++) {
+        actors[i].id = i + 1;
+        actors[i].v = 0;
+        actors[i].is_plusbus = 1;
+        actors[i].turn_direction = plusbus;
+        actors[i].has_moved = 0;
+        actors[i].active = 1;
+        links[2].road[i] = actors[i].id;
+    }
+   
+    for (int i = PLUSBUS_LENGTH; i < AMOUNT_VEHICLES; i++) {
         actors[i].id = i + 1;
         actors[i].v = 0;
 
@@ -130,10 +133,12 @@ void move(link *link, vehicle *vehicles) {
                     new_link->road[i+v-link->len] = id; /* Place on new link */
 
                     if (vehicles[index].is_plusbus) {
-                        int offset = index;
-
-                        for (; index < offset + PLUSBUS_LENGTH; index++)
-                            vehicles[index].turn_direction = decide_turn_dir(new_link, vehicles[index].is_plusbus);
+                        turn_dir dir = decide_turn_dir(new_link, vehicles[index].is_plusbus);
+                        
+                        for (int j = 0; j < PLUSBUS_LENGTH; j++) {
+                            vehicles[index - i].turn_direction = dir;
+                            vehicles[index - i].has_moved = 1;
+                        }
                     }
                     else {
                         vehicles[index].turn_direction = decide_turn_dir(new_link, vehicles[index].is_plusbus);
@@ -149,13 +154,14 @@ void move(link *link, vehicle *vehicles) {
 }
 
 void change_speed(link *link, vehicle *vehicles) {
-    int i, id, v, gap = 0, gap2, index;
+    int i, id, v, gap = 0, gap2, index, plusbus = -1;
     struct link* new_link;
     for(i = link->len - 1; i >= 0; i--) {
         gap2 = 0;
         id = link->road[i];
         index = id - 1;
-        if (id){
+
+        if (id) {
             v = vehicles[index].v;
             gap = lead_gap(link, i);
 
@@ -182,10 +188,25 @@ void change_speed(link *link, vehicle *vehicles) {
 
             else if (gap < v)
                 vehicles[index].v = gap;
+            
+            /* spread plusbus speed from main cell */
+            /* no protection of baby cells getting recalculated thier speed?*/
+            if (vehicles[index].is_plusbus) {
+                plusbus = index;
+            }
 
             assert(vehicles[index].v <= gap + gap2);
         }
     }
+
+    /* spread plusbus speed from main cell */
+    /* no protection of baby cells getting recalculated thier speed?*/
+    if (plusbus != -1) {
+        for (int j = 1; j < PLUSBUS_LENGTH; j++) {
+            vehicles[plusbus - j].v = vehicles[plusbus].v;
+        }
+    }
+
 }
 
 void is_finished(vehicle* vehicle, link* links, int* done){
