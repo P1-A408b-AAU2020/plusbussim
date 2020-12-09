@@ -410,10 +410,10 @@ turn_dir decide_turn_dir(link* link, int is_plusbus){
 link* turn(turn_dir dir, intersection *intersection, int link_id) {
     link* result = 0;
     switch (dir) {
-        case left:    result = left_turn(intersection, link_id);   break;
-        case right:   result = right_turn(intersection, link_id);  break;
-        case forward: result = go_forward(intersection, link_id);  break;
-        case plusbus: result = plusbus_dec(intersection, link_id); printf("Hej: %d", result->id); break;
+        case left:    result = left_turn(intersection,   link_id);   break;
+        case right:   result = right_turn(intersection,  link_id);  break;
+        case forward: result = go_forward(intersection,  link_id);  break;
+        case plusbus: result = plusbus_dec(intersection, link_id); break;
     }
     return result;
 }
