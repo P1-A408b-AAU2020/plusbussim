@@ -20,7 +20,7 @@ int main(void) {
     srand(seed);
     int done = 0, i = 0, j;
     link links[AMOUNT_LINKS];
-    intersection nodes[2];
+    intersection nodes[9];
     vehicle vehicles[AMOUNT_VEHICLES];
     build_network(nodes, links);
     initialize_actors(vehicles, links, AMOUNT_LINKS);
@@ -30,10 +30,9 @@ int main(void) {
       simulate_all_links(links, vehicles, &done);
       ++i;
     }
+    print_status(vehicles, seed, links + 46);
 
-    print_status(vehicles, seed, links + 12, timer);
-
-    for (j = 0; j < AMOUNT_LINKS; j++) {
+    for (int j = 0; j < AMOUNT_LINKS; j++) {
         free(links[j].road);
     }
 
@@ -88,13 +87,13 @@ void simulate_all_links(link *links, vehicle *vehicles, int* done) {
 
 void time_step(link *link, vehicle *vehicles) {
     move(link, vehicles);
-    if (link->spawn_lane)
-        spawn_car(link, vehicles);
+    /*if (link->spawn_lane)
+        spawn_car(link, vehicles);*/
 
     link->time_step++;
     change_speed(link, vehicles);
 
-    if(link->id == 0 || link->id==3 || link->id == 12)
+    if(link->id == 0 || link->id == 5 || link->id == 12 || link->id == 20 || link->id == 28 || link->id == 32 || link->id == 38 || link->id == 46)
         print_link(link, vehicles);
 }
 
@@ -114,7 +113,7 @@ void move(link *link, vehicle *vehicles) {
                 else if (link->intersection != NULL) {/*There is an intersection at the end of the link. */
                     new_link = turn(vehicles[index].turn_direction, link->intersection, link->id);
                     new_link->road[i+v-link->len] = id; /* Place on new link */
-                    vehicles[index].turn_direction = decide_turn_dir(new_link);
+                    vehicles[index].turn_direction = decide_turn_dir(new_link, vehicles[index].is_plusbus);
                     vehicles[index].has_moved = 1;
                 }
             }
@@ -160,8 +159,8 @@ void change_speed(link *link, vehicle *vehicles) {
                 vehicles[index].v = gap;
 
             /* The plusbus is longer than a regular car. */
-            /*if (vehicles[index].is_plusbus)
-                i -= PLUS_BUS_LENGTH - 1;*/
+            if (vehicles[index].is_plusbus)
+                i -= PLUS_BUS_LENGTH - 1;
 
             assert(vehicles[index].v <= gap + gap2);
         }
