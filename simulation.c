@@ -87,7 +87,6 @@ void initialize_actors(vehicle* actors, link* links, int len){
             actors[i].active = 0;
         */
     }
-    actors[0].is_plusbus = 1;
     printf("\n");
 }
 
@@ -204,9 +203,9 @@ void change_speed(link *link, vehicle *vehicles) {
 
             assert(vehicles[index].v <= gap + gap2);
         }
+
     }
 
-    printf("Number = %d\n", plusbus);
     /* spread plusbus speed from main cell */
     /* no protection of baby cells getting recalculated thier speed?*/
     if (plusbus != -1) {
