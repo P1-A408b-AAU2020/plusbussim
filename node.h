@@ -3,22 +3,6 @@
 #define PLUS_BUS_LENGTH 5
 #define DECELERATE_CHANCE 0
 #define MIN_SPEED_RANDOM_DECELERATE 2
-#define AMOUNT_LINKS 16
-#define AMOUNT_VEHICLES 300
-#define TIME_STEPS 20
-
-/////////////////////////////////////////////////////////////////////////
-#define PLUSBUS_R 10
-#define RED_T 20
-#define GREEN_T 0
-#define PLUSBUS_GREEN_ADJUST 1
-#define PLUSBUS_RED_ADJUST 1
-
-typedef enum light_state{Red, Green}light_state;
-typedef enum intersection_type{A, B, C, D, E, F, G, H}i_type;
-/////////////////////////////////////////////////////////////////////////
-
-typedef enum turn_dir{forward, right, left} turn_dir;
 #define AMOUNT_LINKS 64
 #define AMOUNT_VEHICLES 40
 #define END_LINK 59
@@ -51,32 +35,32 @@ typedef enum turn_dir{forward, right, left} turn_dir;
 
 /* A enum on the different id's for the links */
 typedef enum roadid {jylgade_1_east, jylgade_1_west_plusbus, jylgade_1_east_plusbus,
-                     jylgade_2_east_plusbus, jylgade_2_west_plusbus, jylgade_2_east,
-                     jylgade_2_west, aagade_north, aagade_south, jylgade_1_west,
+    jylgade_2_east_plusbus, jylgade_2_west_plusbus, jylgade_2_east,
+    jylgade_2_west, aagade_north, aagade_south, jylgade_1_west,
 
-                     jylgade_3_east_plusbus, jylgade_3_west_plusbus, jylgade_3_east,
-                     jylgade_3_west, niels_ebbesens_gade_south, niels_ebbesens_gade_north,
+    jylgade_3_east_plusbus, jylgade_3_west_plusbus, jylgade_3_east,
+    jylgade_3_west, niels_ebbesens_gade_south, niels_ebbesens_gade_north,
 
-                     dag_ham_gade_1_south, dag_ham_gade_1_north,
-                     jylgade_4_east_plusbus, jylgade_4_west_plusbus, jylgade_4_east,
-                     jylgade_4_west, dag_ham_gade_2_north, dag_ham_gade_2_south,
+    dag_ham_gade_1_south, dag_ham_gade_1_north,
+    jylgade_4_east_plusbus, jylgade_4_west_plusbus, jylgade_4_east,
+    jylgade_4_west, dag_ham_gade_2_north, dag_ham_gade_2_south,
 
-                     sdrbro_south, sdrbro_north, fyensgade_east_plusbus, fyensgade_west_plusbus,
-                     fyensgade_east, fyensgade_west, kjellerupsgade_north, kjellerupsgade_south,
+    sdrbro_south, sdrbro_north, fyensgade_east_plusbus, fyensgade_west_plusbus,
+    fyensgade_east, fyensgade_west, kjellerupsgade_north, kjellerupsgade_south,
 
-                     bornholmsgade_1_south, bornholmsgade_1_north, karolinelundsvej_north, karolinelundsvej_south,
+    bornholmsgade_1_south, bornholmsgade_1_north, karolinelundsvej_north, karolinelundsvej_south,
 
-                     faereogade_1_west, faerogade_1_east, bornholmsgade_2_south, bornholmsgade_2_north,
-                     faereogade_2_east, faereogade_2_west,
+    faereogade_1_west, faerogade_1_east, bornholmsgade_2_south, bornholmsgade_2_north,
+    faereogade_2_east, faereogade_2_west,
 
-                     sjaelgade_1_west, sjaelgade_1_east, bornholmsgade_3_south, bornholmsgade_3_north,
-                     sjaelgade_2_east, sjaelgade_2_west,
+    sjaelgade_1_west, sjaelgade_1_east, bornholmsgade_3_south, bornholmsgade_3_north,
+    sjaelgade_2_east, sjaelgade_2_west,
 
-                     oester_alle_1_west, oester_alle_1_east, sghsvej_1_south, sghsvej_1_south_plusbus,
-                     sghsvej_1_north_plusbus, sghsvej_1_north, oester_alle_2_east, oester_alle_2_west,
+    oester_alle_1_west, oester_alle_1_east, sghsvej_1_south, sghsvej_1_south_plusbus,
+    sghsvej_1_north_plusbus, sghsvej_1_north, oester_alle_2_east, oester_alle_2_west,
 
-                     kridtsleofen_west, kridtsleofen_east, sghsvej_2_south, sghsvej_2_south_plusbus,
-                     sghsvej_2_north_plusbus, sghsvej_2_north, bernstorffsgade_east, bernstorffsgade_west
+    kridtsleofen_west, kridtsleofen_east, sghsvej_2_south, sghsvej_2_south_plusbus,
+    sghsvej_2_north_plusbus, sghsvej_2_north, bernstorffsgade_east, bernstorffsgade_west
 } roadid;
 
 
@@ -123,17 +107,10 @@ typedef struct plusbus_t_intersection {
     link* links[10];
 } type_b;
 
-/////////////////////////////////////////////////////////////////////////
-typedef struct light_data{
-    int state;
-    int counter;
-}light_data;
-
 typedef struct plusbus_cross_intersection_trafficlight {
     link* links[12];
-    light_data data;
+    int state;
 } type_c;
-/////////////////////////////////////////////////////////////////////////
 
 typedef struct plusbus_t_intersection_trafficlight {
     link* links[8];

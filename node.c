@@ -6,7 +6,7 @@
 #define RIGHT 1
 #define LEFT 5
 #define FORWARD 3
-#define AMT_SPAWN_LANES 4
+#define AMT_SPAWN_LANES 6
 
 /* The contents of this function are predefined. Make changes to how network here. */
 void build_network(intersection* intersections, link* links){
@@ -35,7 +35,7 @@ void build_network(intersection* intersections, link* links){
 
                                      KRIDTSJLFEN_LEN, KRIDTSJLFEN_LEN, SGHSVEJ_2_LEN, SGHSVEJ_2_LEN,
                                      SGHSVEJ_2_LEN, SGHSVEJ_2_LEN, BERNSTFFGADE_LEN, BERNSTFFGADE_LEN
-                                     };
+    };
     /*int spawn_lanes[AMT_SPAWN_LANES] = {0, 2, 6, 12, 14, 15};
     double spawn_chances[AMT_SPAWN_LANES] = {30.5, 21.2, 15.7, 19.2, 8.5, 15.2};*/
     int i, k = 0, j = 0;
@@ -190,12 +190,6 @@ void construct_type_b(intersection* intersection, int id, link* primary1_enter, 
     p[9] = plusbus1_exit;
 }
 
-/* DETTE ER KRYDS 6, 7 og 10 PÅ BILLEDET */
-void construct_type_c(intersection* intersection, int id, int primary1_enter, int primary1_exit, int primary2_enter,
-                      int primary2_exit, int secondary1_enter, int secondary1_exit, int secondary2_enter,
-                      int secondary2_exit, int plusbus1_enter, int plusbus1_exit, int plusbus2_enter, int plusbus2_exit) {
-    intersection->layout.type_c.state = 0;
-
 void construct_type_c(intersection* intersection, int id, link* primary1_enter, link* primary1_exit, link* primary2_enter,
                       link* primary2_exit, link* secondary1_enter, link* secondary1_exit, link* secondary2_enter,
                       link* secondary2_exit, link* plusbus1_enter, link* plusbus1_exit, link* plusbus2_enter, link* plusbus2_exit){
@@ -231,15 +225,6 @@ void construct_type_d(intersection* intersection, int id, link* primary1_enter, 
     p[7] = plusbus_enter;
 }
 
-<<<<<<< HEAD
-link* right_turn_type_a(intersection *intersection, int link_id) {
-    return *intersection->layout.type_a.links + (internal_index_a(intersection, link_id) + RIGHT) % 7;
-}
-
-/*
-link* plusbus_type_c(intersection *intersection, int link_id) {
-    return *intersection->layout.type_c.links + (internal_index_c(intersection, link_id) == 9) ? 10 : 8;
-=======
 void construct_type_e(intersection* intersection, int id, link* primary1_enter, link* primary1_exit, link* primary2_enter,
                       link* primary2_exit, link* secondary_enter, link* secondary_exit, link* plusbus1_enter, link* plusbus1_exit,
                       link* plusbus2_enter, link* plusbus2_exit){
@@ -256,7 +241,6 @@ void construct_type_e(intersection* intersection, int id, link* primary1_enter, 
     p[7] = plusbus2_exit;
     p[8] = plusbus1_enter;
     p[9] = plusbus1_exit;
->>>>>>> main
 }
 
 int internal_index(intersection* intersection, int link_id){

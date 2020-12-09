@@ -1,7 +1,5 @@
 #include "node.h"
 #include "debug.h"
-#include "trafficlights.h"
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
@@ -22,20 +20,15 @@ int main(void) {
     srand(seed);
     int done = 0, i = 0;
     link links[AMOUNT_LINKS];
-<<<<<<< HEAD
-    intersection nodes[1];
-    vehicle vehicles[CARS];
-=======
     intersection nodes[9];
     vehicle vehicles[AMOUNT_VEHICLES];
->>>>>>> main
     build_network(nodes, links);
     initialize_actors(vehicles, links, AMOUNT_LINKS);
 
     while (!done) {
-      printf("Timestep: %d\n", i + 1);
-      simulate_all_links(links, vehicles, &done);
-      ++i;
+        printf("Timestep: %d\n", i + 1);
+        simulate_all_links(links, vehicles, &done);
+        ++i;
     }
     print_status(vehicles, seed, links + 46, timer);
 
@@ -67,7 +60,7 @@ void initialize_actors(vehicle* actors, link* links, int len){
         actors[i].has_moved = 0;
         actors[i].active = 1;
 
-        do 
+        do
             n = rand() % links->len;
         while (links->road[n] != 0);
 
@@ -94,7 +87,7 @@ void simulate_all_links(link *links, vehicle *vehicles, int* done) {
             time_step(links + i, vehicles);
             /*Check if the code is done*/
             if(links[i].id == END_LINK)
-              is_finished(vehicles, links + i, done);
+                is_finished(vehicles, links + i, done);
         }
     }
     printf("\n");
@@ -124,17 +117,6 @@ void move(link *link, vehicle *vehicles) {
         if (id && v){
             if(vehicles[index].has_moved == 0){
                 link->road[i] = 0;
-<<<<<<< HEAD
-
-                if(link->len > i + v) /* if the vehicle does not exceed the end of the road */
-                    link->road[i + v] = a;
-
-                else if (link->intersection != NULL) {
-                    /*There is an intersection at the end of the link. */
-                    vehicles[a].turn_direction = decide_turn_dir(link);
-                    turn(vehicles[a].turn_direction, link->intersection, link->id)->road[i+v-link->len] = a; /* Place on new link */
-                    vehicles[a].has_moved = 1;
-=======
                 if(link->len > i + v) { /* if the vehicle does not exceed the end of the road */
                     link->road[i + v] = id;
                 }
@@ -143,7 +125,6 @@ void move(link *link, vehicle *vehicles) {
                     new_link->road[i+v-link->len] = id; /* Place on new link */
                     vehicles[index].turn_direction = decide_turn_dir(new_link, vehicles[index].is_plusbus);
                     vehicles[index].has_moved = 1;
->>>>>>> main
                 }
             }
             else
@@ -165,13 +146,7 @@ void change_speed(link *link, vehicle *vehicles) {
 
             /* Is the car approaching an intersection? */
             if (i + gap == link->len-1 && link->intersection != NULL) {
-<<<<<<< HEAD
-
-
-                new_link = turn(vehicles[a].turn_direction, link->intersection, link->id);
-=======
                 new_link = turn(vehicles[index].turn_direction, link->intersection, link->id);
->>>>>>> main
 
                 if (new_link->time_step < timer)
                     time_step(new_link, vehicles);
@@ -186,7 +161,7 @@ void change_speed(link *link, vehicle *vehicles) {
                     vehicles[index].v++;
             }
 
-            /* There is no intersection */
+                /* There is no intersection */
             else if (v < V_MAX && gap > v)
                 vehicles[index].v++;
 
@@ -204,7 +179,7 @@ void is_finished(vehicle* vehicle, link* links, int* done){
     for(i = links->len -1; i >= 0; i--){
         index = links->road[i] - 1;
         if(vehicle[index].is_plusbus && index >= 0){
-          *done = 1;
+            *done = 1;
         }
     }
 }
