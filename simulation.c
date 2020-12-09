@@ -11,14 +11,14 @@ void simulate_all_links(link* links, vehicle* vehicles, int* done);
 void time_step(link* links, vehicle* vehicles);
 void move(link *link, vehicle *vehicles);
 void change_speed(link* link, vehicle* vehicles);
-int is_finished(vehicle* vehicle, link* links, int* done);
+void is_finished(vehicle* vehicle, link* links, int* done);
 
 int timer = 0;
 
 int main(void) {
     time_t seed = time(NULL);
     srand(seed);
-    int done = 0, i = 0, j;
+    int done = 0, i = 0;
     link links[AMOUNT_LINKS];
     intersection nodes[9];
     vehicle vehicles[AMOUNT_VEHICLES];
@@ -170,7 +170,7 @@ void change_speed(link *link, vehicle *vehicles) {
     }
 }
 
-int is_finished(vehicle* vehicle, link* links, int* done){
+void is_finished(vehicle* vehicle, link* links, int* done){
     int i, index;
     /*Checks if the Plusbus has reached its destination */
     for(i = links->len -1; i >= 0; i--){
@@ -179,5 +179,4 @@ int is_finished(vehicle* vehicle, link* links, int* done){
           *done = 1;
         }
     }
-
 }
