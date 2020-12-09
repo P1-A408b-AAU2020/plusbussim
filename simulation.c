@@ -60,7 +60,8 @@ void initialize_actors(vehicle* actors, link* links, int len){
         actors[i].has_moved = 0;
         actors[i].active = 1;
 
-        do n = rand() % links->len;
+        do 
+            n = rand() % links->len;
         while (links->road[n] != 0);
 
         links->road[n] = i + 1;
@@ -100,6 +101,7 @@ void time_step(link *link, vehicle *vehicles) {
     link->time_step++;
     change_speed(link, vehicles);
 
+    /* STOP */
     if(link->id == 0 || link->id == 5 || link->id == 12 || link->id == 2 || link->id == 3 || link->id == 10 || link->id == 18|| link->id == 26 || link->id == 20 || link->id == 28 || link->id == 32 || link->id == 38 || link->id == 46)
         print_link(link, vehicles);
 }
