@@ -200,7 +200,9 @@ void change_speed(link *link, vehicle *vehicles) {
                 plusbus = index;
             }
 
-            assert(vehicles[index].v <= gap + gap2);
+            if (!vehicles[index].is_plusbus) {
+                assert(vehicles[index].v <= gap + gap2);
+            }
         }
 
     }
