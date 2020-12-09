@@ -1,5 +1,6 @@
 #include "node.h"
 #include "debug.h"
+#include "trafficlights.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
@@ -146,6 +147,9 @@ void change_speed(link *link, vehicle *vehicles) {
 
             /* Is the car approaching an intersection? */
             if (i + gap == link->len-1 && link->intersection != NULL) {
+
+                traffic_light(*link->intersection, link, vehicles);
+
                 new_link = turn(vehicles[index].turn_direction, link->intersection, link->id);
 
                 if (new_link->time_step < timer)

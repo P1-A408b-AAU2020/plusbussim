@@ -35,10 +35,10 @@
 
 /////////////////////////////////////////////////////////////////////////
 #define PLUSBUS_R 10
-#define RED_T 20
-#define GREEN_T 0
-#define PLUSBUS_GREEN_ADJUST 1
-#define PLUSBUS_RED_ADJUST 1
+#define RED_T 10
+#define GREEN_T 10
+#define PLUSBUS_GREEN_ADJUST 10
+#define PLUSBUS_RED_ADJUST 5
 
 typedef enum light_state{Red, Green}light_state;
 typedef enum intersection_type{A, B, C, D, E, F, G, H}i_type;
@@ -128,17 +128,17 @@ typedef struct plusbus_cross_intersection_trafficlight {
     link* links[12];
     light_data data;
 } type_c;
-/////////////////////////////////////////////////////////////////////////
 
 typedef struct plusbus_t_intersection_trafficlight {
     link* links[8];
-    int state;
+    light_data data;
 } type_d;
 
 typedef struct plusbus_cross_intersection_trafficlight_only_bus_way{
     link* links[10];
-    int state;
+    light_data data;
 } type_e;
+/////////////////////////////////////////////////////////////////////////
 
 typedef union intersection_types{
     type_a type_a;
