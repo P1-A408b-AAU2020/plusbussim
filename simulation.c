@@ -103,7 +103,7 @@ void time_step(link *link, vehicle *vehicles) {
     change_speed(link, vehicles);
 
     /* STOP */
-    if(/*link->id == 10 ||*/ link->id == 20 ||link->id == 12 /*|| link->id == 18
+    if(link->id == 10 /*|| link->id == 20 ||link->id == 12*/ || link->id == 18 /*
         || link->id == 26 || link->id == 28 || link->id == 44|| link->id == 51
         || link->id == 0 || link->id == 5 || link->id == 32 || link->id == 38 || link->id == 46*/)
         print_link(link, vehicles);
@@ -169,8 +169,6 @@ void change_speed(link *link, vehicle *vehicles) {
                     else if (v < V_MAX && gap + gap2 > v)
                         vehicles[index].v++;
                 }
-                printf("car id at change speed: %d \n", vehicles[index].id);
-                printf("bil hastighed: %d paa pos: %d \n", vehicles[index].v, i);
 
             }
 

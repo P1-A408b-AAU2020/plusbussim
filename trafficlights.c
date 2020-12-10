@@ -4,16 +4,13 @@
 
 void link_stop(link *link, vehicle *vehicle){
     int car_found = 0;
-    int i = 2, l, a;
+    int i = 2, l, p;
     if(link->road[link->len - 1] == 0){
         while (!car_found) {
             if(i <= 6) {
                 l = link->road[link->len - i];
                 if (l != 0) {
-                    printf("CAR FOUND! at %d \n" , link->len-i);
-                    printf("car id at link stop: %d \n", (vehicle+l-1)->id);
-                    (vehicle+l-1)->v = i - 1;
-                    printf("Vehicle velocity is: %d \n", vehicle[l].v);
+                    vehicle[l-1].v = i - 1;
                     car_found = 1;
                 }
             }
@@ -21,7 +18,8 @@ void link_stop(link *link, vehicle *vehicle){
         }
     }
     else {
-        vehicle[link->road[link->len - 1]].v = 0;
+        p = link->road[link->len - 1];
+        vehicle[p-1].v = 0;
     }
 
 }
@@ -158,7 +156,6 @@ int intersection_traffic_lights_type_c(vehicle *vehicle, link *link,
         if (link->id == pb_e1 || link->id == pb_e2 || link->id == l_e1 || link->id == l_e2) {
             if(link->id == pb_e1 || link->id == pb_e2)
                 prioritize_plusbus(vehicle, link);
-            printf("YEET %d \n", link->id);
             link_stop(link, vehicle);
             return Red;
 
@@ -178,7 +175,6 @@ int intersection_traffic_lights_type_d(vehicle *vehicle, link *link,
         if(link->id == pb_e || link->id == l_e1 || link->id == l_e2){
             if(link->id == pb_e)
                 prioritize_plusbus(vehicle, link);
-            printf("YEET %d \n", link->id);
             link_stop(link, vehicle);
             return Red;
         }
@@ -198,7 +194,6 @@ int intersection_traffic_lights_type_e(vehicle *vehicle, link *link,
         if(link->id == pb_e || link->id == l_e1 || link->id == l_e2){
             if(link->id == pb_e || link->id == l_e2)
                 prioritize_plusbus(vehicle, link);
-            printf("YEET %d \n", link->id);
             link_stop(link, vehicle);
             return Red;
         }
