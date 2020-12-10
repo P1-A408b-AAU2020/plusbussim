@@ -14,6 +14,7 @@ void change_speed(link* link, vehicle* vehicles);
 void is_finished(vehicle* vehicle, link* links, int* done);
 
 int timer = 0;
+int busCounter = 0;
 
 int main(void) {
     time_t seed = time(NULL);
@@ -39,16 +40,26 @@ int main(void) {
     return EXIT_SUCCESS;
 }
 
-void initialize_actors(vehicle* actors, link* links, int len){
+void initialize_actors(vehicle* actors, link* links, int len) {
     int n;
     /* generate actors */
     /* Place actors */
-    actors->id = 1;
-    actors->v  = 0;
-    actors->is_plusbus = 1;
-    actors->turn_direction = plusbus;
-    actors->has_moved = 0;
-    actors->active = 1;
+    actors[0].id = 1;
+    actors[0].v = 0;
+    if (0) {
+        actors[0].is_plusbus = 1;
+    }
+    else if (1) {
+        actors[0].is_bus = 1;
+        actors[0].turn_arr = (int*)malloc(sizeof(int) * 12); /* 12 = number of dir */
+        for (int i = 0; i < 12; i++) {
+            actors[0].turn_arr[i] = forward;
+        }
+    }
+    actors[0].turn_direction = actors[0].turn_arr[busCounter];
+    busCounter++;
+    actors[0].has_moved = 0;
+    actors[0].active = 1;
     links[2].road[0] = 1;
 
     for (int i = 1; i < AMOUNT_VEHICLES; i++) {
@@ -56,7 +67,9 @@ void initialize_actors(vehicle* actors, link* links, int len){
         actors[i].v = 0;
 
         actors[i].is_plusbus = 0;
+        actors[i].is_bus = 0;
         actors[i].turn_direction = forward;
+        actors[i].turn_arr = NULL;
         actors[i].has_moved = 0;
         actors[i].active = 1;
 
@@ -75,7 +88,6 @@ void initialize_actors(vehicle* actors, link* links, int len){
             actors[i].active = 0;
         */
     }
-    actors[0].is_plusbus = 1;
     printf("\n");
 }
 
@@ -123,7 +135,15 @@ void move(link *link, vehicle *vehicles) {
                 else if (link->intersection != NULL) {/*There is an intersection at the end of the link. */
                     new_link = turn(vehicles[index].turn_direction, link->intersection, link->id);
                     new_link->road[i+v-link->len] = id; /* Place on new link */
-                    vehicles[index].turn_direction = decide_turn_dir(new_link, vehicles[index].is_plusbus);
+                    
+                    if (vehicles[index].is_bus) {
+                        vehicles[index].turn_direction = vehicles[index].turn_arr[busCounter];
+                        busCounter++;
+                    }
+                    else {
+                        vehicles[index].turn_direction = decide_turn_dir(new_link, vehicles[index].is_plusbus);
+                    }
+
                     vehicles[index].has_moved = 1;
                 }
             }
@@ -173,12 +193,16 @@ void change_speed(link *link, vehicle *vehicles) {
     }
 }
 
-void is_finished(vehicle* vehicle, link* links, int* done){
+void is_finished(vehicle* vehicles, link* links, int* done){
     int i, index;
     /*Checks if the Plusbus has reached its destination */
     for(i = links->len -1; i >= 0; i--){
         index = links->road[i] - 1;
-        if(vehicle[index].is_plusbus && index >= 0){
+        if (vehicles[index].is_bus) {
+
+        }
+
+        if((vehicles[index].is_plusbus || vehicles[index].is_bus) && index >= 0) {
           *done = 1;
         }
     }
