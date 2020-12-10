@@ -41,7 +41,7 @@ int check_plusbus(vehicle *vehicle, link *link){
 
 void prioritize_plusbus(vehicle *vehicle, link *link){
     int pb = check_plusbus(vehicle, link);
-    printf(" RUN = %d \n", pb);
+    //printf(" RUN = %d \n", pb);
     switch (link->intersection->type){
         case 'c':
             if(pb == 1 && link->intersection->layout.type_c.data.state == Green && link->intersection->layout.type_c.data.counter < PLUSBUS_R){
@@ -85,8 +85,11 @@ void change_state(intersection *intersection){
                     (intersection+i)->layout.type_c.data.state = Red;
                 }
                 (intersection+i)->layout.type_c.data.counter++;
-                printf("ID: %-3d STATE: %-3d COUNTER: %d\n", (intersection+i)->id,(intersection+i)->layout.type_c.data.state, (intersection+i)->layout.type_c.data.counter);
-                break;
+
+                if(DEBUG)
+                printf("TYPE: %-3c ID: %-3d STATE: %-3d COUNTER: %d\n",(intersection+i)->type, (intersection+i)->id,(intersection+i)->layout.type_c.data.state, (intersection+i)->layout.type_c.data.counter);
+
+                 break;
             case 'd':
                 if ((intersection+i)->layout.type_d.data.counter >= RED_T &&
                     (intersection+i)->layout.type_d.data.state == Red) {
@@ -98,8 +101,11 @@ void change_state(intersection *intersection){
                     (intersection+i)->layout.type_d.data.state = Red;
                 }
                 (intersection+i)->layout.type_d.data.counter++;
-                printf("ID: %-3d STATE: %-3d COUNTER: %d\n", (intersection+i)->id,(intersection+i)->layout.type_d.data.state, (intersection+i)->layout.type_d.data.counter);
-                break;
+
+                if(DEBUG)
+                printf("TYPE: %-3c ID: %-3d STATE: %-3d COUNTER: %d\n",(intersection+i)->type, (intersection+i)->id,(intersection+i)->layout.type_d.data.state, (intersection+i)->layout.type_d.data.counter);
+
+                 break;
             case 'e':
                 if ((intersection+i)->layout.type_e.data.counter >= RED_T &&
                     (intersection+i)->layout.type_e.data.state == Red) {
@@ -111,8 +117,10 @@ void change_state(intersection *intersection){
                     (intersection+i)->layout.type_e.data.state = Red;
                 }
                 (intersection+i)->layout.type_e.data.counter++;
-                printf("ID: %-3d STATE: %-3d COUNTER: %d\n", (intersection+i)->id,(intersection+i)->layout.type_e.data.state, (intersection+i)->layout.type_e.data.counter);
-                break;
+
+                if(DEBUG)
+                printf("TYPE: %-3c ID: %-3d STATE: %-3d COUNTER: %d\n",(intersection+i)->type, (intersection+i)->id,(intersection+i)->layout.type_e.data.state, (intersection+i)->layout.type_e.data.counter);
+                 break;
         }
     }
 }

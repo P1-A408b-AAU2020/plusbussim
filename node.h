@@ -33,6 +33,8 @@
 #define SGHSVEJ_2_LEN (int) (round(400/CELL_LEN))
 #define BERNSTFFGADE_LEN (int) (round(280/CELL_LEN))
 
+#define DEBUG 1
+
 /////////////////////////////////////////////////////////////////////////
 #define PLUSBUS_R 10
 #define RED_T 10

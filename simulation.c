@@ -26,8 +26,9 @@ int main(void) {
     build_network(nodes, links);
     initialize_actors(vehicles, links, AMOUNT_LINKS);
 
+
     while (!done) {
-        printf("Timestep: %d\n", i + 1);
+        print_timestep(i);
         change_state(nodes);
         simulate_all_links(links, vehicles, &done);
         ++i;
@@ -79,7 +80,7 @@ void initialize_actors(vehicle* actors, link* links, int len){
         */
     }
     actors[0].is_plusbus = 1;
-    printf("\n");
+    new_line();
 }
 
 void simulate_all_links(link *links, vehicle *vehicles, int* done) {
@@ -92,7 +93,8 @@ void simulate_all_links(link *links, vehicle *vehicles, int* done) {
                 is_finished(vehicles, links + i, done);
         }
     }
-    printf("\n");
+
+    new_line();
 }
 
 void time_step(link *link, vehicle *vehicles) {
@@ -103,9 +105,9 @@ void time_step(link *link, vehicle *vehicles) {
     change_speed(link, vehicles);
 
     /* STOP */
-    if(link->id == 10 /*|| link->id == 20 ||link->id == 12*/ || link->id == 18 /*
+    if(link->id == 10 || link->id == 20 ||link->id == 12 || link->id == 18
         || link->id == 26 || link->id == 28 || link->id == 44|| link->id == 51
-        || link->id == 0 || link->id == 5 || link->id == 32 || link->id == 38 || link->id == 46*/)
+        || link->id == 0 || link->id == 5 || link->id == 32 || link->id == 38 || link->id == 46)
         print_link(link, vehicles);
 
     move(link, vehicles);

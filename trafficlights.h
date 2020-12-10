@@ -1,4 +1,5 @@
 #include "node.h"
+#include "debug.h"
 
 /*Checks if the plusbus is near intersection*/
 int check_plusbus(vehicle *vehicle, link *link);
