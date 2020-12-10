@@ -38,7 +38,7 @@
 #define RED_T 10
 #define GREEN_T 10
 #define PLUSBUS_GREEN_ADJUST 10
-#define PLUSBUS_RED_ADJUST 5
+#define PLUSBUS_RED_ADJUST 1
 
 typedef enum light_state{Red, Green}light_state;
 typedef enum intersection_type{A, B, C, D, E, F, G, H}i_type;

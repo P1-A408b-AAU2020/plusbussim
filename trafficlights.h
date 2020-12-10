@@ -6,7 +6,7 @@ void light_control();
 void direction_stop(intersection *intersection, vehicle *actor, link *links, i_type type);
 
 /*Checks if the plusbus is near intersection*/
-int check_plusbus(int r, vehicle *actor, link *links);
+int check_plusbus(vehicle *vehicle, link *link);
 
 void prioritize_plusbus(vehicle *vehicle, link *link);
 
