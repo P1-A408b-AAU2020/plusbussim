@@ -103,7 +103,8 @@ void time_step(link *link, vehicle *vehicles) {
     change_speed(link, vehicles);
 
     /* STOP */
-    if(link->id == 0 || link->id == 5 || link->id == 12 || link->id == 2 || link->id == 3 || link->id == 10 || link->id == 18|| link->id == 26 || link->id == 20 || link->id == 28 || link->id == 32 || link->id == 38 || link->id == 46)
+    if(link->id == 10 || link->id == 12 || link->id == 18 || link->id == 20
+        || link->id == 26 || link->id == 28 || link->id == 44|| link->id == 51)
         print_link(link, vehicles);
 
     move(link, vehicles);

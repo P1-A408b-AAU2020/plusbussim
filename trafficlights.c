@@ -154,7 +154,7 @@ void intersection_traffic_lights_type_c(vehicle *vehicle, link *link,
         if (link->id == pb_e1 || link->id == pb_e2 || link->id == l_e1 || link->id == l_e2) {
             if(link->id == pb_e1 || link->id == pb_e2)
                 prioritize_plusbus(vehicle, link);
-            printf("YEET\n");
+            printf("YEET %d ", link->id);
             link_stop(link, vehicle);
         }
     } else{
@@ -170,6 +170,7 @@ void intersection_traffic_lights_type_d(vehicle *vehicle, link *link,
         if(link->id == pb_e || link->id == l_e1 || link->id == l_e2){
             if(link->id == pb_e)
                 prioritize_plusbus(vehicle, link);
+            printf("YEET %d ", link->id);
             link_stop(link, vehicle);
         }
     } else{
@@ -187,6 +188,7 @@ void intersection_traffic_lights_type_e(vehicle *vehicle, link *link,
         if(link->id == pb_e || link->id == l_e1 || link->id == l_e2){
             if(link->id == pb_e || link->id == l_e2)
                 prioritize_plusbus(vehicle, link);
+            printf("YEET %d ", link->id);
             link_stop(link, vehicle);
         }
     } else{
@@ -195,3 +197,4 @@ void intersection_traffic_lights_type_e(vehicle *vehicle, link *link,
         }
     }
 }
+
