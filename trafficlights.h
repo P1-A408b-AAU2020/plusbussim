@@ -1,22 +1,16 @@
 #include "node.h"
-/*Checks and changes light states for all intersections in current simulation*/
-void light_control();
-
-/*Stops cars that have red*/
-void direction_stop(intersection *intersection, vehicle *actor, link *links, i_type type);
 
 /*Checks if the plusbus is near intersection*/
 int check_plusbus(vehicle *vehicle, link *link);
 
+/* Prioritizes plusbus on current lane in the traffic light */
 void prioritize_plusbus(vehicle *vehicle, link *link);
-
-void traffic_timer(intersection *intersection);
 
 /*Changes lights green/red and resets counter*/
 void change_state(intersection *intersection);
 
 /*returns state of selected intersection*/
-light_data * i_data(i_type type, struct intersection *intersection);
+light_data* i_data(link *link);
 
 /*runs correct traffic light control */
 int traffic_light(link *link, vehicle *vehicle);

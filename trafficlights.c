@@ -1,4 +1,3 @@
-/*TODO add "trafficlights.c trafficlights.h" to CMakeLists.txt when this library is done*/
 #include "trafficlights.h"
 #include <stdio.h>
 
@@ -25,7 +24,7 @@ void link_stop(link *link, vehicle *vehicle){
 }
 
 int check_plusbus(vehicle *vehicle, link *link){
-    int run = 0, radius, l, plusbus_found = 0, i = 1;
+    int run = 0, l, plusbus_found = 0, i = 1;
 
     while (!plusbus_found) {
         if(i <= PLUSBUS_R) {
@@ -70,17 +69,8 @@ void prioritize_plusbus(vehicle *vehicle, link *link){
     }
 }
 
-/*void traffic_timer(intersection *intersection){
-    switch (intersection->type) {
-        case 'c': intersection->layout.type_c.data.counter++;
-        case 'd': intersection->layout.type_d.data.counter++;
-        case 'e': intersection->layout.type_e.data.counter++;
-    }
-}*/
 
 void change_state(intersection *intersection){
-    /*int state = i_data(type, intersection)->state,
-      counter = i_data(type, intersection)->counter;*/
     int i;
     for (i = 0; i < 9; i++) {
         switch ((intersection+i)->type) {
@@ -125,27 +115,19 @@ void change_state(intersection *intersection){
                 break;
         }
     }
-    /*if(counter == RED_T && state == Red){
-        i_data(type, intersection)->counter = 0;
-        i_data(type, intersection)->state = Green;
-    }else if(counter == GREEN_T && state == Green){
-        i_data(type, intersection)->counter = 0;
-        i_data(type, intersection)->state = Red;
-    }*/
-    //i_data(type, intersection)->counter++;
 }
 
-light_data* i_data(i_type type, intersection *intersection){
-    switch (type) {
-        case C: return &intersection->layout.type_c.data;
-        case D: return &intersection->layout.type_d.data;
-        case E: return &intersection->layout.type_e.data;
-        /*case F: return &intersection->layout.type_f.data;*/
+light_data* i_data(link *link){
+    switch (link->intersection->type) {
+        case 'c': return &link->intersection->layout.type_c.data;
+        case 'd': return &link->intersection->layout.type_d.data;
+        case 'e': return &link->intersection->layout.type_e.data;
         default: return 0;
     }
 }
 
 int traffic_light(link *link, vehicle *vehicle){
+    printf("test counter %d \n", i_data(link)->counter);
     switch (link->intersection->type) {
         case 'c':
              return intersection_traffic_lights_type_c(vehicle, link,
