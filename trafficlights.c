@@ -10,13 +10,17 @@ void link_stop(link *link, vehicle *vehicle){
             if(i <= 6) {
                 l = link->road[link->len - i];
                 if (l != 0) {
-                    vehicle[l].v = lead_gap(link, i);
+                    vehicle[l - 1].v = lead_gap(link, i);
                     car_found = 1;
                 }
             }
             i++;
         }
     }
+    else {
+        vehicle[link->road[link->len - 1] - 1].v = 0;
+    }
+
 }
 
 int check_plusbus(int r, vehicle *vehicle, link *link){
@@ -117,38 +121,35 @@ light_data* i_data(i_type type, intersection *intersection){
     }
 }
 
-void traffic_light(link *link, vehicle *vehicle){
+int traffic_light(link *link, vehicle *vehicle){
     switch (link->intersection->type) {
         case 'c':
-            intersection_traffic_lights_type_c(vehicle, link,
+             return intersection_traffic_lights_type_c(vehicle, link,
                                                link->intersection->layout.type_c.links[10]->id,
                                                link->intersection->layout.type_c.links[8]->id,
                                                link->intersection->layout.type_c.links[0]->id,
                                                link->intersection->layout.type_c.links[4]->id,
                                                link->intersection->layout.type_c.links[2]->id,
                                                link->intersection->layout.type_c.links[6]->id);
-        break;
         case 'd':
-            intersection_traffic_lights_type_d(vehicle, link,
+            return intersection_traffic_lights_type_d(vehicle, link,
                                                link->intersection->layout.type_d.links[7]->id,
                                                link->intersection->layout.type_d.links[1]->id,
                                                link->intersection->layout.type_d.links[5]->id,
                                                link->intersection->layout.type_d.links[3]->id);
-        break;
         case 'e':
-                intersection_traffic_lights_type_e(vehicle, link,
+                return intersection_traffic_lights_type_e(vehicle, link,
                                                    link->intersection->layout.type_e.links[8]->id,
                                                    link->intersection->layout.type_e.links[6]->id,
                                                    link->intersection->layout.type_e.links[2]->id,
                                                    link->intersection->layout.type_e.links[0]->id,
                                                    link->intersection->layout.type_e.links[4]->id);
 
-        break;
-        /*case 'f': break;*/
+        default: return Green;
     }
 }
 
-void intersection_traffic_lights_type_c(vehicle *vehicle, link *link,
+int intersection_traffic_lights_type_c(vehicle *vehicle, link *link,
                               int pb_e1, int pb_e2,int l_e1,int l_e2,int l_e3,int l_e4){
     if(link->intersection->layout.type_c.data.state == Red) {
         if (link->id == pb_e1 || link->id == pb_e2 || link->id == l_e1 || link->id == l_e2) {
@@ -156,15 +157,19 @@ void intersection_traffic_lights_type_c(vehicle *vehicle, link *link,
                 prioritize_plusbus(vehicle, link);
             printf("YEET %d ", link->id);
             link_stop(link, vehicle);
+            return Red;
+
         }
     } else{
         if (link->id == l_e3 || link->id == l_e4) {
             link_stop(link, vehicle);
+            return Red;
         }
     }
+    return Green;
 }
 
-void intersection_traffic_lights_type_d(vehicle *vehicle, link *link,
+int intersection_traffic_lights_type_d(vehicle *vehicle, link *link,
                                         int pb_e, int l_e1, int l_e2, int l_e3){
     if(link->intersection->layout.type_d.data.state == Red){
         if(link->id == pb_e || link->id == l_e1 || link->id == l_e2){
@@ -172,17 +177,19 @@ void intersection_traffic_lights_type_d(vehicle *vehicle, link *link,
                 prioritize_plusbus(vehicle, link);
             printf("YEET %d ", link->id);
             link_stop(link, vehicle);
+            return Red;
         }
     } else{
         if(link->id == l_e3){
             prioritize_plusbus(vehicle, link);
             link_stop(link, vehicle);
+            return Red;
         }
     }
-
+    return Green;
 }
 
-void intersection_traffic_lights_type_e(vehicle *vehicle, link *link,
+int intersection_traffic_lights_type_e(vehicle *vehicle, link *link,
                                         int pb_e, int l_e1, int l_e2,int l_e3,int l_e4){
     if(link->intersection->layout.type_c.data.state == Red){
         if(link->id == pb_e || link->id == l_e1 || link->id == l_e2){
@@ -190,11 +197,14 @@ void intersection_traffic_lights_type_e(vehicle *vehicle, link *link,
                 prioritize_plusbus(vehicle, link);
             printf("YEET %d ", link->id);
             link_stop(link, vehicle);
+            return Red;
         }
     } else{
         if (link->id == l_e3 || link->id == l_e4) {
             link_stop(link, vehicle);
+            return Red;
         }
     }
+    return Green;
 }
 

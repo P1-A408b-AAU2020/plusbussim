@@ -104,7 +104,8 @@ void time_step(link *link, vehicle *vehicles) {
 
     /* STOP */
     if(link->id == 10 || link->id == 12 || link->id == 18 || link->id == 20
-        || link->id == 26 || link->id == 28 || link->id == 44|| link->id == 51)
+        || link->id == 26 || link->id == 28 || link->id == 44|| link->id == 51
+        || link->id == 0 || link->id == 5 || link->id == 32 || link->id == 38 || link->id == 46)
         print_link(link, vehicles);
 
     move(link, vehicles);
@@ -150,21 +151,22 @@ void change_speed(link *link, vehicle *vehicles) {
             /* Is the car approaching an intersection? */
             if (i + gap == link->len-1 && link->intersection != NULL) {
 
-                traffic_light(link, vehicles);
 
-                new_link = turn(vehicles[index].turn_direction, link->intersection, link->id);
+                if (traffic_light(link, vehicles)) {
+                    new_link = turn(vehicles[index].turn_direction, link->intersection, link->id);
 
-                if (new_link->time_step < timer)
-                    time_step(new_link, vehicles);
+                    if (new_link->time_step < timer)
+                        time_step(new_link, vehicles);
 
-                gap2 = lead_gap(new_link, -1);
+                    gap2 = lead_gap(new_link, -1);
 
-                /* Does the car have to decelerate to avoid collision? */
-                if (gap + gap2 < v)
-                    vehicles[index].v = gap + gap2;
+                    /* Does the car have to decelerate to avoid collision? */
+                    if (gap + gap2 < v)
+                        vehicles[index].v = gap + gap2;
 
-                else if (v < V_MAX && gap + gap2 > v)
-                    vehicles[index].v++;
+                    else if (v < V_MAX && gap + gap2 > v)
+                        vehicles[index].v++;
+                }
             }
 
                 /* There is no intersection */
