@@ -103,9 +103,9 @@ void time_step(link *link, vehicle *vehicles) {
     change_speed(link, vehicles);
 
     /* STOP */
-    if(link->id == 10 || link->id == 12 || link->id == 18 || link->id == 20
+    if(/*link->id == 10 ||*/ link->id == 20 ||link->id == 12 /*|| link->id == 18
         || link->id == 26 || link->id == 28 || link->id == 44|| link->id == 51
-        || link->id == 0 || link->id == 5 || link->id == 32 || link->id == 38 || link->id == 46)
+        || link->id == 0 || link->id == 5 || link->id == 32 || link->id == 38 || link->id == 46*/)
         print_link(link, vehicles);
 
     move(link, vehicles);
@@ -151,9 +151,11 @@ void change_speed(link *link, vehicle *vehicles) {
             /* Is the car approaching an intersection? */
             if (i + gap == link->len-1 && link->intersection != NULL) {
 
-
-                if (traffic_light(link, vehicles)) {
+                int a = traffic_light(link, vehicles);
+                if (a) {
                     new_link = turn(vehicles[index].turn_direction, link->intersection, link->id);
+                    if (link->id == 12)
+                        printf(" WTF %d \n ", link->id);
 
                     if (new_link->time_step < timer)
                         time_step(new_link, vehicles);
@@ -167,6 +169,9 @@ void change_speed(link *link, vehicle *vehicles) {
                     else if (v < V_MAX && gap + gap2 > v)
                         vehicles[index].v++;
                 }
+                printf("car id at change speed: %d \n", vehicles[index].id);
+                printf("bil hastighed: %d paa pos: %d \n", vehicles[index].v, i);
+
             }
 
                 /* There is no intersection */
