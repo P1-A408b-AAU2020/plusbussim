@@ -151,11 +151,8 @@ void change_speed(link *link, vehicle *vehicles) {
             /* Is the car approaching an intersection? */
             if (i + gap == link->len-1 && link->intersection != NULL) {
 
-                int a = traffic_light(link, vehicles);
-                if (a) {
+                if (traffic_light(link, vehicles)) {
                     new_link = turn(vehicles[index].turn_direction, link->intersection, link->id);
-                    if (link->id == 12)
-                        printf(" WTF %d \n ", link->id);
 
                     if (new_link->time_step < timer)
                         time_step(new_link, vehicles);

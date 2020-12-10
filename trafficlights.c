@@ -85,7 +85,7 @@ void change_state(intersection *intersection){
                     (intersection+i)->layout.type_c.data.state = Red;
                 }
                 (intersection+i)->layout.type_c.data.counter++;
-                printf("STATE: %-25d COUNTER: %d\n", (intersection+i)->layout.type_c.data.state, (intersection+i)->layout.type_c.data.counter);
+                printf("ID: %-3d STATE: %-3d COUNTER: %d\n", (intersection+i)->id,(intersection+i)->layout.type_c.data.state, (intersection+i)->layout.type_c.data.counter);
                 break;
             case 'd':
                 if ((intersection+i)->layout.type_d.data.counter >= RED_T &&
@@ -98,7 +98,7 @@ void change_state(intersection *intersection){
                     (intersection+i)->layout.type_d.data.state = Red;
                 }
                 (intersection+i)->layout.type_d.data.counter++;
-                printf("STATE: %-25d COUNTER: %d\n", (intersection+i)->layout.type_d.data.state, (intersection+i)->layout.type_d.data.counter);
+                printf("ID: %-3d STATE: %-3d COUNTER: %d\n", (intersection+i)->id,(intersection+i)->layout.type_d.data.state, (intersection+i)->layout.type_d.data.counter);
                 break;
             case 'e':
                 if ((intersection+i)->layout.type_e.data.counter >= RED_T &&
@@ -111,7 +111,7 @@ void change_state(intersection *intersection){
                     (intersection+i)->layout.type_e.data.state = Red;
                 }
                 (intersection+i)->layout.type_e.data.counter++;
-                printf("STATE: %-25d COUNTER: %d\n", (intersection+i)->layout.type_e.data.state, (intersection+i)->layout.type_e.data.counter);
+                printf("ID: %-3d STATE: %-3d COUNTER: %d\n", (intersection+i)->id,(intersection+i)->layout.type_e.data.state, (intersection+i)->layout.type_e.data.counter);
                 break;
         }
     }
@@ -127,7 +127,7 @@ light_data* i_data(link *link){
 }
 
 int traffic_light(link *link, vehicle *vehicle){
-    printf("test counter %d \n", i_data(link)->counter);
+    /*printf("test counter %d \n", i_data(link)->counter);*/
     switch (link->intersection->type) {
         case 'c':
              return intersection_traffic_lights_type_c(vehicle, link,
