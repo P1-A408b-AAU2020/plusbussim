@@ -5,7 +5,7 @@
 #define MIN_SPEED_RANDOM_DECELERATE 2
 #define AMOUNT_LINKS 64
 #define AMOUNT_VEHICLES 40
-#define END_LINK 46 //59
+#define END_LINK 59 //59
 #define CELL_LEN 4.629
 #define JYLGADE_1_LEN (int)(round(200/CELL_LEN))
 #define JYLGADE_2_LEN (int) (round(120/CELL_LEN))
