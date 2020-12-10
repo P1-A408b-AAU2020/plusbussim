@@ -19,7 +19,7 @@ int timer = 0;
 int main(void) {
     time_t seed = time(NULL);
     srand(seed);
-    int done = 0, i = 0;
+    int done = 0, i = 0, l = 0, o = 0;
     link links[AMOUNT_LINKS];
     intersection nodes[9];
     vehicle vehicles[AMOUNT_VEHICLES];
@@ -30,6 +30,9 @@ int main(void) {
         printf("Timestep: %d\n", i + 1);
         simulate_all_links(links, vehicles, &done);
         ++i;
+        //timer_all_intersections(nodes);
+        // nodes[2].layout.type_c.data.counter++;
+        printf("\nSTATE: %-25d COUNTER: %d\n", nodes[2].layout.type_c.data.state, nodes[2].layout.type_c.data.counter);
     }
     print_status(vehicles, seed, links + 46, timer);
 
@@ -148,7 +151,7 @@ void change_speed(link *link, vehicle *vehicles) {
             /* Is the car approaching an intersection? */
             if (i + gap == link->len-1 && link->intersection != NULL) {
 
-                traffic_light(*link->intersection, link, vehicles);
+                traffic_light(link, vehicles);
 
                 new_link = turn(vehicles[index].turn_direction, link->intersection, link->id);
 
@@ -172,7 +175,7 @@ void change_speed(link *link, vehicle *vehicles) {
             else if (gap < v)
                 vehicles[index].v = gap;
 
-            assert(vehicles[index].v <= gap + gap2);
+            //assert(vehicles[index].v <= gap + gap2);
         }
     }
 }

@@ -195,6 +195,8 @@ void construct_type_c(intersection* intersection, int id, link* primary1_enter, 
                       link* secondary2_exit, link* plusbus1_enter, link* plusbus1_exit, link* plusbus2_enter, link* plusbus2_exit){
     intersection->id = id;
     intersection->type = 'c';
+    intersection->layout.type_c.data.counter = 0;
+    intersection->layout.type_c.data.state = 0;
     link** p= intersection->layout.type_c.links;
     p[0] = primary1_enter;
     p[1] = secondary2_exit;
@@ -214,6 +216,8 @@ void construct_type_d(intersection* intersection, int id, link* primary1_enter, 
                       link* primary2_exit, link* secondary_enter, link* secondary_exit, link* plusbus_enter, link* plusbus_exit){
     intersection->id = id;
     intersection->type = 'd';
+    intersection->layout.type_d.data.counter = 0;
+    intersection->layout.type_d.data.state = 0;
     link** p= intersection->layout.type_d.links;
     p[0] = primary2_exit;
     p[1] = primary1_enter;
@@ -230,6 +234,8 @@ void construct_type_e(intersection* intersection, int id, link* primary1_enter, 
                       link* plusbus2_enter, link* plusbus2_exit){
     intersection->id = id;
     intersection->type = 'e';
+    intersection->layout.type_e.data.counter = 0;
+    intersection->layout.type_e.data.state = 0;
     link** p= intersection->layout.type_e.links;
     p[0] = primary1_enter;
     p[1] = secondary_enter;
