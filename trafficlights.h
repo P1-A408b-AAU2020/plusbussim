@@ -13,7 +13,7 @@ void prioritize_plusbus(vehicle *vehicle, link *link);
 void traffic_timer(intersection *intersection);
 
 /*Changes lights green/red and resets counter*/
-void change_state(link *link);
+void change_state(intersection *intersection);
 
 /*returns state of selected intersection*/
 light_data * i_data(i_type type, struct intersection *intersection);

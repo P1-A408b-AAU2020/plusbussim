@@ -28,11 +28,10 @@ int main(void) {
 
     while (!done) {
         printf("Timestep: %d\n", i + 1);
+        change_state(nodes);
         simulate_all_links(links, vehicles, &done);
         ++i;
-        //timer_all_intersections(nodes);
-        // nodes[2].layout.type_c.data.counter++;
-        printf("\nSTATE: %-25d COUNTER: %d\n", nodes[2].layout.type_c.data.state, nodes[2].layout.type_c.data.counter);
+        //(nodes+2)->layout.type_c.data.counter++;
     }
     print_status(vehicles, seed, links + 46, timer);
 
@@ -85,7 +84,6 @@ void initialize_actors(vehicle* actors, link* links, int len){
 
 void simulate_all_links(link *links, vehicle *vehicles, int* done) {
     timer++;
-
     for (int i = 0; i < AMOUNT_LINKS; ++i) {
         if ((links + i)->time_step < timer){
             time_step(links + i, vehicles);

@@ -50,41 +50,52 @@ void prioritize_plusbus(vehicle *vehicle, link *link){
     }
 }*/
 
-void change_state(link *link){
+void change_state(intersection *intersection){
     /*int state = i_data(type, intersection)->state,
       counter = i_data(type, intersection)->counter;*/
-
-    switch (link->intersection->type) {
-        case 'c':
-            if(link->intersection->layout.type_c.data.counter == RED_T && link->intersection->layout.type_c.data.state == Red){
-                link->intersection->layout.type_c.data.counter = 0;
-                link->intersection->layout.type_c.data.state = Green;
-            }else if(link->intersection->layout.type_c.data.counter == GREEN_T && link->intersection->layout.type_c.data.state == Green){
-                link->intersection->layout.type_c.data.counter = 0;
-                link->intersection->layout.type_c.data.state = Red;
-            }
-            link->intersection->layout.type_c.data.counter++;
-            break;
-        case 'd':
-            if(link->intersection->layout.type_d.data.counter == RED_T && link->intersection->layout.type_d.data.state == Red){
-                link->intersection->layout.type_d.data.counter = 0;
-                link->intersection->layout.type_d.data.state = Green;
-            }else if(link->intersection->layout.type_d.data.counter == GREEN_T && link->intersection->layout.type_d.data.state == Green){
-                link->intersection->layout.type_d.data.counter = 0;
-                link->intersection->layout.type_d.data.state = Red;
-            }
-            link->intersection->layout.type_d.data.counter++;
-        break;
-        case 'e':
-            if(link->intersection->layout.type_e.data.counter == RED_T && link->intersection->layout.type_e.data.state == Red){
-                link->intersection->layout.type_e.data.counter = 0;
-                link->intersection->layout.type_e.data.state = Green;
-            }else if(link->intersection->layout.type_e.data.counter == GREEN_T && link->intersection->layout.type_e.data.state == Green){
-                link->intersection->layout.type_e.data.counter = 0;
-                link->intersection->layout.type_e.data.state = Red;
-            }
-            link->intersection->layout.type_e.data.counter++;
-            break;
+    int i;
+    for (i = 0; i < 9; i++) {
+        switch ((intersection+i)->type) {
+            case 'c':
+                if ((intersection+i)->layout.type_c.data.counter == RED_T &&
+                    (intersection+i)->layout.type_c.data.state == Red) {
+                    (intersection+i)->layout.type_c.data.counter = 0;
+                    (intersection+i)->layout.type_c.data.state = Green;
+                } else if ((intersection+i)->layout.type_c.data.counter == GREEN_T &&
+                        (intersection+i)->layout.type_c.data.state == Green) {
+                    (intersection+i)->layout.type_c.data.counter = 0;
+                    (intersection+i)->layout.type_c.data.state = Red;
+                }
+                (intersection+i)->layout.type_c.data.counter++;
+                printf("STATE: %-25d COUNTER: %d\n", (intersection+i)->layout.type_c.data.state, (intersection+i)->layout.type_c.data.counter);
+                break;
+            case 'd':
+                if ((intersection+i)->layout.type_d.data.counter == RED_T &&
+                    (intersection+i)->layout.type_d.data.state == Red) {
+                    (intersection+i)->layout.type_d.data.counter = 0;
+                    (intersection+i)->layout.type_d.data.state = Green;
+                } else if ((intersection+i)->layout.type_d.data.counter == GREEN_T &&
+                    (intersection+i)->layout.type_d.data.state == Green) {
+                    (intersection+i)->layout.type_d.data.counter = 0;
+                    (intersection+i)->layout.type_d.data.state = Red;
+                }
+                (intersection+i)->layout.type_d.data.counter++;
+                printf("STATE: %-25d COUNTER: %d\n", (intersection+i)->layout.type_d.data.state, (intersection+i)->layout.type_d.data.counter);
+                break;
+            case 'e':
+                if ((intersection+i)->layout.type_e.data.counter == RED_T &&
+                    (intersection+i)->layout.type_e.data.state == Red) {
+                    (intersection+i)->layout.type_e.data.counter = 0;
+                    (intersection+i)->layout.type_e.data.state = Green;
+                } else if ((intersection+i)->layout.type_e.data.counter == GREEN_T &&
+                    (intersection+i)->layout.type_e.data.state == Green) {
+                    (intersection+i)->layout.type_e.data.counter = 0;
+                    (intersection+i)->layout.type_e.data.state = Red;
+                }
+                (intersection+i)->layout.type_e.data.counter++;
+                printf("STATE: %-25d COUNTER: %d\n", (intersection+i)->layout.type_e.data.state, (intersection+i)->layout.type_e.data.counter);
+                break;
+        }
     }
     /*if(counter == RED_T && state == Red){
         i_data(type, intersection)->counter = 0;
@@ -121,13 +132,13 @@ void traffic_light(link *link, vehicle *vehicle){
             intersection_traffic_lights_type_d(vehicle, link,
                                                link->intersection->layout.type_d.links[7]->id,
                                                link->intersection->layout.type_d.links[1]->id,
-                                               link->intersection->layout.type_d.links[0]->id,
+                                               link->intersection->layout.type_d.links[5]->id,
                                                link->intersection->layout.type_d.links[3]->id);
         break;
         case 'e':
                 intersection_traffic_lights_type_e(vehicle, link,
                                                    link->intersection->layout.type_e.links[8]->id,
-                                                   link->intersection->layout.type_e.links[1]->id,
+                                                   link->intersection->layout.type_e.links[6]->id,
                                                    link->intersection->layout.type_e.links[2]->id,
                                                    link->intersection->layout.type_e.links[0]->id,
                                                    link->intersection->layout.type_e.links[4]->id);
@@ -139,11 +150,11 @@ void traffic_light(link *link, vehicle *vehicle){
 
 void intersection_traffic_lights_type_c(vehicle *vehicle, link *link,
                               int pb_e1, int pb_e2,int l_e1,int l_e2,int l_e3,int l_e4){
-    change_state(link);
     if(link->intersection->layout.type_c.data.state == Red) {
         if (link->id == pb_e1 || link->id == pb_e2 || link->id == l_e1 || link->id == l_e2) {
             if(link->id == pb_e1 || link->id == pb_e2)
                 prioritize_plusbus(vehicle, link);
+            printf("YEET\n");
             link_stop(link, vehicle);
         }
     } else{
@@ -155,7 +166,6 @@ void intersection_traffic_lights_type_c(vehicle *vehicle, link *link,
 
 void intersection_traffic_lights_type_d(vehicle *vehicle, link *link,
                                         int pb_e, int l_e1, int l_e2, int l_e3){
-    change_state(link);
     if(link->intersection->layout.type_d.data.state == Red){
         if(link->id == pb_e || link->id == l_e1 || link->id == l_e2){
             if(link->id == pb_e)
@@ -173,7 +183,6 @@ void intersection_traffic_lights_type_d(vehicle *vehicle, link *link,
 
 void intersection_traffic_lights_type_e(vehicle *vehicle, link *link,
                                         int pb_e, int l_e1, int l_e2,int l_e3,int l_e4){
-    change_state(link);
     if(link->intersection->layout.type_c.data.state == Red){
         if(link->id == pb_e || link->id == l_e1 || link->id == l_e2){
             if(link->id == pb_e || link->id == l_e2)
