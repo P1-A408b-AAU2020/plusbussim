@@ -1,8 +1,19 @@
 #include "debug.h"
 #define SECONDS_PER_TIMESTEP 1.667
 
+int check_link(link* link, vehicle* vehicles){
+  int i;
+
+  for (i = 0; i < link->len; i++){
+    if (link->road[i] > 0)
+      return 1;
+  }
+
+  return 0;
+}
+
 void print_link(link *link, vehicle *vehicles) {
-    int i;
+  int i, a;
     char print;
     if(DEBUG) {
         printf("L%-3d: ", link->id);

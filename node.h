@@ -1,7 +1,8 @@
-#pragma once
+#ifndef NODE_H
+#define NODE_H
 #define V_MAX 5
 #define PLUS_BUS_LENGTH 5
-#define DECELERATE_CHANCE 0
+#define DECELERATE_CHANCE 5
 #define MIN_SPEED_RANDOM_DECELERATE 2
 #define AMOUNT_LINKS 64
 #define AMOUNT_VEHICLES 40
@@ -35,7 +36,6 @@
 
 #define DEBUG 1
 
-/////////////////////////////////////////////////////////////////////////
 #define PLUSBUS_R 10
 #define RED_T 10
 #define GREEN_T 10
@@ -44,36 +44,35 @@
 
 typedef enum light_state{Red, Green}light_state;
 typedef enum intersection_type{A, B, C, D, E, F, G, H}i_type;
-/////////////////////////////////////////////////////////////////////////
 
 /* A enum on the different id's for the links */
 typedef enum roadid {jylgade_1_east, jylgade_1_west_plusbus, jylgade_1_east_plusbus,
-    jylgade_2_east_plusbus, jylgade_2_west_plusbus, jylgade_2_east,
-    jylgade_2_west, aagade_north, aagade_south, jylgade_1_west,
+                     jylgade_2_east_plusbus, jylgade_2_west_plusbus, jylgade_2_east,
+                     jylgade_2_west, aagade_north, aagade_south, jylgade_1_west,
 
-    jylgade_3_east_plusbus, jylgade_3_west_plusbus, jylgade_3_east,
-    jylgade_3_west, niels_ebbesens_gade_south, niels_ebbesens_gade_north,
+                     jylgade_3_east_plusbus, jylgade_3_west_plusbus, jylgade_3_east,
+                     jylgade_3_west, niels_ebbesens_gade_south, niels_ebbesens_gade_north,
 
-    dag_ham_gade_1_south, dag_ham_gade_1_north,
-    jylgade_4_east_plusbus, jylgade_4_west_plusbus, jylgade_4_east,
-    jylgade_4_west, dag_ham_gade_2_north, dag_ham_gade_2_south,
+                     dag_ham_gade_1_south, dag_ham_gade_1_north,
+                     jylgade_4_east_plusbus, jylgade_4_west_plusbus, jylgade_4_east,
+                     jylgade_4_west, dag_ham_gade_2_north, dag_ham_gade_2_south,
 
-    sdrbro_south, sdrbro_north, fyensgade_east_plusbus, fyensgade_west_plusbus,
-    fyensgade_east, fyensgade_west, kjellerupsgade_north, kjellerupsgade_south,
+                     sdrbro_south, sdrbro_north, fyensgade_east_plusbus, fyensgade_west_plusbus,
+                     fyensgade_east, fyensgade_west, kjellerupsgade_north, kjellerupsgade_south,
 
-    bornholmsgade_1_south, bornholmsgade_1_north, karolinelundsvej_north, karolinelundsvej_south,
+                     bornholmsgade_1_south, bornholmsgade_1_north, karolinelundsvej_north, karolinelundsvej_south,
 
-    faereogade_1_west, faerogade_1_east, bornholmsgade_2_south, bornholmsgade_2_north,
-    faereogade_2_east, faereogade_2_west,
+                     faereogade_1_west, faerogade_1_east, bornholmsgade_2_south, bornholmsgade_2_north,
+                     faereogade_2_east, faereogade_2_west,
 
-    sjaelgade_1_west, sjaelgade_1_east, bornholmsgade_3_south, bornholmsgade_3_north,
-    sjaelgade_2_east, sjaelgade_2_west,
+                     sjaelgade_1_west, sjaelgade_1_east, bornholmsgade_3_south, bornholmsgade_3_north,
+                     sjaelgade_2_east, sjaelgade_2_west,
 
-    oester_alle_1_west, oester_alle_1_east, sghsvej_1_south, sghsvej_1_south_plusbus,
-    sghsvej_1_north_plusbus, sghsvej_1_north, oester_alle_2_east, oester_alle_2_west,
+                     oester_alle_1_west, oester_alle_1_east, sghsvej_1_south, sghsvej_1_south_plusbus,
+                     sghsvej_1_north_plusbus, sghsvej_1_north, oester_alle_2_east, oester_alle_2_west,
 
-    kridtsleofen_west, kridtsleofen_east, sghsvej_2_south, sghsvej_2_south_plusbus,
-    sghsvej_2_north_plusbus, sghsvej_2_north, bernstorffsgade_east, bernstorffsgade_west
+                     kridtsleofen_west, kridtsleofen_east, sghsvej_2_south, sghsvej_2_south_plusbus,
+                     sghsvej_2_north_plusbus, sghsvej_2_north, bernstorffsgade_east, bernstorffsgade_west
 } roadid;
 
 
@@ -82,79 +81,78 @@ typedef enum turn_dir{forward, right, left, plusbus} turn_dir;
 typedef struct intersection intersection;
 
 typedef struct pocket {
-    int pos;
-    int* road;
-    int len;
+  int pos;
+  int *road;
+  int len;
 } pocket;
 
 typedef struct link {
-    int id;
-    int *road;
-    int len;
-    int time_step;
-    intersection *intersection;
-    pocket left_pocket;
-    pocket right_pocket;
-    int spawn_lane;
-    double spawn_chance;
-    float right_chance;
-    float left_chance;
+  int id;
+  int *road;
+  int len;
+  int time_step;
+  intersection *intersection;
+  pocket left_pocket;
+  pocket right_pocket;
+  int spawn_lane;
+  double spawn_chance;
+  float right_chance;
+  float left_chance;
 } link;
 
 /* Data type for all the different vehicle types. */
-typedef struct vehicle{
-    int id;
-    int v;
-    int active;
-    int is_plusbus;
-    turn_dir turn_direction;
-    int has_moved;
+typedef struct vehicle {
+  int id;
+  int v;
+  int active;
+  int is_plusbus;
+  turn_dir turn_direction;
+  int has_moved;
 } vehicle;
 
 
-typedef struct cross_intersection{
-    link* links[8];
+typedef struct cross_intersection {
+  link *links[8];
 } type_a;
 
 typedef struct plusbus_t_intersection {
-    link* links[10];
+  link *links[10];
 } type_b;
 
-/////////////////////////////////////////////////////////////////////////
 typedef struct light_data{
     int state;
     int counter;
 }light_data;
 
 typedef struct plusbus_cross_intersection_trafficlight {
-    link* links[12];
-    light_data data;
+  link *links[12];
+  light_data data;
 } type_c;
 
 typedef struct plusbus_t_intersection_trafficlight {
-    link* links[8];
-    light_data data;
+  link *links[8];
+  light_data data;
 } type_d;
 
-typedef struct plusbus_cross_intersection_trafficlight_only_bus_way{
-    link* links[10];
-    light_data data;
+typedef struct plusbus_cross_intersection_trafficlight_only_bus_way {
+  link *links[10];
+  light_data data;
 } type_e;
-/////////////////////////////////////////////////////////////////////////
 
-typedef union intersection_types{
-    type_a type_a;
-    type_b type_b;
-    type_c type_c;
-    type_d type_d;
-    type_e type_e;
+typedef union intersection_types {
+  type_a type_a;
+  type_b type_b;
+  type_c type_c;
+  type_d type_d;
+  type_e type_e;
 } intersection_types;
 
-typedef struct intersection{
-    char type;
-    int id;
-    intersection_types layout;
-} intersection;
+struct intersection {
+  char type;
+  int id;
+  int n;
+  intersection_types layout;
+};
 
 /* Builds the networks. Hardcoded to make the network we want to simulate. */
 void build_network(intersection* intersections, link* links);
@@ -200,10 +198,10 @@ link* right_turn_type_b(intersection* intersection, int link_id);
 link* left_turn_type_b(intersection* intersection, int link_id);
 link* forward_type_b(intersection* intersection, int link_id);
 
-link* plusbus_type_c(intersection *intersection, int link_id);
-link* forward_type_c(intersection *intersection, int link_id);
-link* left_turn_type_c(intersection *intersection, int link_id);
-link* right_turn_type_c(intersection *intersection, int link_id);
+link* plusbus_type_c(intersection* intersection, int link_id);
+link* forward_type_c(intersection* intersection, int link_id);
+link* left_turn_type_c(intersection* intersection, int link_id);
+link* right_turn_type_c(intersection* intersection, int link_id);
 
 /* If you arrive at the given intersection on the given link,
  * returns the road you land on if you turn left at the intersection */
@@ -217,9 +215,11 @@ link* go_forward(intersection* intersection, int link_id);
  * returns the road you land on if you turn right at the intersection */
 link* right_turn(intersection* intersection, int link_id);
 
-link* plusbus_dec(intersection *intersection, int link_id);
+link* plusbus_dec(intersection* intersection, int link_id);
 
 int lead_gap(link* link, int pos);
 
 turn_dir decide_turn_dir(link* link, int is_plsubus);
 void spawn_car(link* link, vehicle* vehicles);
+
+#endif
