@@ -54,32 +54,32 @@ int check_status(link *link, int amount) {
     }
 }
 
-void print_timestep(int i){
-    if(DEBUG)
+void print_timestep(int i) {
+  if (DEBUG)
     printf("Timestep: %d\n", i + 1);
 }
 
 /*NOT WORKING*/
-void print_i_data(intersection *intersection){
-    int i;
-    if(DEBUG){
-        for (i = 0; i < 9 ; i++) {
-            switch (intersection->type) {
-                case 'c': printf("TYPE: %-3c ID: %-3d STATE: %-3d COUNTER: %d\n",(intersection+i)->type, (intersection+i)->id,(intersection+i)->layout.type_c.data.state, (intersection+i)->layout.type_c.data.counter); break;
-                case 'd': printf("TYPE: %-3c ID: %-3d STATE: %-3d COUNTER: %d\n",(intersection+i)->type,(intersection+i)->id,(intersection+i)->layout.type_d.data.state, (intersection+i)->layout.type_d.data.counter); break;
-                case 'e': printf("TYPE: %-3c ID: %-3d STATE: %-3d COUNTER: %d\n",(intersection+i)->type,(intersection+i)->id,(intersection+i)->layout.type_e.data.state, (intersection+i)->layout.type_e.data.counter); break;
+void print_i_data(intersection *intersection) {
+  int i;
+  if (DEBUG) {
+    for (i = 0; i < 9; i++) {
+      switch (intersection->type) {
+        case 'c': printf("TYPE: %-3c ID: %-3d STATE: %-3d COUNTER: %d\n", (intersection + i)->type, (intersection + i)->id,(intersection + i)->layout.type_c.data.state, (intersection + i)->layout.type_c.data.counter); break;
+        case 'd': printf("TYPE: %-3c ID: %-3d STATE: %-3d COUNTER: %d\n", (intersection + i)->type, (intersection + i)->id,(intersection + i)->layout.type_d.data.state, (intersection + i)->layout.type_d.data.counter); break;
+        case 'e': printf("TYPE: %-3c ID: %-3d STATE: %-3d COUNTER: %d\n", (intersection + i)->type, (intersection + i)->id,(intersection + i)->layout.type_e.data.state, (intersection + i)->layout.type_e.data.counter); break;
 
-            }
-        }
+      }
     }
+  }
 }
 
-void new_line(){
-    if(DEBUG)
+void new_line() {
+  if (DEBUG)
     printf("\n");
 }
 
-void print_int(char name[], int p){
-    if(DEBUG)
+void print_int(char name[], int p) {
+  if (DEBUG)
     printf("%s: %d\n", name, p);
 }
