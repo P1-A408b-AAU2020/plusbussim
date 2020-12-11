@@ -1,5 +1,4 @@
 #include "trafficlights.h"
-#include <stdio.h>
 
 void link_stop(link *link, vehicle *vehicle) {
   int car_found = 0;
@@ -216,4 +215,3 @@ int intersection_traffic_lights_type_e(vehicle *vehicle, link *link,
   }
   return Green;
 }
-
