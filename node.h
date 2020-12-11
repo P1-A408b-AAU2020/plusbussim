@@ -39,7 +39,7 @@
 #define SGHSVEJ_2_LEN       400 / CELL_LEN
 #define BERNSTFFGADE_LEN    280 / CELL_LEN
 
-#define DEBUG 0
+#define DEBUG 1
 
 #define PLUSBUS_R 10
 #define RED_T 10
