@@ -14,15 +14,20 @@ int check_link(link* link, vehicle* vehicles){
 
 void print_link(link *link, vehicle *vehicles) {
   int i, a;
-    char print;
-    if(DEBUG) {
-        printf("L%-3d: ", link->id);
-        for (i = 0; i < link->len; i++) {
-            print = link->road[i] > 0 ? vehicles[link->road[i] - 1].v + '0' : '.';
-            printf("%c", print);
-        }
-        printf("\n");
+  char print;
+  if (DEBUG){
+    a = check_link(link, vehicles);
+    if (a) {
+      printf("L%-3d: ", link->id);
+
+      for (i = 0; i < link->len; i++) {
+        print = link->road[i] > 0 ? vehicles[link->road[i] - 1].v + '0' : '.';
+        printf("%c", print);
+      }
+
+      printf("\n");
     }
+  }
 }
 
 void print_vehicles(vehicle *vehicles, int len) {
