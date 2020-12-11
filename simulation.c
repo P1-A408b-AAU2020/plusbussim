@@ -199,11 +199,6 @@ void is_finished(vehicle* vehicles, link* links, int* done){
     for(i = links->len - 1; i >= 0; i--){
         index = links->road[i] - 1;
 
-        if (index == 0) {
-            printf("test\n");
-        }
-        /* is the bus allowed on 59*/
-
         if((vehicles[index].is_plusbus || vehicles[index].is_bus) && index >= 0) {
           *done = 1;
         }
