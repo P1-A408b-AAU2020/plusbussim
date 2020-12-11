@@ -154,8 +154,8 @@ int traffic_light(link *link, vehicle *vehicle) {
                                                 link->intersection->layout.type_d.links[3]->id);
     case 'e':
       return intersection_traffic_lights_type_e(vehicle, link,
-                                                link->intersection->layout.type_e.links[8]->id,
                                                 link->intersection->layout.type_e.links[6]->id,
+                                                link->intersection->layout.type_e.links[8]->id,
                                                 link->intersection->layout.type_e.links[2]->id,
                                                 link->intersection->layout.type_e.links[0]->id,
                                                 link->intersection->layout.type_e.links[4]->id);
@@ -205,9 +205,9 @@ int intersection_traffic_lights_type_d(vehicle *vehicle, link *link,
 
 int intersection_traffic_lights_type_e(vehicle *vehicle, link *link,
                                         int pb_e, int l_e1, int l_e2,int l_e3,int l_e4) {
-  if (link->intersection->layout.type_c.data.state == Red) {
+  if (link->intersection->layout.type_e.data.state == Red) {
     if (link->id == pb_e || link->id == l_e1 || link->id == l_e2) {
-      if (link->id == pb_e || link->id == l_e2)
+      if (link->id == pb_e || link->id == l_e1)
         prioritize_plusbus(vehicle, link);
       link_stop(link, vehicle);
       return Red;
