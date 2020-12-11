@@ -53,7 +53,7 @@ void initialize_actors(vehicle* actors, link* links, int len) {
         actors[0].is_bus = 1;
         actors[0].turn_arr = (int*)malloc(sizeof(int) * 12); /* 12 = number of dir */
         for (int i = 0; i < 12; i++) {
-            actors[0].turn_arr[i] = forward;
+            actors[0].turn_arr[i] = plusbus;
         }
     }
     actors[0].turn_direction = actors[0].turn_arr[busCounter];
