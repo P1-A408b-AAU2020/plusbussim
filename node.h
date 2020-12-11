@@ -5,8 +5,9 @@
 #define DECELERATE_CHANCE 5
 #define MIN_SPEED_RANDOM_DECELERATE 2
 #define AMOUNT_LINKS 64
-#define AMOUNT_VEHICLES 40
+#define AMOUNT_VEHICLES 120
 #define END_LINK 59
+#define AMT_PLUSBUS_LINKS 16
 #define CELL_LEN 4.629
 #define N_TYPE_A 8
 #define N_TYPE_B 10
@@ -85,24 +86,17 @@ typedef enum turn_dir{forward, right, left, plusbus} turn_dir;
 
 typedef struct intersection intersection;
 
-typedef struct pocket {
-  int pos;
-  int *road;
-  int len;
-} pocket;
-
 typedef struct link {
   int id;
   int *road;
   int len;
   int time_step;
   intersection *intersection;
-  pocket left_pocket;
-  pocket right_pocket;
   int spawn_lane;
   double spawn_chance;
   float right_chance;
   float left_chance;
+  int plusbus_link;
 } link;
 
 /* Data type for all the different vehicle types. */
@@ -194,19 +188,6 @@ int internal_index(intersection* intersection, int link_id);
 int internal_index_c(intersection* intersection, int link_id);
 
 link* turn(turn_dir dir, intersection* intersection, int link_id);
-
-link* right_turn_type_a(intersection* intersection, int link_id);
-link* left_turn_type_a(intersection* intersection, int link_id);
-link* forward_type_a(intersection* intersection, int link_id);
-
-link* right_turn_type_b(intersection* intersection, int link_id);
-link* left_turn_type_b(intersection* intersection, int link_id);
-link* forward_type_b(intersection* intersection, int link_id);
-
-link* plusbus_type_c(intersection* intersection, int link_id);
-link* forward_type_c(intersection* intersection, int link_id);
-link* left_turn_type_c(intersection* intersection, int link_id);
-link* right_turn_type_c(intersection* intersection, int link_id);
 
 /* If you arrive at the given intersection on the given link,
  * returns the road you land on if you turn left at the intersection */

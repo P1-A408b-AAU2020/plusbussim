@@ -6,7 +6,7 @@
 #define RIGHT 1
 #define LEFT 5
 #define FORWARD 3
-#define AMT_SPAWN_LANES 6
+#define AMT_SPAWN_LANES 17
 
 /* The contents of this function are predefined. Make changes to how network here. */
 void build_network(intersection* intersections, link* links){
@@ -36,9 +36,10 @@ void build_network(intersection* intersections, link* links){
                                    KRIDTSJLFEN_LEN, KRIDTSJLFEN_LEN, SGHSVEJ_2_LEN, SGHSVEJ_2_LEN,
                                    SGHSVEJ_2_LEN, SGHSVEJ_2_LEN, BERNSTFFGADE_LEN, BERNSTFFGADE_LEN
                                    };
-    /*int spawn_lanes[AMT_SPAWN_LANES] = {0, 2, 6, 12, 14, 15};
-    double spawn_chances[AMT_SPAWN_LANES] = {30.5, 21.2, 15.7, 19.2, 8.5, 15.2};*/
-    int i;
+    int spawn_lanes[AMT_SPAWN_LANES] = {0, 8, 15, 17, 23, 25, 31, 35, 37, 41, 43, 47, 49, 55, 57, 61, 63};
+    double spawn_chances[AMT_SPAWN_LANES] = {9.95, 3.0, 3.0, 8.41, 6.86, 22.29, 3.0, 15.89, 3.0, 3.0, 3.04, 3.04, 44.13, 31.06, 2.12, 21.12, 1.0};
+    int plusbus_links[AMT_PLUSBUS_LINKS] = {1, 2, 3, 4, 10, 11, 18, 19, 26, 27, 44, 45, 51, 52, 59, 60};
+    int i, j = 0, k = 0;
     for (i = jylgade_1_east; i <= bernstorffsgade_west; i++){
         links[i].id    = i;
         links[i].road  = (int*)calloc(link_length[i], sizeof(int));
@@ -47,17 +48,24 @@ void build_network(intersection* intersections, link* links){
         links[i].intersection = NULL;
         links[i].left_chance  = 0;
         links[i].right_chance = 0;
-/*
+
         if (links[i].id == spawn_lanes[j]){
             links[i].spawn_lane = 1;
-            links[i].spawn_chance = 0;  spawn_chances[k];
-            k++;
+            links[i].spawn_chance = spawn_chances[j];
             j++;
         }
         else {
             links[i].spawn_lane = 0;
             links[i].spawn_chance = 0.0;
-        }*/
+        }
+
+        if (links[i].id == plusbus_links[k]) {
+          links[i].plusbus_link = 1;
+          k++;
+        }
+        else
+          links[i].plusbus_link = 0;
+
     }
     links[fyensgade_east].right_chance       = 100;
     links[bornholmsgade_2_south].left_chance = 100;
@@ -137,7 +145,7 @@ void construct_type_b(intersection* intersection, int id,
   for (i = 0; i < N_TYPE_B; ++i) {
     intersection->layout.type_b.links[i] = links[i];
 
-    if (i < 6 && (i + 1) % 2 == 0 || i >= 6 && (i + 1) % 2)
+    if (((i < 6) && ((i + 1) % 2 == 0)) || ((i >= 6) && ((i + 1) % 2)))
       links[i]->intersection = intersection;
   }
 }
@@ -205,7 +213,7 @@ void construct_type_e(intersection* intersection, int id,
   for (i = 0; i < N_TYPE_E; ++i) {
     intersection->layout.type_e.links[i] = links[i];
 
-    if ((i == 0 || i == 1) || i >= 4 && (i + 1) % 2)
+    if ((i == 0 || i == 1) || ((i >= 4) && ((i + 1) % 2)))
       links[i]->intersection = intersection;
   }
 }
@@ -321,22 +329,22 @@ int lead_gap(link* link, int pos) {
 
 void spawn_car(link *link, vehicle *vehicles) {
   int car_spawned = 0;
-  int i = 1;
+  int i = 0;
 
   while (!car_spawned) {
     if (!(vehicles + i)->active) {
-      if (!(vehicles + link->road[0])->id) {
+      if (!link->road[0]) {
         if (rand() % 101 <= link->spawn_chance) {
-          link->road[0] = (vehicles + i)->id;
-          (vehicles + i)->active = 1;
-          (vehicles + i)->v = V_MAX;
-          car_spawned = 1;
+          link->road[0] = (vehicles+ i)->id;
+          (vehicles+i)->active = 1;
+          (vehicles+i)->v = V_MAX;
         }
       }
+      car_spawned = 1;
+    }
+    if (i == AMOUNT_VEHICLES - 1){
       break;
     }
-    if (i > AMOUNT_VEHICLES)
-      break;
     i++;
   }
 }

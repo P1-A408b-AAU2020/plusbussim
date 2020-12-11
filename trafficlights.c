@@ -3,6 +3,7 @@
 void link_stop(link *link, vehicle *vehicle) {
   int car_found = 0;
   int i = 2, l, p;
+
   if (link->road[link->len - 1] == 0) {
     while (!car_found) {
       if (i <= 6) {
@@ -32,6 +33,9 @@ int check_plusbus(vehicle *vehicle, link *link) {
         plusbus_found = 1;
       }
     }
+    else {
+      break;
+    }
     i++;
   }
   return run;
@@ -39,7 +43,6 @@ int check_plusbus(vehicle *vehicle, link *link) {
 
 void prioritize_plusbus(vehicle *vehicle, link *link) {
   int pb = check_plusbus(vehicle, link);
-  print_int("RUN", pb);
   switch (link->intersection->type) {
     case 'c':
       if (pb == 1 && link->intersection->layout.type_c.data.state == Green && link->intersection->layout.type_c.data.counter < PLUSBUS_R && link->intersection->layout.type_c.data.counter != 0) {

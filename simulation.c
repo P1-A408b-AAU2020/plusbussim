@@ -44,7 +44,7 @@ int main(void) {
 }
 
 void initialize_actors(vehicle* actors, link* links) {
-  int n, i;
+  int n, i, ran_link;
   actors->id = 1;
   actors->v = 0;
   actors->is_plusbus = 1;
@@ -59,21 +59,22 @@ void initialize_actors(vehicle* actors, link* links) {
     actors[i].is_plusbus = 0;
     actors[i].turn_direction = forward;
     actors[i].has_moved = 0;
-    actors[i].active = 1;
 
-    do n = rand() % links->len;
-    while (links->road[n] != 0);
 
-    links->road[n] = i + 1;
 
-    /*if (actors[i].id < AMOUNT_VEHICLES/2) {
-        actors[i].active = 1;
-        int l = rand()%len;
-        links[l].road[rand()%links[l].len] = i;
+    if (actors[i].id < AMOUNT_VEHICLES/3) {
+      do ran_link = rand() % AMOUNT_LINKS;
+      while (links[ran_link].plusbus_link);
+
+      actors[i].active = 1;
+        do n = rand() % links[ran_link].len;
+        while (links[ran_link].road[n] != 0);
+
+      links[ran_link].road[n] = i + 1;
     }
     else
-        actors[i].active = 0;
-    */
+      actors[i].active = 0;
+
   }
 
   actors[0].is_plusbus = 1;
@@ -99,8 +100,8 @@ void simulate_all_links(link *links, vehicle *vehicles, int* done) {
 
 void time_step(link *link, vehicle *vehicles) {
   int i;
-  /*if (link->spawn_lane)
-      spawn_car(link, vehicles);*/
+  if (link->spawn_lane)
+    spawn_car(link, vehicles);
 
   link->time_step++;
   change_speed(link, vehicles);
@@ -187,15 +188,15 @@ void change_speed(link *link, vehicle *vehicles) {
         }
 
       }
-
         /* There is no intersection */
       else if (v < V_MAX && gap > v)
         vehicles[index].v++;
 
+      else if (i + gap == link->len - 1 && link->intersection == NULL)
+        vehicles[index].active = 0;
+
       else if (gap < v)
         vehicles[index].v = gap;
-
-      assert(vehicles[index].v <= gap + gap2);
     }
   }
 }
