@@ -43,7 +43,7 @@ void prioritize_plusbus(vehicle *vehicle, link *link) {
   switch (link->intersection->type) {
     case 'c':
       if (pb == 1 && link->intersection->layout.type_c.data.state == Green && link->intersection->layout.type_c.data.counter < PLUSBUS_R && link->intersection->layout.type_c.data.counter != 0) {
-        link->intersection->layout.type_c.data.counter += PLUSBUS_GREEN_ADJUST;
+        link->intersection->layout.type_c.data.counter -= PLUSBUS_GREEN_ADJUST;
       } else if (pb == 1 && link->intersection->layout.type_c.data.state == Red) {
         link->intersection->layout.type_c.data.counter += PLUSBUS_RED_ADJUST;
       }
@@ -51,7 +51,7 @@ void prioritize_plusbus(vehicle *vehicle, link *link) {
 
     case 'd':
       if (pb == 1 && link->intersection->layout.type_d.data.state == Green && link->intersection->layout.type_d.data.counter < PLUSBUS_R && link->intersection->layout.type_d.data.counter != 0) {
-        link->intersection->layout.type_d.data.counter += PLUSBUS_GREEN_ADJUST;
+        link->intersection->layout.type_d.data.counter -= PLUSBUS_GREEN_ADJUST;
       } else if (pb == 1 && link->intersection->layout.type_d.data.state == Red) {
         link->intersection->layout.type_d.data.counter += PLUSBUS_RED_ADJUST;
       }
@@ -59,7 +59,7 @@ void prioritize_plusbus(vehicle *vehicle, link *link) {
 
     case 'e':
       if (pb == 1 && link->intersection->layout.type_e.data.state == Green && link->intersection->layout.type_e.data.counter < PLUSBUS_R && link->intersection->layout.type_c.data.counter != 0) {
-        link->intersection->layout.type_e.data.counter += PLUSBUS_GREEN_ADJUST;
+        link->intersection->layout.type_e.data.counter -= PLUSBUS_GREEN_ADJUST;
       } else if (pb == 1 && link->intersection->layout.type_e.data.state == Red) {
         link->intersection->layout.type_e.data.counter += PLUSBUS_RED_ADJUST;
       }
