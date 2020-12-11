@@ -28,7 +28,7 @@ int main(void) {
   initialize_actors(vehicles, links);
 
   while (!done) {
-    printf("Timestep: %d\n", i + 1);
+    print_int("Timestep", i+1);
     change_state(nodes);
     simulate_all_links(links, vehicles, &done);
     ++i;
@@ -77,7 +77,7 @@ void initialize_actors(vehicle* actors, link* links) {
   }
 
   actors[0].is_plusbus = 1;
-  printf("\n");
+  new_line();
 }
 
 void simulate_all_links(link *links, vehicle *vehicles, int* done) {
@@ -94,7 +94,7 @@ void simulate_all_links(link *links, vehicle *vehicles, int* done) {
     }
   }
 
-  printf("\n");
+  new_line();
 }
 
 void time_step(link *link, vehicle *vehicles) {

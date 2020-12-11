@@ -70,11 +70,6 @@ int check_status(link *link, int amount) {
     }
 }
 
-void print_timestep(int i) {
-  if (DEBUG)
-    printf("Timestep: %d\n", i + 1);
-}
-
 /*NOT WORKING*/
 void print_i_data(intersection *intersection) {
   int i;

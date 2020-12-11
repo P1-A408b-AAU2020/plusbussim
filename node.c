@@ -62,8 +62,6 @@ void build_network(intersection* intersections, link* links){
     links[fyensgade_east].right_chance       = 100;
     links[bornholmsgade_2_south].left_chance = 100;
 
-    printf("længde af vej: %d", links[0].len);
-
     construct_type_b(intersections, 0,links+jylgade_1_east,links+jylgade_2_east, links+jylgade_2_west,links+jylgade_1_west,
                      links+aagade_south,links+aagade_north,links+jylgade_1_east_plusbus,links+jylgade_2_east_plusbus,
                      links+jylgade_2_west_plusbus, links+jylgade_1_west_plusbus);
