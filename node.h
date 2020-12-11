@@ -8,31 +8,36 @@
 #define AMOUNT_VEHICLES 40
 #define END_LINK 59
 #define CELL_LEN 4.629
-#define JYLGADE_1_LEN (int)(round(200/CELL_LEN))
-#define JYLGADE_2_LEN (int) (round(120/CELL_LEN))
-#define AAGADE_LEN (int) (round(150/CELL_LEN))
-#define JYLGADE_3_LEN (int) (round(120/CELL_LEN))
-#define NIELS_EBS_GADE_LEN (int) (round(120/CELL_LEN))
-#define DAG_HAM_GADE_1_LEN (int) (round(70/CELL_LEN))
-#define JYLGADE_4_LEN (int) (round(300/CELL_LEN))
-#define DAG_HAM_GADE_2_LEN (int) (round(100/CELL_LEN))
-#define SDRBRO_LEN (int) (round(300/CELL_LEN))
-#define FYENSGADE_LEN (int) (round(180/CELL_LEN))
-#define KJELRUPSGADE_LEN (int) (round(160/CELL_LEN))
-#define KAROLUNDSVEJ_LEN (int) (round(350/CELL_LEN))
-#define BORNHOLMSGADE_1_LEN (int) (round(110/CELL_LEN))
-#define FAEROESGADE_1_LEN (int) (round(160/CELL_LEN))
-#define BORNHOLMSGADE_2_LEN (int) (round(190/CELL_LEN))
-#define FAEROESGADE_2_LEN (int) (round(230/CELL_LEN))
-#define SJAELGADE_1_LEN (int) (round(160/CELL_LEN))
-#define BORNHOLMSGADE_3_LEN (int) (round(220/CELL_LEN))
-#define SJAELGADE_2_LEN (int) (round(250/CELL_LEN))
-#define OESTER_ALLE_1_LEN (int) (round(250/CELL_LEN))
-#define SGHSVEJ_1_LEN (int) (round(300/CELL_LEN))
-#define OESTER_ALLE_2_LEN (int) (round(300/CELL_LEN))
-#define KRIDTSJLFEN_LEN (int) (round(100/CELL_LEN))
-#define SGHSVEJ_2_LEN (int) (round(400/CELL_LEN))
-#define BERNSTFFGADE_LEN (int) (round(280/CELL_LEN))
+#define N_TYPE_A 8
+#define N_TYPE_B 10
+#define N_TYPE_C 12
+#define N_TYPE_D 8
+#define N_TYPE_E 10
+#define JYLGADE_1_LEN       200 / CELL_LEN
+#define JYLGADE_2_LEN       120 / CELL_LEN
+#define AAGADE_LEN          150 / CELL_LEN
+#define JYLGADE_3_LEN       120 / CELL_LEN
+#define NIELS_EBS_GADE_LEN  120 / CELL_LEN
+#define DAG_HAM_GADE_1_LEN  70  / CELL_LEN
+#define JYLGADE_4_LEN       300 / CELL_LEN
+#define DAG_HAM_GADE_2_LEN  100 / CELL_LEN
+#define SDRBRO_LEN          300 / CELL_LEN
+#define FYENSGADE_LEN       180 / CELL_LEN
+#define KJELRUPSGADE_LEN    160 / CELL_LEN
+#define KAROLUNDSVEJ_LEN    350 / CELL_LEN
+#define BORNHOLMSGADE_1_LEN 110 / CELL_LEN
+#define FAEROESGADE_1_LEN   160 / CELL_LEN
+#define BORNHOLMSGADE_2_LEN 190 / CELL_LEN
+#define FAEROESGADE_2_LEN   230 / CELL_LEN
+#define SJAELGADE_1_LEN     160 / CELL_LEN
+#define BORNHOLMSGADE_3_LEN 220 / CELL_LEN
+#define SJAELGADE_2_LEN     250 / CELL_LEN
+#define OESTER_ALLE_1_LEN   250 / CELL_LEN
+#define SGHSVEJ_1_LEN       300 / CELL_LEN
+#define OESTER_ALLE_2_LEN   300 / CELL_LEN
+#define KRIDTSJLFEN_LEN     100 / CELL_LEN
+#define SGHSVEJ_2_LEN       400 / CELL_LEN
+#define BERNSTFFGADE_LEN    280 / CELL_LEN
 
 #define DEBUG 1
 
