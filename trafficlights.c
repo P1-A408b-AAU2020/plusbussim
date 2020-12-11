@@ -40,7 +40,6 @@ int check_plusbus(vehicle *vehicle, link *link) {
 
 void prioritize_plusbus(vehicle *vehicle, link *link) {
   int pb = check_plusbus(vehicle, link);
-  printf(" RUN = %d \n", pb);
   switch (link->intersection->type) {
     case 'c':
       if (pb == 1 && link->intersection->layout.type_c.data.state == Green &&

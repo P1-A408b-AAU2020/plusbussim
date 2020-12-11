@@ -108,6 +108,10 @@ void time_step(link *link, vehicle *vehicles) {
   print_link(link, vehicles);
 
   move(link, vehicles);
+
+
+  for (int i = 0; i < AMOUNT_VEHICLES; i++)
+    vehicles[i].has_moved = 0;
 }
 
 void move(link *link, vehicle *vehicles) {
