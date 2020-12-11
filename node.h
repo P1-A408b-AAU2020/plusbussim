@@ -85,20 +85,12 @@ typedef enum turn_dir{forward, right, left, plusbus} turn_dir;
 
 typedef struct intersection intersection;
 
-typedef struct pocket {
-  int pos;
-  int *road;
-  int len;
-} pocket;
-
 typedef struct link {
   int id;
   int *road;
   int len;
   int time_step;
   intersection *intersection;
-  pocket left_pocket;
-  pocket right_pocket;
   int spawn_lane;
   double spawn_chance;
   float right_chance;
