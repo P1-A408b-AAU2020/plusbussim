@@ -95,11 +95,13 @@ void simulate_all_links(link *links, vehicle *vehicles, int* done) {
     }
   }
 
+  for (i = 0; i < AMOUNT_VEHICLES; i++)
+    vehicles[i].has_moved = 0;
+
   new_line();
 }
 
 void time_step(link *link, vehicle *vehicles) {
-  int i;
   if (link->spawn_lane)
     spawn_car(link, vehicles);
 
@@ -112,8 +114,7 @@ void time_step(link *link, vehicle *vehicles) {
   move(link, vehicles);
 
 
-  for (i = 0; i < AMOUNT_VEHICLES; i++)
-    vehicles[i].has_moved = 0;
+
 }
 
 void move(link *link, vehicle *vehicles) {

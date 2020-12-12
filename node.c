@@ -69,6 +69,8 @@ void build_network(intersection* intersections, link* links){
     }
     links[fyensgade_east].right_chance       = 100;
     links[bornholmsgade_2_south].left_chance = 100;
+    links[sjaelgade_1_east].left_chance      = 100;
+    links[sjaelgade_2_west].right_chance     = 100;
 
     construct_type_b(intersections, 0,links+jylgade_1_east,links+jylgade_2_east, links+jylgade_2_west,links+jylgade_1_west,
                      links+aagade_south,links+aagade_north,links+jylgade_1_east_plusbus,links+jylgade_2_east_plusbus,
@@ -253,7 +255,7 @@ link* right_turn(intersection *intersection, int link_id) {
 link* left_turn(intersection *intersection, int link_id) {
   link *result;
   link** links = get_links(intersection);
-  result = links[(internal_index(intersection, link_id) + LEFT) % 8];
+    result = links[(internal_index(intersection, link_id) + LEFT) % 8];
 
   return result;
 }
@@ -261,7 +263,14 @@ link* left_turn(intersection *intersection, int link_id) {
 link* go_forward(intersection *intersection, int link_id) {
   link *result;
   link** links = get_links(intersection);
-  result = links[(internal_index(intersection, link_id) + FORWARD) % 8];
+  if (intersection->type == 'e'){
+    if (internal_index(intersection, link_id) == 0)
+      result = links[(internal_index(intersection, link_id) + 3)];
+    else
+      result = links[(internal_index(intersection, link_id) + 1)];
+  }
+  else
+    result = links[(internal_index(intersection, link_id) + FORWARD) % 8];
 
   return result;
 }
