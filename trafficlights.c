@@ -28,7 +28,7 @@ int check_plusbus(vehicle *vehicle, link *link) {
   while (!plusbus_found) {
     if (i <= PLUSBUS_R) {
       l = link->road[link->len - i];
-      if (l != 0 && vehicle[l - 1].is_plusbus) {
+      if (l != 0 && (vehicle[l - 1].is_plusbus || vehicle[l - 1].is_bus)) {
         run = 1;
         plusbus_found = 1;
       }
