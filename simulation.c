@@ -13,6 +13,7 @@ void time_step(link* links, vehicle* vehicles);
 void move(link *link, vehicle *vehicles);
 void change_speed(link* link, vehicle* vehicles);
 void is_finished(vehicle* vehicle, link* links, int* done);
+void free_actors(vehicle* actors);
 
 int timer = 0;
 
@@ -39,27 +40,60 @@ int main(void) {
     free(links[j].road);
   }
 
+  free_actors(vehicles);
+
   return EXIT_SUCCESS;
+}
+
+void free_actors(vehicle *actors) {
+    for (int i = 0; i < AMOUNT_VEHICLES; i++) {
+        free(actors[i].turn_direction);
+    }
 }
 
 void initialize_actors(vehicle* actors, link* links) {
   int n, i, ran_link;
   actors->id = 1;
   actors->v = 0;
-  actors->is_plusbus = 1;
-  actors->turn_direction = plusbus;
   actors->has_moved = 0;
   actors->active = 1;
+  actors->intersec_counter = 0;
+  if (PLUS_OR_BUS) {
+    actors->is_bus = 0;
+    actors->is_plusbus = 1;
+  }
+  else {
+    actors->is_bus = 1;
+    actors->is_plusbus = 0;
+  }
+  if (PLUS_OR_BUS) {
+    /* TODO: plusbus route length has to be set */
+    actors->turn_direction = (turn_dir*)malloc(sizeof(turn_dir) * PLUSBUS_ROUTE_LEN);
+
+    for (int i = 0; i < PLUSBUS_ROUTE_LEN; i++) {
+      actors->turn_direction[i] = plusbus;
+    }
+  }
+  else {
+    /* TODO: bus route length has to be set */
+    actors->turn_direction = (turn_dir*)malloc(sizeof(turn_dir) * BUS_ROUTE_LEN);
+
+    for (int i = 0; i < BUS_ROUTE_LEN; i++) {
+      actors->turn_direction[i] = plusbus;
+    }
+  }
+  
   links[2].road[0] = 1;
 
   for (i = 1; i < AMOUNT_VEHICLES; i++) {
     actors[i].id = i + 1;
     actors[i].v = 0;
+    actors[i].is_bus = 0;
     actors[i].is_plusbus = 0;
-    actors[i].turn_direction = forward;
+    actors[i].intersec_counter = 0;
+    actors[i].turn_direction = (turn_dir*)malloc(sizeof(turn_dir) * 1);
+    actors[i].turn_direction[0] = forward;
     actors[i].has_moved = 0;
-
-
 
     if (actors[i].id < AMOUNT_VEHICLES/3) {
       do ran_link = rand() % AMOUNT_LINKS;
@@ -73,10 +107,8 @@ void initialize_actors(vehicle* actors, link* links) {
     }
     else
       actors[i].active = 0;
-
   }
 
-  actors[0].is_plusbus = 1;
   new_line();
 }
 
@@ -112,8 +144,6 @@ void time_step(link *link, vehicle *vehicles) {
 
   move(link, vehicles);
 
-
-
 }
 
 void move(link *link, vehicle *vehicles) {
@@ -138,12 +168,17 @@ void move(link *link, vehicle *vehicles) {
         else if (link->intersection != NULL) {
 
           /* Place vehicle on new link */
-          new_link = turn(vehicles[index].turn_direction, link->intersection, link->id);
+          new_link = turn(vehicles[index].turn_direction[0], link->intersection, link->id);
           new_link->road[i + v - link->len] = id;
 
           /* Find out where to turn next */
-          next_turn = decide_turn_dir(new_link, vehicles[index].is_plusbus);
-          vehicles[index].turn_direction = next_turn;
+          if (!vehicles[index].is_bus) {
+              next_turn = decide_turn_dir(new_link, vehicles[index].is_plusbus);
+           
+              for (int i = 0; i < ROUTE_LEN; i++) {
+                  vehicles[index].turn_direction[i] = next_turn;
+              }
+          }
 
           vehicles[index].has_moved = 1;
         }
@@ -172,7 +207,11 @@ void change_speed(link *link, vehicle *vehicles) {
       if (i + gap == link->len - 1 && link->intersection != NULL) {
 
         if (traffic_light(link, vehicles)) {
-          new_link = turn(vehicles[index].turn_direction, link->intersection, link->id);
+          new_link = turn(vehicles[index].turn_direction[vehicles[index].intersec_counter], link->intersection, link->id);
+
+          if (vehicles[index].is_bus) {
+              vehicles[index].intersec_counter++;
+          }
 
           if (new_link->time_step < timer)
             time_step(new_link, vehicles);
@@ -201,14 +240,15 @@ void change_speed(link *link, vehicle *vehicles) {
   }
 }
 
-void is_finished(vehicle* vehicle, link* links, int* done) {
+void is_finished(vehicle* vehicles, link* links, int* done) {
   int i, index;
 
   /*Checks if the Plusbus has reached its destination */
   for (i = links->len - 1; i >= 0; i--) {
     index = links->road[i] - 1;
 
-    if (vehicle[index].is_plusbus && index >= 0)
+    if ((vehicles[index].is_plusbus || vehicles[index].is_bus) && index >= 0) {
       *done = 1;
+    }
   }
 }

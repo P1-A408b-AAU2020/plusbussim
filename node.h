@@ -9,6 +9,12 @@
 #define END_LINK 59
 #define AMT_PLUSBUS_LINKS 16
 #define CELL_LEN 4.629
+
+#define ROUTE_LEN 1
+#define PLUSBUS_ROUTE_LEN 1
+#define BUS_ROUTE_LEN 12
+#define PLUS_OR_BUS 0
+
 #define N_TYPE_A 8
 #define N_TYPE_B 10
 #define N_TYPE_C 12
@@ -105,8 +111,10 @@ typedef struct vehicle {
   int v;
   int active;
   int is_plusbus;
-  turn_dir turn_direction;
+  int is_bus;
   int has_moved;
+  int intersec_counter;
+  turn_dir *turn_direction;
 } vehicle;
 
 
