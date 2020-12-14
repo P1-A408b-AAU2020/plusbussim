@@ -164,8 +164,13 @@ void construct_type_c(intersection* intersection, int id,
                            plusbus2_exit,    plusbus1_enter,  plusbus1_exit};
   intersection->id = id;
   intersection->type = 'c';
-  intersection->layout.type_c.data.counter = 0;
-  intersection->layout.type_c.data.state = 0;
+  intersection->layout.type_c.data.state = rand() % 2;
+  if(intersection->layout.type_c.data.state){
+    intersection->layout.type_c.data.counter = rand() % GREEN_T;
+  }
+  else{
+    intersection->layout.type_c.data.counter = rand() % RED_T;
+  }
   intersection->n = N_TYPE_C;
   for (i = 0; i < N_TYPE_C; ++i) {
     intersection->layout.type_c.links[i] = links[i];
@@ -185,8 +190,13 @@ void construct_type_d(intersection* intersection, int id,
                            plusbus_exit,    plusbus_enter};
   intersection->id = id;
   intersection->type = 'd';
-  intersection->layout.type_d.data.counter = 0;
-  intersection->layout.type_d.data.state = 0;
+  intersection->layout.type_d.data.state = rand() % 2;
+  if(intersection->layout.type_d.data.state){
+    intersection->layout.type_d.data.counter = rand() % GREEN_T;
+  }
+  else{
+    intersection->layout.type_d.data.counter = rand() % RED_T;
+  }
   intersection->n = N_TYPE_D;
   for (i = 0; i < N_TYPE_D; ++i) {
     intersection->layout.type_d.links[i] = links[i];
@@ -209,8 +219,13 @@ void construct_type_e(intersection* intersection, int id,
                            plusbus1_exit};
   intersection->id = id;
   intersection->type = 'e';
-  intersection->layout.type_e.data.counter = 0;
-  intersection->layout.type_e.data.state = 0;
+  intersection->layout.type_e.data.state = rand() % 2;
+  if(intersection->layout.type_e.data.state){
+    intersection->layout.type_e.data.counter = rand() % GREEN_T;
+  }
+  else{
+    intersection->layout.type_e.data.counter = rand() % RED_T;
+  }
   intersection->n = N_TYPE_E;
   for (i = 0; i < N_TYPE_E; ++i) {
     intersection->layout.type_e.links[i] = links[i];
