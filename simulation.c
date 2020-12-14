@@ -13,6 +13,7 @@ void time_step(link* links, vehicle* vehicles);
 void move(link *link, vehicle *vehicles);
 void change_speed(link* link, vehicle* vehicles);
 void is_finished(vehicle* vehicle, link* links, int* done);
+void free_actors(vehicle* actors);
 
 int timer = 0;
 
@@ -40,7 +41,15 @@ int main(void) {
     free(links[j].road);
   }
 
+  free_actors(vehicles);
+
   return EXIT_SUCCESS;
+}
+
+void free_actors(vehicle *actors) {
+    for (int i = 0; i < AMOUNT_VEHICLES; i++) {
+        free(actors[i].turn_direction);
+    }
 }
 
 void initialize_actors(vehicle* actors, link* links) {
@@ -68,7 +77,7 @@ void initialize_actors(vehicle* actors, link* links) {
   }
   else {
     /* TODO: bus route length has to be set */
-    actors->turn_direction = (turn_dir*)malloc(sizeof(turn_dir) * 1);
+    actors->turn_direction = (turn_dir*)malloc(sizeof(turn_dir) * 8);
 
     for (int i = 0; i < 1; i++) {
       actors->turn_direction[i] = plusbus;
@@ -133,8 +142,6 @@ void time_step(link *link, vehicle *vehicles) {
   print_link(link, vehicles);
 
   move(link, vehicles);
-
-
 
 }
 
