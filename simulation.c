@@ -47,20 +47,43 @@ void initialize_actors(vehicle* actors, link* links) {
   int n, i, ran_link;
   actors->id = 1;
   actors->v = 0;
-  actors->is_plusbus = 1;
-  actors->turn_direction = plusbus;
   actors->has_moved = 0;
   actors->active = 1;
+  actors->intersec_counter = 0;
+  if (1) {
+    actors->is_bus = 1;
+    actors->is_plusbus = 0;
+  }
+  else {
+    actors->is_bus = 0;
+    actors->is_plusbus = 1;
+  }
+  if (1) {
+    /* TODO: plusbus route length has to be set */
+    actors->turn_direction = (turn_dir*)malloc(sizeof(turn_dir) * 1);
+
+    for (int i = 0; i < 1; i++) {
+      actors->turn_direction[i] = plusbus;
+    }
+  }
+  else {
+    /* TODO: bus route length has to be set */
+    actors->turn_direction = (turn_dir*)malloc(sizeof(turn_dir) * 1);
+
+    for (int i = 0; i < 1; i++) {
+      actors->turn_direction[i] = plusbus;
+    }
+  }
+  
   links[2].road[0] = 1;
 
   for (i = 1; i < AMOUNT_VEHICLES; i++) {
     actors[i].id = i + 1;
     actors[i].v = 0;
     actors[i].is_plusbus = 0;
-    actors[i].turn_direction = forward;
+    actors[i].turn_direction = (turn_dir*)malloc(sizeof(turn_dir) * 1);
+    actors[i].turn_direction[0] = forward;
     actors[i].has_moved = 0;
-
-
 
     if (actors[i].id < AMOUNT_VEHICLES/3) {
       do ran_link = rand() % AMOUNT_LINKS;
@@ -74,10 +97,8 @@ void initialize_actors(vehicle* actors, link* links) {
     }
     else
       actors[i].active = 0;
-
   }
 
-  actors[0].is_plusbus = 1;
   new_line();
 }
 
@@ -202,14 +223,15 @@ void change_speed(link *link, vehicle *vehicles) {
   }
 }
 
-void is_finished(vehicle* vehicle, link* links, int* done) {
+void is_finished(vehicle* vehicles, link* links, int* done) {
   int i, index;
 
   /*Checks if the Plusbus has reached its destination */
   for (i = links->len - 1; i >= 0; i--) {
     index = links->road[i] - 1;
 
-    if (vehicle[index].is_plusbus && index >= 0)
+    if ((vehicles[index].is_plusbus || vehicles[index].is_bus) && index >= 0) {
       *done = 1;
+    }
   }
 }

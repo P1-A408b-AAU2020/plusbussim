@@ -105,8 +105,10 @@ typedef struct vehicle {
   int v;
   int active;
   int is_plusbus;
-  turn_dir turn_direction;
+  int is_bus;
   int has_moved;
+  int intersec_counter;
+  turn_dir* turn_direction;
 } vehicle;
 
 
