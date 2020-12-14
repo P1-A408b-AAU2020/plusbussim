@@ -59,7 +59,7 @@ void initialize_actors(vehicle* actors, link* links) {
   actors->has_moved = 0;
   actors->active = 1;
   actors->intersec_counter = 0;
-  if (1) {
+  if (PLUS_OR_BUS) {
     actors->is_bus = 0;
     actors->is_plusbus = 1;
   }
@@ -67,7 +67,7 @@ void initialize_actors(vehicle* actors, link* links) {
     actors->is_bus = 1;
     actors->is_plusbus = 0;
   }
-  if (1) {
+  if (PLUS_OR_BUS) {
     /* TODO: plusbus route length has to be set */
     actors->turn_direction = (turn_dir*)malloc(sizeof(turn_dir) * PLUSBUS_ROUTE_LEN);
 
@@ -89,7 +89,9 @@ void initialize_actors(vehicle* actors, link* links) {
   for (i = 1; i < AMOUNT_VEHICLES; i++) {
     actors[i].id = i + 1;
     actors[i].v = 0;
+    actors[i].is_bus = 0;
     actors[i].is_plusbus = 0;
+    actors[i].intersec_counter = 0;
     actors[i].turn_direction = (turn_dir*)malloc(sizeof(turn_dir) * 1);
     actors[i].turn_direction[0] = forward;
     actors[i].has_moved = 0;
@@ -167,19 +169,19 @@ void move(link *link, vehicle *vehicles) {
         else if (link->intersection != NULL) {
 
           /* Place vehicle on new link */
-          new_link = turn(vehicles[index].turn_direction, link->intersection, link->id);
+          new_link = turn(vehicles[index].turn_direction[0], link->intersection, link->id);
           new_link->road[i + v - link->len] = id;
 
           /* Find out where to turn next */
-          if (vehicles[index].is_bus) {
+          if (!vehicles[index].is_bus) {
               next_turn = decide_turn_dir(new_link, vehicles[index].is_plusbus);
-              vehicles[index].turn_direction = next_turn;
+           
+              for (int i = 0; i < ROUTE_LEN; i++) {
+                  vehicles[index].turn_direction[i] = next_turn;
+              }
           }
-          else {
-              next_turn = decide_turn_dir(new_link, vehicles[index].is_plusbus);
-              vehicles[index].turn_direction = next_turn;
-              vehicles[index].has_moved = 1;
-          }
+
+          vehicles[index].has_moved = 1;
         }
       }
 
@@ -206,7 +208,11 @@ void change_speed(link *link, vehicle *vehicles) {
       if (i + gap == link->len - 1 && link->intersection != NULL) {
 
         if (traffic_light(link, vehicles)) {
-          new_link = turn(vehicles[index].turn_direction, link->intersection, link->id);
+          new_link = turn(vehicles[index].turn_direction[vehicles[index].intersec_counter], link->intersection, link->id);
+
+          if (vehicles[index].is_bus) {
+              vehicles[index].intersec_counter++;
+          }
 
           if (new_link->time_step < timer)
             time_step(new_link, vehicles);

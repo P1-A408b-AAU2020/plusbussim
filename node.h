@@ -12,7 +12,8 @@
 
 #define ROUTE_LEN 1
 #define PLUSBUS_ROUTE_LEN 1
-#define BUS_ROUTE_LEN 8
+#define BUS_ROUTE_LEN 12
+#define PLUS_OR_BUS 0
 
 #define N_TYPE_A 8
 #define N_TYPE_B 10
@@ -113,7 +114,7 @@ typedef struct vehicle {
   int is_bus;
   int has_moved;
   int intersec_counter;
-  turn_dir* turn_direction;
+  turn_dir *turn_direction;
 } vehicle;
 
 
