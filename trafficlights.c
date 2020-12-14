@@ -13,6 +13,8 @@ void link_stop(link *link, vehicle *vehicle) {
           car_found = 1;
         }
       }
+      else
+        break;
       i++;
     }
   } else {

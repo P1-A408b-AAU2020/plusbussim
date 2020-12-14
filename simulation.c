@@ -32,7 +32,6 @@ int main(void) {
     change_state(nodes);
     simulate_all_links(links, vehicles, &done);
     ++i;
-    //(nodes+2)->layout.type_c.data.counter++;
   }
   print_status(vehicles, seed, links + 46, timer);
 
