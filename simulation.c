@@ -60,26 +60,26 @@ void initialize_actors(vehicle* actors, link* links) {
   actors->active = 1;
   actors->intersec_counter = 0;
   if (1) {
-    actors->is_bus = 1;
-    actors->is_plusbus = 0;
-  }
-  else {
     actors->is_bus = 0;
     actors->is_plusbus = 1;
   }
+  else {
+    actors->is_bus = 1;
+    actors->is_plusbus = 0;
+  }
   if (1) {
     /* TODO: plusbus route length has to be set */
-    actors->turn_direction = (turn_dir*)malloc(sizeof(turn_dir) * 1);
+    actors->turn_direction = (turn_dir*)malloc(sizeof(turn_dir) * PLUSBUS_ROUTE_LEN);
 
-    for (int i = 0; i < 1; i++) {
+    for (int i = 0; i < PLUSBUS_ROUTE_LEN; i++) {
       actors->turn_direction[i] = plusbus;
     }
   }
   else {
     /* TODO: bus route length has to be set */
-    actors->turn_direction = (turn_dir*)malloc(sizeof(turn_dir) * 8);
+    actors->turn_direction = (turn_dir*)malloc(sizeof(turn_dir) * BUS_ROUTE_LEN);
 
-    for (int i = 0; i < 1; i++) {
+    for (int i = 0; i < BUS_ROUTE_LEN; i++) {
       actors->turn_direction[i] = plusbus;
     }
   }
@@ -171,10 +171,15 @@ void move(link *link, vehicle *vehicles) {
           new_link->road[i + v - link->len] = id;
 
           /* Find out where to turn next */
-          next_turn = decide_turn_dir(new_link, vehicles[index].is_plusbus);
-          vehicles[index].turn_direction = next_turn;
-
-          vehicles[index].has_moved = 1;
+          if (vehicles[index].is_bus) {
+              next_turn = decide_turn_dir(new_link, vehicles[index].is_plusbus);
+              vehicles[index].turn_direction = next_turn;
+          }
+          else {
+              next_turn = decide_turn_dir(new_link, vehicles[index].is_plusbus);
+              vehicles[index].turn_direction = next_turn;
+              vehicles[index].has_moved = 1;
+          }
         }
       }
 

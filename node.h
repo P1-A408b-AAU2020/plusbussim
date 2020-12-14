@@ -9,6 +9,11 @@
 #define END_LINK 59
 #define AMT_PLUSBUS_LINKS 16
 #define CELL_LEN 4.629
+
+#define ROUTE_LEN 1
+#define PLUSBUS_ROUTE_LEN 1
+#define BUS_ROUTE_LEN 8
+
 #define N_TYPE_A 8
 #define N_TYPE_B 10
 #define N_TYPE_C 12
