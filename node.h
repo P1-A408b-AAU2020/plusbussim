@@ -14,6 +14,8 @@
 #define ROUTE_LEN 1
 #define PLUSBUS_ROUTE_LEN 1
 #define BUS_ROUTE_LEN 12
+
+/*Bus: 0, Plusbus: 1*/
 #define PLUS_OR_BUS 0
 
 /*Traffic light Data*/
