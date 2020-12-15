@@ -10,10 +10,20 @@
 #define AMT_PLUSBUS_LINKS 16
 #define CELL_LEN 4.629
 
+/*Bus Data*/
 #define ROUTE_LEN 1
 #define PLUSBUS_ROUTE_LEN 1
 #define BUS_ROUTE_LEN 12
 #define PLUS_OR_BUS 0
+
+/*Traffic light Data*/
+#define PLUSBUS_R 10
+#define RED_T 10
+#define GREEN_T 10
+#define PLUSBUS_GREEN_ADJUST 1
+#define PLUSBUS_RED_ADJUST 1
+
+#define DEBUG 0
 
 #define N_TYPE_A 8
 #define N_TYPE_B 10
@@ -46,16 +56,7 @@
 #define SGHSVEJ_2_LEN       400 / CELL_LEN
 #define BERNSTFFGADE_LEN    280 / CELL_LEN
 
-#define DEBUG 0
-
-#define PLUSBUS_R 10
-#define RED_T 10
-#define GREEN_T 10
-#define PLUSBUS_GREEN_ADJUST 1
-#define PLUSBUS_RED_ADJUST 1
-
 typedef enum light_state{Red, Green}light_state;
-typedef enum intersection_type{A, B, C, D, E, F, G, H}i_type;
 
 /* A enum on the different id's for the links */
 typedef enum roadid {jylgade_1_east, jylgade_1_west_plusbus, jylgade_1_east_plusbus,
