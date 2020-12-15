@@ -29,7 +29,7 @@ int main(void) {
   srand(seed);
   /*build_network(nodes, links);*/
 
-  FILE *file = fopen("/Users/alexandersteffensen/Repositories/plusbussim/input.txt", "r");
+  FILE *file = fopen("C:/Users/Carl/Source/Repos/P1-A408b-AAU2020/plusbussim/input.txt", "r");
   printf("%s\n", strerror(errno));
 
   interpret_file(file, nodes, links);
