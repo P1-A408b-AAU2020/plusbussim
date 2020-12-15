@@ -18,8 +18,8 @@
 
 /*Traffic light Data*/
 #define PLUSBUS_R 10
-#define RED_T 10
-#define GREEN_T 10
+#define RED_T 30
+#define GREEN_T 30
 #define PLUSBUS_GREEN_ADJUST 1
 #define PLUSBUS_RED_ADJUST 1
 
