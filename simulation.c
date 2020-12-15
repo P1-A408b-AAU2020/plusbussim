@@ -3,7 +3,9 @@
 #include "trafficlights.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include <time.h>
+#include "errno.h"
 #include <assert.h>
 #include "simbuildinterpreter.h"
 
@@ -18,14 +20,20 @@ void is_finished(vehicle* vehicle, link* links, int* done);
 int timer = 0;
 
 int main(void) {
-  int done = 0, i = 0, j;
-  link *links;
+  int done = 0, i = 0, j, n_links = 64, n_nodes = 9;
+  link *links = (link*) calloc(n_links, sizeof(link));
   vehicle vehicles[AMOUNT_VEHICLES];
-  intersection *nodes;
+  intersection *nodes = (intersection*) calloc(n_nodes, sizeof(intersection));
   time_t seed = time(NULL);
 
   srand(seed);
-  build_network(nodes, links);
+  /*build_network(nodes, links);*/
+
+  FILE *file = fopen("/Users/alexandersteffensen/Repositories/plusbussim/input.txt", "r");
+  printf("%s\n", strerror(errno));
+
+  interpret_file(file, nodes, links);
+  fclose(file);
 
   initialize_actors(vehicles, links);
 
@@ -53,6 +61,7 @@ void initialize_actors(vehicle* actors, link* links) {
   actors->turn_direction = plusbus;
   actors->has_moved = 0;
   actors->active = 1;
+  printf("\n%d\n", links);
   links[2].road[0] = 1;
 
   for (i = 1; i < AMOUNT_VEHICLES; i++) {

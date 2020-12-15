@@ -42,6 +42,20 @@ internal_name link_name(char prim, int dir, int to) {
 }
 void interpret_node(const char *str, intersection* node) {
   sscanf(str, " node %d: type_%c, %d", &node->id, &node->type, &node->n);
+
+
+    if (node->type == 'c') {
+      node->layout.type_c.data.counter = 0;
+      node->layout.type_c.data.state = 0;
+    }
+    else if(node->type == 'd') {
+      node->layout.type_d.data.counter = 0;
+      node->layout.type_d.data.state = 0;
+    }
+    else if(node->type == 'e') {
+      node->layout.type_e.data.counter = 0;
+      node->layout.type_e.data.state = 0;
+    }
 }
 
 int read_line(FILE *file, union interpretation *interp, intersection* nodes) {
@@ -196,12 +210,9 @@ void count_nodes_and_links(const char* filepath, int* nodes, int* links){
 }
 */
 
-void interpret_file(FILE *file, intersection *nodes, int n_nodes, link *links, int n_links) {
+void interpret_file(FILE *file, intersection *nodes, link *links) {
   union interpretation interp;
   int res;
-
-  nodes = (intersection*)calloc(n_nodes, sizeof(intersection));
-  links = (link*)calloc(n_links, sizeof(link));
 
   intersection *nptr = nodes;
   link *lptr = links;
@@ -217,6 +228,7 @@ void interpret_file(FILE *file, intersection *nodes, int n_nodes, link *links, i
       *lptr++ = interp.link;
   }
   while (res);
+
 }
 
 void setup_intersection(intersection* intersection, char type){

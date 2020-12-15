@@ -13,11 +13,7 @@
 
 /* The contents of this function are predefined. Make changes to how network here. */
 void build_network(intersection* intersections, link* links){
-  FILE *file = fopen("C:/Repositories/plusbussim/input.txt", "r");
-  printf("%s\n", strerror(errno));
 
-  interpret_file(file, intersections, 9, links, 64);
-  fclose(file);
 
 
   /*
