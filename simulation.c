@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <assert.h>
+#include "simbuildinterpreter.h"
 
 /* Populates the roads with vehicles */
 void initialize_actors(vehicle* actors, link* links);
@@ -18,13 +19,14 @@ int timer = 0;
 
 int main(void) {
   int done = 0, i = 0, j;
-  link links[AMOUNT_LINKS];
+  link *links;
   vehicle vehicles[AMOUNT_VEHICLES];
-  intersection nodes[9];
+  intersection *nodes;
   time_t seed = time(NULL);
 
   srand(seed);
   build_network(nodes, links);
+
   initialize_actors(vehicles, links);
 
   while (!done) {

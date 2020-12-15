@@ -7,9 +7,20 @@
 #define LEFT 5
 #define FORWARD 3
 #define AMT_SPAWN_LANES 6
+#include "simbuildinterpreter.h"
+#include "errno.h"
+#include <string.h>
 
 /* The contents of this function are predefined. Make changes to how network here. */
 void build_network(intersection* intersections, link* links){
+  FILE *file = fopen("C:/Repositories/plusbussim/input.txt", "r");
+  printf("%s\n", strerror(errno));
+
+  interpret_file(file, intersections, 9, links, 64);
+  fclose(file);
+
+
+  /*
   int link_length[AMOUNT_LINKS] = {JYLGADE_1_LEN, JYLGADE_1_LEN, JYLGADE_1_LEN, JYLGADE_2_LEN, JYLGADE_2_LEN,
                                    JYLGADE_2_LEN, JYLGADE_2_LEN, AAGADE_LEN, AAGADE_LEN, JYLGADE_1_LEN,
 
@@ -36,9 +47,14 @@ void build_network(intersection* intersections, link* links){
                                    KRIDTSJLFEN_LEN, KRIDTSJLFEN_LEN, SGHSVEJ_2_LEN, SGHSVEJ_2_LEN,
                                    SGHSVEJ_2_LEN, SGHSVEJ_2_LEN, BERNSTFFGADE_LEN, BERNSTFFGADE_LEN
                                    };
+                                   */
     /*int spawn_lanes[AMT_SPAWN_LANES] = {0, 2, 6, 12, 14, 15};
     double spawn_chances[AMT_SPAWN_LANES] = {30.5, 21.2, 15.7, 19.2, 8.5, 15.2};*/
-    int i;
+  /*
+  int i;
+
+
+
     for (i = jylgade_1_east; i <= bernstorffsgade_west; i++){
         links[i].id    = i;
         links[i].road  = (int*)calloc(link_length[i], sizeof(int));
@@ -47,6 +63,7 @@ void build_network(intersection* intersections, link* links){
         links[i].intersection = NULL;
         links[i].left_chance  = 0;
         links[i].right_chance = 0;
+        */
 /*
         if (links[i].id == spawn_lanes[j]){
             links[i].spawn_lane = 1;
@@ -58,6 +75,7 @@ void build_network(intersection* intersections, link* links){
             links[i].spawn_lane = 0;
             links[i].spawn_chance = 0.0;
         }*/
+/*
     }
     links[fyensgade_east].right_chance       = 100;
     links[bornholmsgade_2_south].left_chance = 100;
@@ -97,7 +115,36 @@ void build_network(intersection* intersections, link* links){
                      links+kridtsleofen_east, links+bernstorffsgade_east, links+bernstorffsgade_west, links+kridtsleofen_west,
                      links+sghsvej_1_south_plusbus, links+sghsvej_2_south_plusbus, links+sghsvej_2_north_plusbus, links+sghsvej_1_north_plusbus);
 
+  */
 }
+
+void add_link(intersection* node, int index, link* link){
+  switch (node->type) {
+    case 'a': node->layout.type_a.links[index] = link;
+    case 'b': node->layout.type_b.links[index] = link;
+    case 'c': node->layout.type_c.links[index] = link;
+    case 'd': node->layout.type_d.links[index] = link;
+    case 'e': node->layout.type_e.links[index] = link;
+
+  }
+}
+
+int get_link_index_a(enum internal_name name){
+  int index;
+  switch (name) {
+    case p1i: index = 0; break;
+    case p1o: index = 3; break;
+    case p2i: index = 4; break;
+    case p2o: index = 7; break;
+    case s1i: index = 2; break;
+    case s1o: index = 5; break;
+    case s2i: index = 6; break;
+    case s2o: index = 1; break;
+  }
+
+  return index;
+}
+
 /* Pointer to the intersection. */
 void construct_type_a(intersection* intersection, int id,
                       link* primary1_enter,   link* primary1_exit,
@@ -118,6 +165,24 @@ void construct_type_a(intersection* intersection, int id,
     if((i + 1) % 2)
       links[i]->intersection = intersection;
   }
+}
+
+int get_link_index_b(enum internal_name name){
+  int index;
+  switch (name) {
+    case p1i: index = 5; break;
+    case p1o: index = 0; break;
+    case p2i: index = 1; break;
+    case p2o: index = 4; break;
+    case s1i: index = 3; break;
+    case s1o: index = 2; break;
+    case b1i: index = 8; break;
+    case b1o: index = 9; break;
+    case b2i: index = 6; break;
+    case b2o: index = 7; break;
+  }
+
+  return index;
 }
 
 void construct_type_b(intersection* intersection, int id,
@@ -144,6 +209,26 @@ void construct_type_b(intersection* intersection, int id,
   }
 }
 
+int get_link_index_c(enum internal_name name){
+  int index;
+  switch (name) {
+    case p1i: index = 0; break;
+    case p1o: index = 3; break;
+    case p2i: index = 4; break;
+    case p2o: index = 7; break;
+    case s1i: index = 2; break;
+    case s1o: index = 5; break;
+    case s2i: index = 6; break;
+    case s2o: index = 1; break;
+    case b1i: index = 10; break;
+    case b1o: index = 11; break;
+    case b2i: index = 8; break;
+    case b2o: index = 9; break;
+  }
+
+  return index;
+}
+
 void construct_type_c(intersection* intersection, int id,
                       link* primary1_enter,   link* primary1_exit,    link* primary2_enter,
                       link* primary2_exit,    link* secondary1_enter, link* secondary1_exit,
@@ -167,6 +252,22 @@ void construct_type_c(intersection* intersection, int id,
   }
 }
 
+int get_link_index_d(enum internal_name name){
+  int index;
+  switch (name) {
+    case p1i: index = 1; break;
+    case p1o: index = 4; break;
+    case p2i: index = 5; break;
+    case p2o: index = 0; break;
+    case s1i: index = 3; break;
+    case s1o: index = 2; break;
+    case b1i: index = 7; break;
+    case b1o: index = 6; break;
+  }
+
+  return index;
+}
+
 void construct_type_d(intersection* intersection, int id,
                       link* primary1_enter, link* primary1_exit,   link* primary2_enter,
                       link* primary2_exit,  link* secondary_enter, link* secondary_exit,
@@ -187,6 +288,24 @@ void construct_type_d(intersection* intersection, int id,
       links[i]->intersection = intersection;
   }
 
+}
+
+int get_link_index_e(enum internal_name name){
+  int index;
+  switch (name) {
+    case p1i: index = 0; break;
+    case p1o: index = 3; break;
+    case p2i: index = 4; break;
+    case p2o: index = 5; break;
+    case s1i: index = 1; break;
+    case s1o: index = 2; break;
+    case b1i: index = 8; break;
+    case b1o: index = 9; break;
+    case b2i: index = 6; break;
+    case b2o: index = 7; break;
+  }
+
+  return index;
 }
 
 void construct_type_e(intersection* intersection, int id,
@@ -224,6 +343,20 @@ link** get_links(intersection* intersection){
   }
 
   return links;
+}
+
+int get_link_index(enum internal_name name, char type) {
+  int (*fn) (enum internal_name);
+
+  switch (type) {
+    case 'a': fn = &get_link_index_a; break;
+    case 'b': fn = &get_link_index_b; break;
+    case 'c': fn = &get_link_index_c; break;
+    case 'd': fn = &get_link_index_d; break;
+    case 'e': fn = &get_link_index_e; break;
+  }
+
+  return fn(name);
 }
 
 int internal_index(intersection* intersection, int link_id) {

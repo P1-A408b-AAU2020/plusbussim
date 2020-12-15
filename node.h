@@ -47,6 +47,9 @@
 
 typedef enum light_state{Red, Green}light_state;
 typedef enum intersection_type{A, B, C, D, E, F, G, H}i_type;
+typedef enum internal_name{
+  p1i, p1o, p2i, p2o, s1i, s1o, s2i, s2o, b1i, b1o, b2i, b2o
+} internal_name;
 
 /* A enum on the different id's for the links */
 typedef enum roadid {jylgade_1_east, jylgade_1_west_plusbus, jylgade_1_east_plusbus,
@@ -157,6 +160,9 @@ struct intersection {
   intersection_types layout;
 };
 
+void add_link(intersection* node, int index, link* link);
+link** get_links(intersection* intersection);
+
 /* Builds the networks. Hardcoded to make the network we want to simulate. */
 void build_network(intersection* intersections, link* links);
 
@@ -185,7 +191,7 @@ void construct_type_e(intersection* intersection, int id, link* primary1_enter, 
                       link* primary2_exit, link* secondary1_enter, link* secondary1_exit, link* plusbus1_enter, link* plusbus1_exit,
                       link* plusbus2_enter, link* plusbus2_exit);
 
-
+int get_link_index(enum internal_name name, char type);
 
 /* Returns the internal index in the node of the road that has the given id*/
 int internal_index(intersection* intersection, int link_id);
