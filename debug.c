@@ -1,5 +1,10 @@
 #include "debug.h"
-#define SECONDS_PER_TIMESTEP 1.667
+ /*
+  * Debugging library used to find errors in code.
+  * Can be enabled in node.h #define DEBUG
+  * Enabled: 1
+  * Disabled: 0
+  * */
 
 int check_link(link* link, vehicle* vehicles){
   int i;

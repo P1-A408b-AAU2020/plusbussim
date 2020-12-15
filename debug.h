@@ -2,6 +2,9 @@
 #include <stdio.h>
 #ifndef DEBUG_H
 #define DEBUG_H
+#define SECONDS_PER_TIMESTEP 1.667
+
+/*prints lanes*/
 void print_link(link* link, vehicle* vehicles);
 
 void print_vehicles(vehicle* vehicles, int len);
