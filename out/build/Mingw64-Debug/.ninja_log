@@ -1,9 +1,0 @@
-# ninja log v5
-1	178	629728652	CMakeFiles/Cmake.dir/debug.c.obj	9873b84870e3f4ed
-5	180	629728652	CMakeFiles/Cmake.dir/simulation.c.obj	a012c8872549ed22
-8	184	629728652	CMakeFiles/Cmake.dir/trafficlights.c.obj	c220ef14685153
-15	185	629728652	CMakeFiles/Cmake.dir/simbuildinterpreter.c.obj	aa1e90c938debba6
-11	211	629728652	CMakeFiles/Cmake.dir/node.c.obj	d426b7f8b0599b04
-212	469	629728652	Cmake.exe	2b3836b1d959ec32
-3	144	629729794	CMakeFiles/Cmake.dir/node.c.obj	d426b7f8b0599b04
-145	362	629729794	Cmake.exe	2b3836b1d959ec32
