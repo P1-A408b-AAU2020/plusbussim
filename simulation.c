@@ -21,19 +21,21 @@ int timer = 0;
 
 int main(void) {
   int done = 0, i = 0, j, n_links = 64, n_nodes = 9;
-  link *links = (link*) calloc(n_links, sizeof(link));
+
+  /*FILE *file = fopen("/Users/alexandersteffensen/Repositories/plusbussim/input.txt", "r");*/
+
+
+
+  link* links = (link*) calloc(n_links, sizeof(link));
   vehicle vehicles[AMOUNT_VEHICLES];
   intersection *nodes = (intersection*) calloc(n_nodes, sizeof(intersection));
   time_t seed = time(NULL);
 
   srand(seed);
-  /*build_network(nodes, links);*/
+  build_network(nodes, links, n_links, n_nodes);
 
-  FILE *file = fopen("/Users/alexandersteffensen/Repositories/plusbussim/input.txt", "r");
-  printf("%s\n", strerror(errno));
 
-  interpret_file(file, nodes, links);
-  fclose(file);
+
 
   initialize_actors(vehicles, links);
 

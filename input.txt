@@ -32,77 +32,78 @@ node 6: type_a, 8
 node 7: type_e, 10
 node 8: type_c, 12
 
-#   id  length        r%        l%     from         to           inst%
-link 0:    200,        0,    18.33,                 t: 0[p1],     9.95 # jylgade_1_east
-link 1:    120,    29.71,    24.23,    f: 0[p1],    t: 1[p1]           # jylgade_2_east
-link 2:    120,    23.17,        0,    f: 1[p2],    t: 0[p2]           # jylgade_2_west
-link 3:    200,                        f: 0[p2],                       # jylgade_1_west
-link 4:    150,    42.67,    57.33,                 t: 0[s1],        3 # aagade_south
-link 5:    150,                        f: 0[s1],                       # aagade_north
-link 6:    200,                                     t: 0[b1]           # jylgade_1_east_plusbus
-link 7:    120,                        f: 0[b1],    t: 1[b1]           # jylgade_2_east_plusbus
-link 8:    120,                        f: 1[b2],    t: 0[b2]           # jylgade_2_west_plusbus
-link 9:    200,                        f: 0[b2]                        # jylgade_1_west_plusbus
+#   id  length        r%        l%          inst%
+link 0:    200,        0,    18.33,         9.95 # jylgade_1_east
+link 1:    120,    29.71,    24.23,              # jylgade_2_east
+link 2:    120,    23.17,        0,              # jylgade_2_west
+link 3:    200,                                  # jylgade_1_west
+link 4:    150,    42.67,    57.33,            3 # aagade_south
+link 5:    150,                                  # aagade_north
+link 6:    200,                                  # jylgade_1_east_plusbus
+link 7:    120,                                  # jylgade_2_east_plusbus
+link 8:    120,                                  # jylgade_2_west_plusbus
+link 9:    200,                                  # jylgade_1_west_plusbus
 
-link 10:   120,    29.71,    24.23,    f: 1[p1],    t: 2[p1]           # jylgade_3_east
-link 11:   120,    23.17,        0,    f: 2[p2],    t: 1[p2]           # jylgade_3_west
-link 12:   120,    42.67,    57.33,                 t: 1[s1],        3 # niels_ebbesens_gade_south
-link 13:   120,                        f: 1[s1],                       # niels_ebbesens_gade_north
-link 14:   120,                        f: 1[b1],   t: 2[b1]            # jylgade_3_east_plusbus
-link 15:   120,                        f: 2[b2],   t: 1[b2]            # jylgade_3_west_plusbus
+link 10:   120,    29.71,    24.23,              # jylgade_3_east
+link 11:   120,    23.17,        0,              # jylgade_3_west
+link 12:   120,    42.67,    57.33,            3 # niels_ebbesens_gade_south
+link 13:   120,                                  # niels_ebbesens_gade_north
+link 14:   120,                                  # jylgade_3_east_plusbus
+link 15:   120,                                  # jylgade_3_west_plusbus
 
-link 16:   300,    53.79,     7.24,    f: 2[p1],    t: 3[p1]           # jylgade_4_east
-link 17:   300,    23.95,    29.36,    f: 3[p2],    t: 2[p2]           # jylgade_4_west
-link 18:    70,    39.19,    40.19,                 t: 2[s1],     8.41 # dag_ham_gade_1_north
-link 19:   100,                        f: 2[s1],                       # dag_ham_gade_2_north
-link 20:    70,                        f: 2[s2],                       # dag_ham_gade_1_south
-link 21:   100,    38.40,    37.45,                 t: 2[s2]      6.86 # dag_ham_gade_2_south
-link 22:   300,                        f: 2[b1],    t: 3[b1]          # jylgade_4_east_plusbus
-link 23:   300,                        f: 3[b2],    t: 2[b2]          # jylgade_4_west_plusbus
+link 16:   300,    53.79,     7.24,              # jylgade_4_east
+link 17:   300,    23.95,    29.36,              # jylgade_4_west
+link 18:    70,    39.19,    40.19,         8.41 # dag_ham_gade_1_north
+link 19:   100,                                  # dag_ham_gade_2_north
+link 20:    70,                                  # dag_ham_gade_1_south
+link 21:   100,    38.40,    37.45,         6.86 # dag_ham_gade_2_south
+link 22:   300,                                  # jylgade_4_east_plusbus
+link 23:   300,                                  # jylgade_4_west_plusbus
 
-link 24:   180,    19.87,        0,    f: 3[p1],    t: 4[p1]           # karolinelundsvej_1_east
-link 25:   180,     7.65,    56.85,    f: 4[p2],    t: 3[p2]           # karolinelundsvej_1_west
-link 26:   300,    48.84,    42.09,                 t: 3[s1]     22.29 # sdrbro_north
-link 27:   160,                        f: 3[s1]     		           # kjellerupsgade_north
-link 28:   160,    26.59,    30.84,                 t: 3[s2]         3 # kjellerupsgade_south
-link 29:   300,                        f: 3[s2]                        # sdrbro_south
-link 30:   180,                        f: 3[b1],    t: 4[b1]	       # karolinelundsvej_1_east_plusbus
-link 31:   180,                        f: 4[b2],    t: 3[b2]          # karolinelundsvej_1_west_plusbus
+link 24:   180,    19.87,        0,              # karolinelundsvej_1_east
+link 25:   180,     7.65,    56.85,              # karolinelundsvej_1_west
+link 26:   300,    48.84,    42.09,        22.29 # sdrbro_north
+link 27:   160,                                  # kjellerupsgade_north
+link 28:   160,    26.59,    30.84,            3 # kjellerupsgade_south
+link 29:   300,                                  # sdrbro_south
+link 30:   180,                        	         # karolinelundsvej_1_east_plusbus
+link 31:   180,                                  # karolinelundsvej_1_west_plusbus
 
-link 32:   350,                        f: 4[p1]                        # karolinelundsvej_2_north
-link 33:   350,        0,    19.61,                 t: 4[p2]     15.89 # karolinelundsvej_2_south
-link 34:   110,    49.59,    50.41,    f: 5[p2]     t: 4[s1]           # bornholmsgade_1_north
-link 35:   110,    30.18,    30.18,    f: 4[s1]     t: 5[p1]           # bornholmsgade_1_south
+link 32:   350,                                  # karolinelundsvej_2_north
+link 33:   350,        0,    19.61,        15.89 # karolinelundsvej_2_south
+link 34:   110,    49.59,    50.41,              # bornholmsgade_1_north
+link 35:   110,    30.18,    30.18,              # bornholmsgade_1_south
 
-link 36:   190,       50,       50,    f: 5[p1],    t: 6[p1]           # bornholmsgade_2_south
-link 37:   190,    30.18,    30.18,    f: 6[p2],    t: 5[p2]           # bornholmsgade_2_north
-link 38:   160,    36.21,    36.21,                 t: 5[s1]         3 # faerogade_1_east
-link 39:   230,                        f: 5[s1]                        # faereogade_2_east
-link 40:   230,    36.21,    36.21,                 t: 5[s2]         3 # faereogade_2_west
-link 41:   160,                        f: 5[s2]                        # faereogade_1_west
+link 36:   190,       50,       50,              # bornholmsgade_2_south
+link 37:   190,    30.18,    30.18,              # bornholmsgade_2_north
+link 38:   160,    36.21,    36.21,            3 # faerogade_1_east
+link 39:   230,                                  # faereogade_2_east
+link 40:   230,    36.21,    36.21,            3 # faereogade_2_west
+link 41:   160,                                  # faereogade_1_west
 
-link 42:   220,                        f: 6[p1],    t: 7[b2]           # bornholmsgade_3_south
-link 43:   220,                        f: 7[b1],    t: 6[p2]           # bornholmsgade_3_north
-link 44:   160,        0,    56.45,                 t: 6[s1]      3.04 # sjaelgade_1_east
-link 45:   250,                        f: 6[s1]                        # sjaelgade_2_east
-link 46:   250,    56.45,        0,                 t: 6[s2]      3.04 # sjaelgade_2_west
-link 47:   160,                        f: 6[s2]                        # sjaelgade_1_west
+link 42:   220,                                  # bornholmsgade_3_south
+link 43:   220,                                  # bornholmsgade_3_north
+link 44:   160,        0,    56.45,         3.04 # sjaelgade_1_east
+link 45:   250,                                  # sjaelgade_2_east
+link 46:   250,    56.45,        0,         3.04 # sjaelgade_2_west
+link 47:   160,                                  # sjaelgade_1_west
 
-link 48:   250,    39.88,        0,                 t: 7[p1]     44.13 # oester_alle_1_east
-link 49:   300,                        f: 7[p1]                        # oester_alle_2_east
-link 50:   300,        0,    31.82,                 t: 7[p2]     31.06 # oester_alle_2_west
-link 51:   250,                        f: 7[p2]                        # oester_alle_1_west
-link 52:   300,    41.31,    58.69,    f: 8[p2],    t: 7[s1]           # sghsvej_1_north
-link 53:   300,     8.77,     3.89,    f: 7[s1],    t: 8[p1]           # sghsvej_1_south
-link 54:   300,                        f: 8[b2],    t: 7[b1]           # sghsvej_1_north_plusbus
-link 55:   300,                        f: 7[b2],    t: 8[b1]           # sghsvej_1_south_plusbus
+link 48:   250,    39.88,        0,        44.13 # oester_alle_1_east
+link 49:   300,                                  # oester_alle_2_east
+link 50:   300,        0,    31.82,        31.06 # oester_alle_2_west
+link 51:   250,                                  # oester_alle_1_west
+link 52:   300,    41.31,    58.69,              # sghsvej_1_north
+link 53:   300,     8.77,     3.89,              # sghsvej_1_south
+link 54:   300,                                  # sghsvej_1_north_plusbus
+link 55:   300,                                  # sghsvej_1_south_plusbus
 
-link 56:   400,                        f: 8[p1]                        # sghsvej_2_south
-link 57:   400,     3.97,     8.96,                 t: 8[p2]     21.12 # sghsvej_2_north
-link 58:   100,    49.51,    48.29,                 t: 8[s1]      2.12 # kridtsleofen_east
-link 59:   280,                        f: 8[s1]                        # bernstorffsgade_east
-link 60:   280,    46.99,    48.18,                 t: 8[s2]      0.94 # bernstorffsgade_west
-link 61:   100,                        f: 8[s2]                        # kridtsleofen_west
-link 62:   400,                        f: 8[b1]                        # sghsvej_2_south_plusbus
-link 63:   400,                                      t: 8[b2]          # sghsvej_2_north_plusbus
+link 56:   400,                                  # sghsvej_2_south
+link 57:   400,     3.97,     8.96,        21.12 # sghsvej_2_north
+link 58:   100,    49.51,    48.29,         2.12 # kridtsleofen_east
+link 59:   280,                                  # bernstorffsgade_east
+link 60:   280,    46.99,    48.18,         0.94 # bernstorffsgade_west
+link 61:   100,                                  # kridtsleofen_west
+link 62:   400,                                  # sghsvej_2_south_plusbus
+link 63:   400,                                  # sghsvej_2_north_plusbus
+
 

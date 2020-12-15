@@ -42,8 +42,7 @@ internal_name link_name(char prim, int dir, int to) {
 }
 void interpret_node(const char *str, intersection* node) {
   sscanf(str, " node %d: type_%c, %d", &node->id, &node->type, &node->n);
-
-
+/*
     if (node->type == 'c') {
       node->layout.type_c.data.counter = 0;
       node->layout.type_c.data.state = 0;
@@ -56,6 +55,7 @@ void interpret_node(const char *str, intersection* node) {
       node->layout.type_e.data.counter = 0;
       node->layout.type_e.data.state = 0;
     }
+    */
 }
 
 int read_line(FILE *file, union interpretation *interp, intersection* nodes) {
@@ -130,11 +130,11 @@ void interpret_link(const char *str, link *link, intersection* nodes) {
         printf("%lf ", spawn_chance);
       }
    }
-
+    /*
     else {
       sscanf(ptr, " %c: %d[%c%d]%n", &dest, &node, &prim, &dir, &pos);
-      printf("%c: %d[%c%d]", dest, node, prim, dir);
-
+      printf("%c: %d[%c%d]", dest, node, prim, dir); */
+      /*
       if (dest == 't'){
         to_node = node;
         to_dir = dir;
@@ -147,19 +147,18 @@ void interpret_link(const char *str, link *link, intersection* nodes) {
       }
 
     }
-
+    */
   }
 
     link->id = id;
-    link->len = len;
+    link->len = (len/CELL_LEN);
     link->left_chance = l_chance;
     link->right_chance = r_chance;
     link->spawn_chance = spawn_chance;
-
-    /* initialization */
     link->time_step = 0;
-    link->road=(int*)calloc(len,sizeof(int));
+    /* initialization */
 
+    /*
     if (to_node > -1){
       tmp_node = nodes + to_node;
       link->intersection = tmp_node;
@@ -173,7 +172,7 @@ void interpret_link(const char *str, link *link, intersection* nodes) {
       index = get_link_index(link_name(from_prim, from_dir, 0), tmp_node->type);
       get_links(tmp_node)[index] = link;
     }
-
+    */
 
     printf("\n");
 
@@ -231,6 +230,9 @@ void interpret_file(FILE *file, intersection *nodes, link *links) {
 
 }
 
+/*
 void setup_intersection(intersection* intersection, char type){
 
 }
+*/
+

@@ -164,30 +164,30 @@ void add_link(intersection* node, int index, link* link);
 link** get_links(intersection* intersection);
 
 /* Builds the networks. Hardcoded to make the network we want to simulate. */
-void build_network(intersection* intersections, link* links);
+void build_network(intersection* intersections, link* links, int n_links, int n_nodes);
 
 /* Constructs a typical four way intersection without traffic lights. */
-void construct_type_a(intersection* intersection, int id, link* primary1_enter, link* primary1_exit, link* primary2_enter,
+void construct_type_a(intersection* intersection, link* primary1_enter, link* primary1_exit, link* primary2_enter,
                       link* primary2_exit, link* secondary1_enter, link* secondary1_exit, link* secondary2_enter,
                       link* secondary2_exit);
 
 
 /* Constructs a T-cross intersection without traffic lights. */
-void construct_type_b(intersection* intersection, int id, link* primary1_enter, link* primary1_exit, link* primary2_enter,
+void construct_type_b(intersection* intersection, link* primary1_enter, link* primary1_exit, link* primary2_enter,
                       link* primary2_exit, link* secondary1_enter, link* secondary1_exit, link* plusbus1_enter, link* plusbus1_exit,
                       link* plusbus2_enter, link* plusbus2_exit);
 
 /* Constructs a typical four way intersection with traffic light and with separate plusbus lanes*/
-void construct_type_c(intersection* intersection, int id, link* primary1_enter, link* primary1_exit, link* primary2_enter,
+void construct_type_c(intersection* intersection, link* primary1_enter, link* primary1_exit, link* primary2_enter,
                       link* primary2_exit, link* secondary1_enter, link* secondary1_exit, link* secondary2_enter,
                       link* secondary2_exit, link* plusbus1_enter, link* plusbus1_exit, link* plusbus2_enter, link* plusbus2_exit);
 
 /*    */
-void construct_type_d(intersection* intersection, int id, link* primary1_enter, link* primary1_exit, link* primary2_enter,
+void construct_type_d(intersection* intersection, link* primary1_enter, link* primary1_exit, link* primary2_enter,
                       link* primary2_exit, link* secondary1_enter, link* secondary1_exit, link* plusbus_enter, link* plusbus_exit);
 
 /*  */
-void construct_type_e(intersection* intersection, int id, link* primary1_enter, link* primary1_exit, link* primary2_enter,
+void construct_type_e(intersection* intersection, link* primary1_enter, link* primary1_exit, link* primary2_enter,
                       link* primary2_exit, link* secondary1_enter, link* secondary1_exit, link* plusbus1_enter, link* plusbus1_exit,
                       link* plusbus2_enter, link* plusbus2_exit);
 

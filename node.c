@@ -12,38 +12,55 @@
 #include <string.h>
 
 /* The contents of this function are predefined. Make changes to how network here. */
-void build_network(intersection* intersections, link* links){
+void build_network(intersection* intersections, link* links, int n_links, int n_nodes){
+  int i, link_sec = 0;
 
+  FILE *file = fopen("/Users/alexandersteffensen/Repositories/plusbussim/input.txt", "r");
+  printf("%s\n", strerror(errno));
 
+  interpret_file(file, intersections, links);
+  fclose(file);
 
-  /*
-  int link_length[AMOUNT_LINKS] = {JYLGADE_1_LEN, JYLGADE_1_LEN, JYLGADE_1_LEN, JYLGADE_2_LEN, JYLGADE_2_LEN,
-                                   JYLGADE_2_LEN, JYLGADE_2_LEN, AAGADE_LEN, AAGADE_LEN, JYLGADE_1_LEN,
+  for (i = 0; i < n_links; i++){
+    links[i].road  = (int*)calloc(links[i].len, sizeof(int));
+    printf("node id %d \n", links[i].id);
+  }
 
-                                   JYLGADE_3_LEN, JYLGADE_3_LEN, JYLGADE_3_LEN, JYLGADE_3_LEN,
-                                   NIELS_EBS_GADE_LEN, NIELS_EBS_GADE_LEN,
+  for (i = 0; i < n_nodes; i++) {
+    printf("intersection, id: ‰d, type: %c, number", (intersections+i)->id, (intersections+i)->type, intersections);
+    switch((intersections+i)->type) {
 
-                                   DAG_HAM_GADE_1_LEN, DAG_HAM_GADE_1_LEN, JYLGADE_4_LEN, JYLGADE_4_LEN,
-                                   JYLGADE_4_LEN, JYLGADE_4_LEN, DAG_HAM_GADE_2_LEN, DAG_HAM_GADE_2_LEN,
+      case 'a' : construct_type_a(intersections + i, links + (link_sec), links + (link_sec+1), links + (link_sec+2),
+                                  links + (link_sec+3),links + (link_sec+4), links + (link_sec+5), links + (link_sec+6),
+                                  links + (link_sec+7));
+                 link_sec =+ N_TYPE_A;
+                 break;
 
-                                   SDRBRO_LEN, SDRBRO_LEN, FYENSGADE_LEN, FYENSGADE_LEN, FYENSGADE_LEN,
-                                   FYENSGADE_LEN, KJELRUPSGADE_LEN, KJELRUPSGADE_LEN,
+      case 'b' : construct_type_b(intersections + i, links + (link_sec), links + (link_sec+1), links + (link_sec+2),
+                                  links + (link_sec+3),links + (link_sec+4), links + (link_sec+5), links + (link_sec+6),
+                                  links + (link_sec+7), links + (link_sec+8), links + (link_sec+9));
+                 link_sec =+ N_TYPE_B;
+                 break;
 
-                                   BORNHOLMSGADE_1_LEN, BORNHOLMSGADE_1_LEN, KAROLUNDSVEJ_LEN, KAROLUNDSVEJ_LEN,
+      case 'c' : construct_type_c(intersections + i, links + (link_sec), links + (link_sec+1), links + (link_sec+2),
+                                  links + (link_sec+3),links + (link_sec+4), links + (link_sec+5), links + (link_sec+6),
+                                  links + (link_sec+7), links + (link_sec+8), links + (link_sec+9), links + (link_sec+10),
+                                  links + (link_sec+11));
+                 link_sec =+ N_TYPE_C;
+                 break;
 
-                                   FAEROESGADE_1_LEN, FAEROESGADE_1_LEN, BORNHOLMSGADE_2_LEN, BORNHOLMSGADE_2_LEN,
-                                   FAEROESGADE_2_LEN, FAEROESGADE_2_LEN,
+      case 'd' : construct_type_d(intersections + i, links + (link_sec), links + (link_sec+1), links + (link_sec+2),
+                                  links + (link_sec+3),links + (link_sec+4), links + (link_sec+5), links + (link_sec+6),
+                                  links + (link_sec+7));
+                 link_sec += N_TYPE_D;
+                 break;
 
-                                   SJAELGADE_1_LEN, SJAELGADE_1_LEN, BORNHOLMSGADE_3_LEN, BORNHOLMSGADE_3_LEN,
-                                   SJAELGADE_2_LEN, SJAELGADE_2_LEN,
+      case 'e' : construct_type_e(intersections + i, links + (link_sec), links + (link_sec+1), links + (link_sec+2),
+                                  links + (link_sec+3),links + (link_sec+4), links + (link_sec+5), links + (link_sec+6),
+                                  links + (link_sec+7), links + (link_sec+8), links + (link_sec+9));
+    }
 
-                                   OESTER_ALLE_1_LEN, OESTER_ALLE_1_LEN, SGHSVEJ_1_LEN, SGHSVEJ_1_LEN,
-                                   SGHSVEJ_1_LEN, SGHSVEJ_1_LEN, OESTER_ALLE_2_LEN, OESTER_ALLE_2_LEN,
-
-                                   KRIDTSJLFEN_LEN, KRIDTSJLFEN_LEN, SGHSVEJ_2_LEN, SGHSVEJ_2_LEN,
-                                   SGHSVEJ_2_LEN, SGHSVEJ_2_LEN, BERNSTFFGADE_LEN, BERNSTFFGADE_LEN
-                                   };
-                                   */
+  }
     /*int spawn_lanes[AMT_SPAWN_LANES] = {0, 2, 6, 12, 14, 15};
     double spawn_chances[AMT_SPAWN_LANES] = {30.5, 21.2, 15.7, 19.2, 8.5, 15.2};*/
   /*
@@ -142,7 +159,7 @@ int get_link_index_a(enum internal_name name){
 }
 
 /* Pointer to the intersection. */
-void construct_type_a(intersection* intersection, int id,
+void construct_type_a(intersection* intersection,
                       link* primary1_enter,   link* primary1_exit,
                       link* primary2_enter,   link* primary2_exit,
                       link* secondary1_enter, link* secondary1_exit,
@@ -152,8 +169,7 @@ void construct_type_a(intersection* intersection, int id,
                            secondary1_enter, primary1_exit,
                            primary2_enter,   secondary1_exit,
                            secondary2_enter, primary2_exit};
-  intersection->id = id;
-  intersection->type = 'a';
+
   intersection->n = N_TYPE_A;
   for (i = 0; i < N_TYPE_A; ++i){
     intersection->layout.type_a.links[i] = links[i];
@@ -181,7 +197,7 @@ int get_link_index_b(enum internal_name name){
   return index;
 }
 
-void construct_type_b(intersection* intersection, int id,
+void construct_type_b(intersection* intersection,
                       link* primary1_enter,  link* primary1_exit,
                       link* primary2_enter,  link* primary2_exit,
                       link* secondary_enter, link* secondary_exit,
@@ -193,8 +209,6 @@ void construct_type_b(intersection* intersection, int id,
                            primary2_exit,  primary1_enter,
                            plusbus2_enter, plusbus2_exit,
                            plusbus1_enter, plusbus1_exit};
-  intersection->id = id;
-  intersection->type = 'b';
   intersection->n = N_TYPE_B;
 
   for (i = 0; i < N_TYPE_B; ++i) {
@@ -225,7 +239,7 @@ int get_link_index_c(enum internal_name name){
   return index;
 }
 
-void construct_type_c(intersection* intersection, int id,
+void construct_type_c(intersection* intersection,
                       link* primary1_enter,   link* primary1_exit,    link* primary2_enter,
                       link* primary2_exit,    link* secondary1_enter, link* secondary1_exit,
                       link* secondary2_enter, link* secondary2_exit,  link* plusbus1_enter,
@@ -235,8 +249,7 @@ void construct_type_c(intersection* intersection, int id,
                            primary1_exit,    primary2_enter,  secondary1_exit,
                            secondary2_enter, primary2_exit,   plusbus2_enter,
                            plusbus2_exit,    plusbus1_enter,  plusbus1_exit};
-  intersection->id = id;
-  intersection->type = 'c';
+
   intersection->layout.type_c.data.counter = 0;
   intersection->layout.type_c.data.state = 0;
   intersection->n = N_TYPE_C;
@@ -264,7 +277,7 @@ int get_link_index_d(enum internal_name name){
   return index;
 }
 
-void construct_type_d(intersection* intersection, int id,
+void construct_type_d(intersection* intersection,
                       link* primary1_enter, link* primary1_exit,   link* primary2_enter,
                       link* primary2_exit,  link* secondary_enter, link* secondary_exit,
                       link* plusbus_enter,  link* plusbus_exit){
@@ -272,8 +285,7 @@ void construct_type_d(intersection* intersection, int id,
   link* links[N_TYPE_D] = {primary2_exit,   primary1_enter, secondary_exit,
                            secondary_enter, primary1_exit,  primary2_enter,
                            plusbus_exit,    plusbus_enter};
-  intersection->id = id;
-  intersection->type = 'd';
+
   intersection->layout.type_d.data.counter = 0;
   intersection->layout.type_d.data.state = 0;
   intersection->n = N_TYPE_D;
@@ -304,7 +316,7 @@ int get_link_index_e(enum internal_name name){
   return index;
 }
 
-void construct_type_e(intersection* intersection, int id,
+void construct_type_e(intersection* intersection,
                       link* primary1_enter, link* primary1_exit,   link* primary2_enter,
                       link* primary2_exit,  link* secondary_enter, link* secondary_exit,
                       link* plusbus1_enter, link* plusbus1_exit,   link* plusbus2_enter,
@@ -314,8 +326,7 @@ void construct_type_e(intersection* intersection, int id,
                            primary1_exit,  primary2_enter,  primary2_exit,
                            plusbus2_enter, plusbus2_exit,   plusbus1_enter,
                            plusbus1_exit};
-  intersection->id = id;
-  intersection->type = 'e';
+
   intersection->layout.type_e.data.counter = 0;
   intersection->layout.type_e.data.state = 0;
   intersection->n = N_TYPE_E;
@@ -341,6 +352,7 @@ link** get_links(intersection* intersection){
   return links;
 }
 
+
 int get_link_index(enum internal_name name, char type) {
   int (*fn) (enum internal_name);
 
@@ -354,6 +366,7 @@ int get_link_index(enum internal_name name, char type) {
 
   return fn(name);
 }
+
 
 int internal_index(intersection* intersection, int link_id) {
   int i, n = intersection->n;
