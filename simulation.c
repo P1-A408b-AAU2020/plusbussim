@@ -33,6 +33,8 @@ int main(void) {
     change_state(nodes);
     simulate_all_links(links, vehicles, &done);
     ++i;
+    if (i > 600)
+      assert(1>2);
   }
   print_status(vehicles, seed, links + 46, timer);
 
@@ -77,13 +79,19 @@ void initialize_actors(vehicle* actors, link* links) {
   else {
     /* TODO: bus route length has to be set */
     actors->turn_direction = (turn_dir*)malloc(sizeof(turn_dir) * BUS_ROUTE_LEN);
-
+    int bus_route[BUS_ROUTE_LEN] = {forward, forward, forward, forward, right, forward, plusbus, forward, forward};
     for (int i = 0; i < BUS_ROUTE_LEN; i++) {
-      actors->turn_direction[i] = plusbus;
+      actors->turn_direction[i] = bus_route[i];
+      printf("bus direction %d : %d \n", i, actors->turn_direction[i]);
     }
   }
 
-  links[2].road[0] = 1;
+
+  if (PLUS_OR_BUS)
+    links[PLUSBUS_START_LINK].road[0] = 1;
+  else
+    links[BUS_START_LINK].road[0] = 1;
+
 
   for (i = 1; i < AMOUNT_VEHICLES; i++) {
     actors[i].id = i + 1;
@@ -172,18 +180,15 @@ void move(link *link, vehicle *vehicles) {
           new_link->road[i + v - link->len] = id;
 
           /* Find out where to turn next */
-          if (!vehicles[index].is_bus) {
-            next_turn = decide_turn_dir(new_link, vehicles[index].is_plusbus);
-
-            for (int i = 0; i < ROUTE_LEN; i++) {
-              vehicles[index].turn_direction[i] = next_turn;
-            }
-          }
+          next_turn = decide_turn_dir(new_link, vehicles[index].is_plusbus, vehicles[index].is_bus);
+          vehicles[index].turn_direction[0] = next_turn;
 
           vehicles[index].has_moved = 1;
         }
+        else {
+          vehicles[index].active = 0;
+        }
       }
-
       else
         vehicles[index].has_moved = 0;
     }
@@ -207,11 +212,7 @@ void change_speed(link *link, vehicle *vehicles) {
       if (i + gap == link->len - 1 && link->intersection != NULL) {
 
         if (traffic_light(link, vehicles)) {
-          new_link = turn(vehicles[index].turn_direction[vehicles[index].intersec_counter], link->intersection, link->id);
-
-          if (vehicles[index].is_bus) {
-            vehicles[index].intersec_counter++;
-          }
+          new_link = turn(vehicles[index].turn_direction[0], link->intersection, link->id);
 
           if (new_link->time_step < timer)
             time_step(new_link, vehicles);
@@ -231,9 +232,6 @@ void change_speed(link *link, vehicle *vehicles) {
       else if (v < V_MAX && gap > v)
         vehicles[index].v++;
 
-      else if (i + gap == link->len - 1 && link->intersection == NULL)
-        vehicles[index].active = 0;
-
       else if (gap < v)
         vehicles[index].v = gap;
     }
@@ -243,8 +241,8 @@ void change_speed(link *link, vehicle *vehicles) {
 void is_finished(vehicle* vehicles, link* links, int* done) {
   int i, index;
 
-  /*Checks if the Plusbus has reached its destination */
-  for (i = links->len - 1; i >= 0; i--) {
+  /*Checks if the Plusbus or the bus has reached its destination */
+  for (i = links->len - 1; i >= (links->len - 1) - 10; i--) {
     index = links->road[i] - 1;
 
     if ((vehicles[index].is_plusbus || vehicles[index].is_bus) && index >= 0) {

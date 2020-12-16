@@ -26,7 +26,7 @@ void print_link(link *link, vehicle *vehicles) {
       printf("L%-3d: ", link->id);
 
       for (i = 0; i < link->len; i++) {
-        print = link->road[i] > 0 ? vehicles[link->road[i] - 1].v + '0' : '.';
+        print = link->road[i] > 0 ? vehicles[link->road[i] - 1].id + '0' : '.';
         printf("%c", print);
       }
 

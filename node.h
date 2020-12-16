@@ -6,19 +6,19 @@
 #define MIN_SPEED_RANDOM_DECELERATE 2
 #define AMOUNT_LINKS 64
 #define AMOUNT_VEHICLES 120
-#define END_LINK 59
 #define AMT_PLUSBUS_LINKS 16
 #define CELL_LEN 4.629
 
 /*Bus Data*/
 #define PLUSBUS_ROUTE_LEN 1
-#define BUS_ROUTE_LEN 12
+#define BUS_ROUTE_LEN 9
 #define BUS_START_LINK 0
 #define PLUSBUS_START_LINK 2
 #define ROUTE_LEN 1
 
 /*Bus: 0, Plusbus: 1*/
 #define PLUS_OR_BUS 0
+#define END_LINK 58
 
 /*Traffic light Data*/
 #define PLUSBUS_R 10
@@ -27,7 +27,7 @@
 #define PLUSBUS_GREEN_ADJUST 1
 #define PLUSBUS_RED_ADJUST 1
 
-#define DEBUG 0
+#define DEBUG 1
 
 #define N_TYPE_A 8
 #define N_TYPE_B 10
@@ -93,7 +93,7 @@ typedef enum roadid {jylgade_1_east, jylgade_1_west_plusbus, jylgade_1_east_plus
 } roadid;
 
 
-typedef enum turn_dir{forward, right, left, plusbus} turn_dir;
+typedef enum turn_dir{forward, right, left, plusbus, bus} turn_dir;
 
 typedef struct intersection intersection;
 
@@ -216,9 +216,11 @@ link* right_turn(intersection* intersection, int link_id);
 
 link* plusbus_dec(intersection* intersection, int link_id);
 
+link* bus_dec(intersection *intersection, int link_id);
+
 int lead_gap(link* link, int pos);
 
-turn_dir decide_turn_dir(link* link, int is_plsubus);
+turn_dir decide_turn_dir(link* link, int is_plsubus, int is_bus);
 void spawn_car(link* link, vehicle* vehicles);
 
 #endif

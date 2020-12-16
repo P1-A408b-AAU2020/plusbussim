@@ -310,11 +310,38 @@ link* plusbus_dec(intersection *intersection, int link_id) {
   return result;
 }
 
-turn_dir decide_turn_dir(link* link, int is_plusbus) {
+link* bus_dec(intersection *intersection, int link_id) {
+  link *result;
+  link** links = get_links(intersection);
+  switch (intersection->type) {
+    case 'a' :
+      result = links[((internal_index(intersection, link_id) == 0) ? 3 : 7)];
+      break;
+
+    case 'b' : case 'c' :
+      result = links[(internal_index(intersection, link_id) + FORWARD) % 8];
+      break;
+
+    case 'd' :
+      result = links[(internal_index(intersection, link_id) + RIGHT) % 8];
+      break;
+
+    case 'e' :
+      result = links[(internal_index(intersection, link_id) == 6) ? 1 : 9];
+      break;
+  }
+
+  return result;
+}
+
+turn_dir decide_turn_dir(link* link, int is_plusbus, int is_bus) {
   int dir = rand() % 100 + 1;
 
   if (is_plusbus)
     return plusbus;
+
+  else if (is_bus)
+    return bus;
 
   else if (dir <= link->left_chance)
     return left;
@@ -333,6 +360,7 @@ link* turn(turn_dir dir, intersection *intersection, int link_id) {
     case right:   result = right_turn(intersection, link_id);  break;
     case forward: result = go_forward(intersection, link_id);  break;
     case plusbus: result = plusbus_dec(intersection, link_id); break;
+    case bus:     result = bus_dec(intersection, link_id);     break;
   }
   return result;
 }
@@ -348,7 +376,10 @@ int lead_gap(link* link, int pos) {
             return V_MAX;
     }
     /* If the car reaches the end of the road */
-    return gap;
+    if (link->intersection == NULL)
+      return V_MAX;
+    else
+      return gap;
 }
 
 void spawn_car(link *link, vehicle *vehicles) {
