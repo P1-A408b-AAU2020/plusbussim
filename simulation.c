@@ -182,6 +182,9 @@ void move(link *link, vehicle *vehicles) {
           }
           vehicles[index].has_moved = 1;
         }
+        else {
+          vehicles[index].active = 0;
+        }
       }
 
       else
@@ -231,8 +234,6 @@ void change_speed(link *link, vehicle *vehicles) {
       else if (v < V_MAX && gap > v)
         vehicles[index].v++;
 
-      else if (i + gap == link->len - 1 && link->intersection == NULL)
-        vehicles[index].active = 0;
 
       else if (gap < v)
         vehicles[index].v = gap;

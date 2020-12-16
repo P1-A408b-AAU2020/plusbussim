@@ -348,7 +348,10 @@ int lead_gap(link* link, int pos) {
             return V_MAX;
     }
     /* If the car reaches the end of the road */
-    return gap;
+    if (link->intersection == NULL)
+      return V_MAX;
+    else
+      return gap;
 }
 
 void spawn_car(link *link, vehicle *vehicles) {
