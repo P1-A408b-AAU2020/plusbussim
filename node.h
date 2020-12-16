@@ -11,9 +11,10 @@
 #define CELL_LEN 4.629
 
 /*Bus Data*/
-#define ROUTE_LEN 1
 #define PLUSBUS_ROUTE_LEN 1
 #define BUS_ROUTE_LEN 12
+#define BUS_START_LINK 0
+#define PLUSBUS_START_LINK 2
 
 /*Bus: 0, Plusbus: 1*/
 #define PLUS_OR_BUS 0
