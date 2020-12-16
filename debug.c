@@ -53,7 +53,7 @@ void print_status(struct vehicle* actors, long int seed, link* link, int timer) 
         }
         disabled = AMOUNT_VEHICLES - active;
         printf("%s %s %s %s\n%-9s%-.2lf%-5s%-7d%-2c%-20d%ld\n",
-               "Status: ", "Runtime: ", "Active / disabled vehicles: ", "Seed:",
+               "Status: ", "Runtime: ", "Active / inactive vehicles: ", "Seed:",
                "OK", timer * SECONDS_PER_TIMESTEP,
                "s", active, '/', disabled, seed);
     /*}*/

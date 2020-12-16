@@ -327,7 +327,7 @@ link* bus_dec(intersection *intersection, int link_id) {
       break;
 
     case 'e' :
-      result = links[(internal_index(intersection, link_id) == 6) ? 1 : 9];
+      result = links[(internal_index(intersection, link_id) == 6) ? 2 : 9];
       break;
   }
 

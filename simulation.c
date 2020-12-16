@@ -33,8 +33,6 @@ int main(void) {
     change_state(nodes);
     simulate_all_links(links, vehicles, &done);
     ++i;
-    if (i > 600)
-      assert(1>2);
   }
   print_status(vehicles, seed, links + 46, timer);
 
@@ -86,12 +84,10 @@ void initialize_actors(vehicle* actors, link* links) {
     }
   }
 
-
   if (PLUS_OR_BUS)
     links[PLUSBUS_START_LINK].road[0] = 1;
   else
     links[BUS_START_LINK].road[0] = 1;
-
 
   for (i = 1; i < AMOUNT_VEHICLES; i++) {
     actors[i].id = i + 1;
