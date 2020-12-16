@@ -29,10 +29,20 @@ void build_network(intersection *intersections, link *links){
                                    KRIDTSJLFEN_LEN, KRIDTSJLFEN_LEN, SGHSVEJ_2_LEN, SGHSVEJ_2_LEN,
                                    SGHSVEJ_2_LEN, SGHSVEJ_2_LEN, BERNSTFFGADE_LEN, BERNSTFFGADE_LEN
                                    };
+    int dec_chance_lanes[AMT_DEC_LANES] = {jylgade_1_east, jylgade_2_east, jylgade_2_west, aagade_south, jylgade_3_east,
+                                         jylgade_3_west, niels_ebbesens_gade_south, dag_ham_gade_1_north, jylgade_4_east,
+                                         jylgade_4_west, dag_ham_gade_2_south, sdrbro_north, fyensgade_east, fyensgade_west,
+                                         kjellerupsgade_south, bornholmsgade_1_south, bornholmsgade_1_north, karolinelundsvej_south,
+                                         faerogade_1_east, bornholmsgade_2_south, bornholmsgade_2_north, faereogade_2_west,
+                                         sjaelgade_1_east, sjaelgade_2_west, oester_alle_1_east, sghsvej_1_south, sghsvej_1_north,
+                                         oester_alle_2_west, kridtsleofen_east, sghsvej_2_north, bernstorffsgade_west};
+    int left_chances[AMT_DEC_LANES] = {18, 18, 0, 57, 24, 0, 57, 40, 7, 29, 37, 42, 0, 57, 31, 30, 50, 20, 36, 50, 30, 36, 56, 0, 0, 9, 59, 32, 48, 4, 48};
+    int right_chances[AMT_DEC_LANES] = {0, 0, 23, 43, 30, 23, 43, 39, 54, 24, 38, 49, 20, 8, 27, 30, 50, 0, 36, 50, 30, 36, 0, 56, 40, 4, 41, 0, 50, 9, 47};
     int spawn_lanes[AMT_SPAWN_LANES] = {0, 8, 15, 17, 23, 25, 31, 35, 37, 41, 43, 47, 49, 55, 57, 61, 63};
     double spawn_chances[AMT_SPAWN_LANES] = {9.95, 3.0, 3.0, 8.41, 6.86, 22.29, 3.0, 15.89, 3.0, 3.0, 3.04, 3.04, 44.13, 31.06, 2.12, 21.12, 1.0};
     int plusbus_links[AMT_PLUSBUS_LINKS] = {1, 2, 3, 4, 10, 11, 18, 19, 26, 27, 44, 45, 51, 52, 59, 60};
-    int i, j = 0, k = 0;
+
+    int i, j = 0, k = 0, m = 0;
 
     /* Building all the different links */
     for (i = jylgade_1_east; i <= bernstorffsgade_west; i++){
@@ -41,8 +51,16 @@ void build_network(intersection *intersections, link *links){
         links[i].len  = link_length[i];
         links[i].time_step    = 0;
         links[i].intersection = NULL;
-        links[i].left_chance  = 0;
-        links[i].right_chance = 0;
+
+        if (links[i].id == dec_chance_lanes[m]){
+          links[i].left_chance  = left_chances[m];
+          links[i].right_chance = right_chances[m];
+          m++;
+        }
+        else {
+          links[i].left_chance = 0;
+          links[i].right_chance = 0;
+        }
 
         if (links[i].id == spawn_lanes[j]){
             links[i].spawn_lane = 1;

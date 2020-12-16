@@ -8,6 +8,7 @@
 #define V_MAX 5
 #define AMOUNT_LINKS 64
 #define AMOUNT_NODES 9
+#define AMT_DEC_LANES 31
 #define AMOUNT_VEHICLES 120
 #define AMT_PLUSBUS_LINKS 16
 #define CELL_LEN 4.629
