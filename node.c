@@ -1,15 +1,8 @@
 #include "node.h"
-#include <stdlib.h>
-#include <time.h>
-#include <math.h>
 #include "debug.h"
-#define RIGHT 1
-#define LEFT 5
-#define FORWARD 3
-#define AMT_SPAWN_LANES 17
 
-/* The contents of this function are predefined. Make changes to how network here. */
-void build_network(intersection* intersections, link* links){
+/* Builds the road network. Hardcoded to make the network we want to simulate. User can build own road network here. */
+void build_network(intersection *intersections, link *links){
   int link_length[AMOUNT_LINKS] = {JYLGADE_1_LEN, JYLGADE_1_LEN, JYLGADE_1_LEN, JYLGADE_2_LEN, JYLGADE_2_LEN,
                                    JYLGADE_2_LEN, JYLGADE_2_LEN, AAGADE_LEN, AAGADE_LEN, JYLGADE_1_LEN,
 
@@ -40,10 +33,12 @@ void build_network(intersection* intersections, link* links){
     double spawn_chances[AMT_SPAWN_LANES] = {9.95, 3.0, 3.0, 8.41, 6.86, 22.29, 3.0, 15.89, 3.0, 3.0, 3.04, 3.04, 44.13, 31.06, 2.12, 21.12, 1.0};
     int plusbus_links[AMT_PLUSBUS_LINKS] = {1, 2, 3, 4, 10, 11, 18, 19, 26, 27, 44, 45, 51, 52, 59, 60};
     int i, j = 0, k = 0;
+
+    /* Building all the different links */
     for (i = jylgade_1_east; i <= bernstorffsgade_west; i++){
-        links[i].id    = i;
-        links[i].road  = (int*)calloc(link_length[i], sizeof(int));
-        links[i].len   = link_length[i];
+        links[i].id   = i;
+        links[i].road = (int*)calloc(link_length[i], sizeof(int));
+        links[i].len  = link_length[i];
         links[i].time_step    = 0;
         links[i].intersection = NULL;
         links[i].left_chance  = 0;
@@ -72,6 +67,7 @@ void build_network(intersection* intersections, link* links){
     links[sjaelgade_1_east].left_chance      = 100;
     links[sjaelgade_2_west].right_chance     = 100;
 
+    /* Building all the intersections in the road network */
     construct_type_b(intersections, 0,links+jylgade_1_east,links+jylgade_2_east, links+jylgade_2_west,links+jylgade_1_west,
                      links+aagade_south,links+aagade_north,links+jylgade_1_east_plusbus,links+jylgade_2_east_plusbus,
                      links+jylgade_2_west_plusbus, links+jylgade_1_west_plusbus);
@@ -84,43 +80,44 @@ void build_network(intersection* intersections, link* links){
                      links+dag_ham_gade_1_north, links+dag_ham_gade_2_north, links+dag_ham_gade_2_south, links+dag_ham_gade_1_south,
                      links+jylgade_3_east_plusbus, links+jylgade_4_east_plusbus, links+jylgade_4_west_plusbus, links+jylgade_3_west_plusbus);
 
-    construct_type_c(intersections+3, 3, links+jylgade_4_east, links+fyensgade_east, links+fyensgade_west, links+jylgade_4_west,
+    construct_type_c(intersections + 3, 3, links+jylgade_4_east, links+fyensgade_east, links+fyensgade_west, links+jylgade_4_west,
                      links+sdrbro_north, links+kjellerupsgade_north, links+kjellerupsgade_south, links+sdrbro_south,
                      links+jylgade_4_east_plusbus, links+fyensgade_east_plusbus, links+fyensgade_west_plusbus, links+jylgade_4_west_plusbus);
 
-    construct_type_d(intersections+4, 4, links+fyensgade_east, links+karolinelundsvej_north, links+karolinelundsvej_south, links+fyensgade_west,
+    construct_type_d(intersections + 4, 4, links+fyensgade_east, links+karolinelundsvej_north, links+karolinelundsvej_south, links+fyensgade_west,
                      links+bornholmsgade_1_north, links+bornholmsgade_1_south, links+fyensgade_east_plusbus, links+fyensgade_west_plusbus);
 
-    construct_type_a(intersections+5, 5, links+bornholmsgade_1_south, links+bornholmsgade_2_south, links+bornholmsgade_2_north, links+bornholmsgade_1_north,
+    construct_type_a(intersections + 5, 5, links+bornholmsgade_1_south, links+bornholmsgade_2_south, links+bornholmsgade_2_north, links+bornholmsgade_1_north,
                      links+faerogade_1_east, links+faereogade_2_east, links+faereogade_2_west, links+faereogade_1_west);
 
-    construct_type_a(intersections+6, 6, links+bornholmsgade_2_south, links+bornholmsgade_3_south, links+bornholmsgade_3_north, links+bornholmsgade_2_north,
+    construct_type_a(intersections + 6, 6, links+bornholmsgade_2_south, links+bornholmsgade_3_south, links+bornholmsgade_3_north, links+bornholmsgade_2_north,
                      links+sjaelgade_1_east, links+sjaelgade_2_east, links+sjaelgade_2_west, links+sjaelgade_1_west);
 
-    construct_type_e(intersections+7, 7, links+oester_alle_1_east, links+oester_alle_2_east, links+oester_alle_2_west, links+oester_alle_1_west,
+    construct_type_e(intersections + 7, 7, links+oester_alle_1_east, links+oester_alle_2_east, links+oester_alle_2_west, links+oester_alle_1_west,
                      links+sghsvej_1_north, links+sghsvej_1_south, links+sghsvej_1_north_plusbus, links+bornholmsgade_3_north,
                      links+bornholmsgade_3_south, links+sghsvej_1_south_plusbus);
 
-    construct_type_c(intersections+8, 8, links+sghsvej_1_south, links+sghsvej_2_south, links+sghsvej_2_north, links+sghsvej_1_north,
+    construct_type_c(intersections + 8, 8, links+sghsvej_1_south, links+sghsvej_2_south, links+sghsvej_2_north, links+sghsvej_1_north,
                      links+kridtsleofen_east, links+bernstorffsgade_east, links+bernstorffsgade_west, links+kridtsleofen_west,
                      links+sghsvej_1_south_plusbus, links+sghsvej_2_south_plusbus, links+sghsvej_2_north_plusbus, links+sghsvej_1_north_plusbus);
 
 }
-/* Pointer to the intersection. */
-void construct_type_a(intersection* intersection, int id,
-                      link* primary1_enter,   link* primary1_exit,
-                      link* primary2_enter,   link* primary2_exit,
-                      link* secondary1_enter, link* secondary1_exit,
-                      link* secondary2_enter, link* secondary2_exit){
+
+/* Constructs a typical four way intersection without traffic lights. */
+void construct_type_a(intersection *intersection, int id,
+                      link *primary1_enter,   link *primary1_exit,
+                      link *primary2_enter,   link *primary2_exit,
+                      link *secondary1_enter, link *secondary1_exit,
+                      link *secondary2_enter, link *secondary2_exit){
   int i;
-  link* links[N_TYPE_A] = {primary1_enter,   secondary2_exit,
+  link *links[N_TYPE_A] = {primary1_enter,   secondary2_exit,
                            secondary1_enter, primary1_exit,
                            primary2_enter,   secondary1_exit,
                            secondary2_enter, primary2_exit};
   intersection->id = id;
   intersection->type = 'a';
   intersection->n = N_TYPE_A;
-  for (i = 0; i < N_TYPE_A; ++i){
+  for (i = 0; i < N_TYPE_A; i++){
     intersection->layout.type_a.links[i] = links[i];
 
     if((i + 1) % 2)
@@ -128,14 +125,15 @@ void construct_type_a(intersection* intersection, int id,
   }
 }
 
-void construct_type_b(intersection* intersection, int id,
-                      link* primary1_enter,  link* primary1_exit,
-                      link* primary2_enter,  link* primary2_exit,
-                      link* secondary_enter, link* secondary_exit,
-                      link* plusbus1_enter,  link* plusbus1_exit,
-                      link* plusbus2_enter,  link* plusbus2_exit){
+/* Constructs a T-cross intersection with separate plusbus lanes and without traffic lights. */
+void construct_type_b(intersection *intersection, int id,
+                      link *primary1_enter,  link *primary1_exit,
+                      link *primary2_enter,  link *primary2_exit,
+                      link *secondary_enter, link *secondary_exit,
+                      link *plusbus1_enter,  link *plusbus1_exit,
+                      link *plusbus2_enter,  link *plusbus2_exit){
   int i;
-  link* links[N_TYPE_B] = {primary1_exit,  primary2_enter,
+  link *links[N_TYPE_B] = {primary1_exit,  primary2_enter,
                            secondary_exit, secondary_enter,
                            primary2_exit,  primary1_enter,
                            plusbus2_enter, plusbus2_exit,
@@ -144,7 +142,7 @@ void construct_type_b(intersection* intersection, int id,
   intersection->type = 'b';
   intersection->n = N_TYPE_B;
 
-  for (i = 0; i < N_TYPE_B; ++i) {
+  for (i = 0; i < N_TYPE_B; i++) {
     intersection->layout.type_b.links[i] = links[i];
 
     if (((i < 6) && ((i + 1) % 2 == 0)) || ((i >= 6) && ((i + 1) % 2)))
@@ -152,19 +150,22 @@ void construct_type_b(intersection* intersection, int id,
   }
 }
 
-void construct_type_c(intersection* intersection, int id,
-                      link* primary1_enter,   link* primary1_exit,    link* primary2_enter,
-                      link* primary2_exit,    link* secondary1_enter, link* secondary1_exit,
-                      link* secondary2_enter, link* secondary2_exit,  link* plusbus1_enter,
-                      link* plusbus1_exit,    link* plusbus2_enter,   link* plusbus2_exit){
+/* Constructs a typical four way intersection with traffic light and with separate plusbus lanes */
+void construct_type_c(intersection *intersection, int id,
+                      link *primary1_enter,   link *primary1_exit,    link *primary2_enter,
+                      link *primary2_exit,    link *secondary1_enter, link *secondary1_exit,
+                      link *secondary2_enter, link *secondary2_exit,  link *plusbus1_enter,
+                      link *plusbus1_exit,    link *plusbus2_enter,   link *plusbus2_exit){
   int i;
-  link* links[N_TYPE_C] = {primary1_enter,   secondary2_exit, secondary1_enter,
+  link *links[N_TYPE_C] = {primary1_enter,   secondary2_exit, secondary1_enter,
                            primary1_exit,    primary2_enter,  secondary1_exit,
                            secondary2_enter, primary2_exit,   plusbus2_enter,
                            plusbus2_exit,    plusbus1_enter,  plusbus1_exit};
   intersection->id = id;
   intersection->type = 'c';
   intersection->layout.type_c.data.state = rand() % 2;
+
+  /* Setting the state of the traffic light */
   if(intersection->layout.type_c.data.state){
     intersection->layout.type_c.data.counter = rand() % GREEN_T;
   }
@@ -172,7 +173,8 @@ void construct_type_c(intersection* intersection, int id,
     intersection->layout.type_c.data.counter = rand() % RED_T;
   }
   intersection->n = N_TYPE_C;
-  for (i = 0; i < N_TYPE_C; ++i) {
+
+  for (i = 0; i < N_TYPE_C; i++) {
     intersection->layout.type_c.links[i] = links[i];
 
     if((i + 1) % 2)
@@ -180,12 +182,14 @@ void construct_type_c(intersection* intersection, int id,
   }
 }
 
-void construct_type_d(intersection* intersection, int id,
-                      link* primary1_enter, link* primary1_exit,   link* primary2_enter,
-                      link* primary2_exit,  link* secondary_enter, link* secondary_exit,
-                      link* plusbus_enter,  link* plusbus_exit){
+/* Constructs a T-cross intersection with traffic light where
+ * the plusbus goes from a separate lane to a shared lane  */
+void construct_type_d(intersection *intersection, int id,
+                      link *primary1_enter, link *primary1_exit,   link *primary2_enter,
+                      link *primary2_exit,  link *secondary_enter, link *secondary_exit,
+                      link *plusbus_enter,  link *plusbus_exit){
   int i;
-  link* links[N_TYPE_D] = {primary2_exit,   primary1_enter, secondary_exit,
+  link *links[N_TYPE_D] = {primary2_exit,   primary1_enter, secondary_exit,
                            secondary_enter, primary1_exit,  primary2_enter,
                            plusbus_exit,    plusbus_enter};
   intersection->id = id;
@@ -198,7 +202,7 @@ void construct_type_d(intersection* intersection, int id,
     intersection->layout.type_d.data.counter = rand() % RED_T;
   }
   intersection->n = N_TYPE_D;
-  for (i = 0; i < N_TYPE_D; ++i) {
+  for (i = 0; i < N_TYPE_D; i++) {
     intersection->layout.type_d.links[i] = links[i];
 
     if ((i + 1) % 2 == 0)
@@ -206,14 +210,15 @@ void construct_type_d(intersection* intersection, int id,
   }
 
 }
-
-void construct_type_e(intersection* intersection, int id,
-                      link* primary1_enter, link* primary1_exit,   link* primary2_enter,
-                      link* primary2_exit,  link* secondary_enter, link* secondary_exit,
-                      link* plusbus1_enter, link* plusbus1_exit,   link* plusbus2_enter,
-                      link* plusbus2_exit){
+ /* Constructs a cross intersection with traffic lights
+  * One of the ingoing roads are bus only, and the opposite road has a separated plusbus lane*/
+void construct_type_e(intersection *intersection, int id,
+                      link *primary1_enter, link *primary1_exit,   link *primary2_enter,
+                      link *primary2_exit,  link *secondary_enter, link *secondary_exit,
+                      link *plusbus1_enter, link *plusbus1_exit,   link *plusbus2_enter,
+                      link *plusbus2_exit){
   int i;
-  link* links[N_TYPE_E] = {primary1_enter, secondary_enter, secondary_exit,
+  link *links[N_TYPE_E] = {primary1_enter, secondary_enter, secondary_exit,
                            primary1_exit,  primary2_enter,  primary2_exit,
                            plusbus2_enter, plusbus2_exit,   plusbus1_enter,
                            plusbus1_exit};
@@ -227,7 +232,7 @@ void construct_type_e(intersection* intersection, int id,
     intersection->layout.type_e.data.counter = rand() % RED_T;
   }
   intersection->n = N_TYPE_E;
-  for (i = 0; i < N_TYPE_E; ++i) {
+  for (i = 0; i < N_TYPE_E; i++) {
     intersection->layout.type_e.links[i] = links[i];
 
     if ((i == 0 || i == 1) || ((i >= 4) && ((i + 1) % 2)))
@@ -235,9 +240,9 @@ void construct_type_e(intersection* intersection, int id,
   }
 }
 
-link** get_links(intersection* intersection){
-  link** links;
-
+/* Finds the links connected to the intersections depending on the intersection type */
+link** get_links(intersection *intersection){
+  link **links;
   switch (intersection->type) {
     case 'a': links = intersection->layout.type_a.links; break;
     case 'b': links = intersection->layout.type_b.links; break;
@@ -245,11 +250,11 @@ link** get_links(intersection* intersection){
     case 'd': links = intersection->layout.type_d.links; break;
     case 'e': links = intersection->layout.type_e.links; break;
   }
-
   return links;
 }
 
-int internal_index(intersection* intersection, int link_id) {
+/* Finds the internal index the link has in the intersection */
+int internal_index(intersection *intersection, int link_id) {
   int i, n = intersection->n;
   link **link = get_links(intersection);
 
@@ -259,25 +264,31 @@ int internal_index(intersection* intersection, int link_id) {
   }
 }
 
+/* If you arrive at the given intersection on the given link,
+ * returns the road you land on if you turn right at the intersection */
 link* right_turn(intersection *intersection, int link_id) {
   link *result;
-  link** links = get_links(intersection);
+  link **links = get_links(intersection);
   result = links[(internal_index(intersection, link_id) + RIGHT) % 8];
 
   return result;
 }
 
+/* If you arrive at the given intersection on the given link,
+ * returns the road you land on if you turn left at the intersection */
 link* left_turn(intersection *intersection, int link_id) {
   link *result;
-  link** links = get_links(intersection);
+  link **links = get_links(intersection);
     result = links[(internal_index(intersection, link_id) + LEFT) % 8];
 
   return result;
 }
 
+/* If you arrive at the given intersection on the given link,
+ * returns the road you land on if you don't turn at the intersection */
 link* go_forward(intersection *intersection, int link_id) {
   link *result;
-  link** links = get_links(intersection);
+  link **links = get_links(intersection);
   if (intersection->type == 'e'){
     if (internal_index(intersection, link_id) == 0)
       result = links[(internal_index(intersection, link_id) + 3)];
@@ -290,9 +301,10 @@ link* go_forward(intersection *intersection, int link_id) {
   return result;
 }
 
+/* Calculates the upcoming link for the plusbus */
 link* plusbus_dec(intersection *intersection, int link_id) {
   link *result;
-  link** links = get_links(intersection);
+  link **links = get_links(intersection);
   switch (intersection->type) {
     case 'a' :
       result = links[((internal_index(intersection, link_id) == 0) ? 3 : 7)];
@@ -310,9 +322,10 @@ link* plusbus_dec(intersection *intersection, int link_id) {
   return result;
 }
 
+/* Calculates the upcoming link for the conventional bus */
 link* bus_dec(intersection *intersection, int link_id) {
   link *result;
-  link** links = get_links(intersection);
+  link **links = get_links(intersection);
   switch (intersection->type) {
     case 'a' :
       result = links[((internal_index(intersection, link_id) == 0) ? 3 : 7)];
@@ -334,25 +347,24 @@ link* bus_dec(intersection *intersection, int link_id) {
   return result;
 }
 
-turn_dir decide_turn_dir(link* link, int is_plusbus, int is_bus) {
+/* Decides what a vehicle will do at the upcoming intersection */
+turn_dir decide_turn_dir(link *link, int is_plusbus, int is_bus) {
   int dir = rand() % 100 + 1;
 
   if (is_plusbus)
     return plusbus;
-
   else if (is_bus)
     return bus;
-
   else if (dir <= link->left_chance)
     return left;
-
   else if (dir <= link->left_chance + link->right_chance)
     return right;
-
   else
     return forward;
 }
 
+/* Decides what calculations should be done based on what a vehicle will do
+ * at the upcoming intersection */
 link* turn(turn_dir dir, intersection *intersection, int link_id) {
   link *result = 0;
   switch (dir) {
@@ -363,43 +375,4 @@ link* turn(turn_dir dir, intersection *intersection, int link_id) {
     case bus:     result = bus_dec(intersection, link_id);     break;
   }
   return result;
-}
-
-int lead_gap(link* link, int pos) {
-    int i, gap = 0;
-    for(i = pos + 1; i < link->len; i++){
-        if(link->road[i] == 0)
-            gap++;
-        else
-            return gap;
-        if(gap > V_MAX)
-            return V_MAX;
-    }
-    /* If the car reaches the end of the road */
-    if (link->intersection == NULL)
-      return V_MAX;
-    else
-      return gap;
-}
-
-void spawn_car(link *link, vehicle *vehicles) {
-  int car_spawned = 0;
-  int i = 0;
-
-  while (!car_spawned) {
-    if (!(vehicles + i)->active) {
-      if (!link->road[0]) {
-        if (rand() % 101 <= link->spawn_chance) {
-          link->road[0] = (vehicles+ i)->id;
-          (vehicles+i)->active = 1;
-          (vehicles+i)->v = V_MAX;
-        }
-      }
-      car_spawned = 1;
-    }
-    if (i == AMOUNT_VEHICLES - 1){
-      break;
-    }
-    i++;
-  }
 }

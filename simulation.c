@@ -2,57 +2,52 @@
 #include "debug.h"
 #include "trafficlights.h"
 #include <stdlib.h>
-#include <stdio.h>
 #include <time.h>
-#include <assert.h>
 
-/* Populates the roads with vehicles */
 void initialize_actors(vehicle* actors, link* links);
 void simulate_all_links(link* links, vehicle* vehicles, int* done);
 void time_step(link* links, vehicle* vehicles);
 void move(link *link, vehicle *vehicles);
 void change_speed(link* link, vehicle* vehicles);
+int lead_gap(link* link, int pos);
+void spawn_car(link* link, vehicle* vehicles);
 void is_finished(vehicle* vehicle, link* links, int* done);
-void free_actors(vehicle* actors);
 
 int timer = 0;
 
+/* This is where the simulation is ran */
 int main(void) {
   int done = 0, i = 0, j;
   link links[AMOUNT_LINKS];
   vehicle vehicles[AMOUNT_VEHICLES];
-  intersection nodes[9];
+  intersection nodes[AMOUNT_NODES];
   time_t seed = time(NULL);
-
   srand(seed);
+
+  /* creates simulation environment */
   build_network(nodes, links);
   initialize_actors(vehicles, links);
 
+  /* the environment is simulated */
   while (!done) {
     print_int("Timestep", i+1);
     change_state(nodes);
     simulate_all_links(links, vehicles, &done);
-    ++i;
+    i++;
   }
-  print_status(vehicles, seed, links + 46, timer);
 
-  for (j = 0; j < AMOUNT_LINKS; j++) {
+  /* the status is printed to the user */
+  print_status(vehicles, seed, timer);
+
+  for (j = 0; j < AMOUNT_LINKS; j++)
     free(links[j].road);
-  }
-
-  free_actors(vehicles);
 
   return EXIT_SUCCESS;
 }
 
-void free_actors(vehicle *actors) {
-  for (int i = 0; i < AMOUNT_VEHICLES; i++) {
-    free(actors[i].turn_direction);
-  }
-}
-
+/* initializes the vehicles and placing them in the road network */
 void initialize_actors(vehicle* actors, link* links) {
-  int n, i, ran_link;
+  int num, i, ran_link;
   actors->id = 1;
   actors->v = 0;
   actors->has_moved = 0;
@@ -61,33 +56,15 @@ void initialize_actors(vehicle* actors, link* links) {
   if (PLUS_OR_BUS) {
     actors->is_bus = 0;
     actors->is_plusbus = 1;
+    actors->turn_direction = plusbus;
+    links[PLUSBUS_START_LINK].road[0] = 1;
   }
   else {
     actors->is_bus = 1;
     actors->is_plusbus = 0;
-  }
-  if (PLUS_OR_BUS) {
-    /* TODO: plusbus route length has to be set */
-    actors->turn_direction = (turn_dir*)malloc(sizeof(turn_dir) * PLUSBUS_ROUTE_LEN);
-
-    for (int i = 0; i < PLUSBUS_ROUTE_LEN; i++) {
-      actors->turn_direction[i] = plusbus;
-    }
-  }
-  else {
-    /* TODO: bus route length has to be set */
-    actors->turn_direction = (turn_dir*)malloc(sizeof(turn_dir) * BUS_ROUTE_LEN);
-    int bus_route[BUS_ROUTE_LEN] = {forward, forward, forward, forward, right, forward, plusbus, forward, forward};
-    for (int i = 0; i < BUS_ROUTE_LEN; i++) {
-      actors->turn_direction[i] = bus_route[i];
-      printf("bus direction %d : %d \n", i, actors->turn_direction[i]);
-    }
-  }
-
-  if (PLUS_OR_BUS)
-    links[PLUSBUS_START_LINK].road[0] = 1;
-  else
+    actors->turn_direction = forward;
     links[BUS_START_LINK].road[0] = 1;
+  }
 
   for (i = 1; i < AMOUNT_VEHICLES; i++) {
     actors[i].id = i + 1;
@@ -95,32 +72,32 @@ void initialize_actors(vehicle* actors, link* links) {
     actors[i].is_bus = 0;
     actors[i].is_plusbus = 0;
     actors[i].intersec_counter = 0;
-    actors[i].turn_direction = (turn_dir*)malloc(sizeof(turn_dir) * 1);
-    actors[i].turn_direction[0] = forward;
+    actors[i].turn_direction = forward;
     actors[i].has_moved = 0;
 
-    if (actors[i].id < AMOUNT_VEHICLES/3) {
+    /* initiates half of the vehicles on the road network */
+    if (actors[i].id < AMOUNT_VEHICLES / 2) {
       do ran_link = rand() % AMOUNT_LINKS;
       while (links[ran_link].plusbus_link);
 
       actors[i].active = 1;
-      do n = rand() % links[ran_link].len;
-      while (links[ran_link].road[n] != 0);
+      do num = rand() % links[ran_link].len;
+      while (links[ran_link].road[num] != 0);
 
-      links[ran_link].road[n] = i + 1;
+      links[ran_link].road[num] = i + 1;
     }
     else
       actors[i].active = 0;
   }
-
   new_line();
 }
 
-void simulate_all_links(link *links, vehicle *vehicles, int* done) {
+/* simulates all the links on the road network */
+void simulate_all_links(link *links, vehicle *vehicles, int *done) {
   int i;
   timer++;
 
-  for (i = 0; i < AMOUNT_LINKS; ++i) {
+  for (i = 0; i < AMOUNT_LINKS; i++) {
     if ((links + i)->time_step < timer) {
       time_step(links + i, vehicles);
 
@@ -136,6 +113,7 @@ void simulate_all_links(link *links, vehicle *vehicles, int* done) {
   new_line();
 }
 
+/* Timestep agent, here a timestep is simulated for a link*/
 void time_step(link *link, vehicle *vehicles) {
   if (link->spawn_lane)
     spawn_car(link, vehicles);
@@ -150,12 +128,13 @@ void time_step(link *link, vehicle *vehicles) {
 
 }
 
+/* Move agent, here the vehicles are moved according to their speed. */
 void move(link *link, vehicle *vehicles) {
   int id, v, index, i;
   struct link *new_link;
   turn_dir next_turn;
 
-  for (i = link->len - 1; i >= 0; --i) {
+  for (i = link->len - 1; i >= 0; i--) {
     id = link->road[i];
     index = id - 1;
     v = vehicles[index].v;
@@ -172,15 +151,16 @@ void move(link *link, vehicle *vehicles) {
         else if (link->intersection != NULL) {
 
           /* Place vehicle on new link */
-          new_link = turn(vehicles[index].turn_direction[0], link->intersection, link->id);
+          new_link = turn(vehicles[index].turn_direction, link->intersection, link->id);
           new_link->road[i + v - link->len] = id;
 
           /* Find out where to turn next */
           next_turn = decide_turn_dir(new_link, vehicles[index].is_plusbus, vehicles[index].is_bus);
-          vehicles[index].turn_direction[0] = next_turn;
+          vehicles[index].turn_direction = next_turn;
 
           vehicles[index].has_moved = 1;
         }
+        /* if a vehicle leaves the simulation */
         else {
           vehicles[index].active = 0;
         }
@@ -191,12 +171,12 @@ void move(link *link, vehicle *vehicles) {
   }
 }
 
+/* speed agent, here the speed of the vehicles is changed */
 void change_speed(link *link, vehicle *vehicles) {
   int i, id, v, gap, gap2, index;
   struct link *new_link;
 
-  for (i = link->len - 1; i >= 0; i--) {
-    gap2 = 0;
+  for (i = link->len - 1; i >= 0; i--) { /* loops through the link */
     id = link->road[i];
     index = id - 1;
 
@@ -208,7 +188,7 @@ void change_speed(link *link, vehicle *vehicles) {
       if (i + gap == link->len - 1 && link->intersection != NULL) {
 
         if (traffic_light(link, vehicles)) {
-          new_link = turn(vehicles[index].turn_direction[0], link->intersection, link->id);
+          new_link = turn(vehicles[index].turn_direction, link->intersection, link->id);
 
           if (new_link->time_step < timer)
             time_step(new_link, vehicles);
@@ -224,21 +204,61 @@ void change_speed(link *link, vehicle *vehicles) {
         }
 
       }
-        /* There is no intersection */
+      /* There is no intersection */
       else if (v < V_MAX && gap > v)
         vehicles[index].v++;
 
+      /* Does the car have to decelerate to avoid collision?*/
       else if (gap < v)
         vehicles[index].v = gap;
     }
   }
 }
 
-void is_finished(vehicle* vehicles, link* links, int* done) {
+/* Gap agent, calculates the lead gap a vehicle has on the link */
+int lead_gap(link *link, int pos) {
+  int i, gap = 0;
+  for(i = pos + 1; i < link->len; i++){
+    if(link->road[i] == 0)
+      gap++;
+    else
+      return gap;
+    if(gap > V_MAX)
+      return V_MAX;
+  }
+  /* If the car reaches the end of the road */
+  if (link->intersection == NULL)
+    return V_MAX;
+  else
+    return gap;
+}
+
+/* Initiate new cars agent, here new vehicles are initiated. */
+void spawn_car(link *link, vehicle *vehicles) {
+  int car_spawned = 0, i = 0;
+
+  while (!car_spawned) {
+    if (!vehicles[i].active) {
+      if (!link->road[0]) {
+        if (rand() % 101 <= link->spawn_chance) {
+          link->road[0] = (vehicles+ i)->id;
+          vehicles[i].active = 1;
+          vehicles[i].v = V_MAX;
+        }
+      }
+      car_spawned = 1;
+    }
+    if (i == AMOUNT_VEHICLES - 1)
+      break;
+    i++;
+  }
+}
+
+/* This function checks whether the bus or plusbus has reached it's destination*/
+void is_finished(vehicle *vehicles, link *links, int *done) {
   int i, index;
 
-  /*Checks if the Plusbus or the bus has reached its destination */
-  for (i = links->len - 1; i >= (links->len - 1) - 10; i--) {
+  for (i = links->len - 1; i >= (links->len - 1) - 10; i--) { /* loops through the end of the link */
     index = links->road[i] - 1;
 
     if ((vehicles[index].is_plusbus || vehicles[index].is_bus) && index >= 0) {

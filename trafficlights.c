@@ -1,8 +1,9 @@
 #include "trafficlights.h"
 
+/*Stops the first vehicle on link, because there is a red light */
 void link_stop(link *link, vehicle *vehicle) {
   int car_found = 0;
-  int i = 2, l, p;
+  int i = 2, pos;
 
   /*Runs if there isn't a vehicle in the last cell of a link*/
   if (link->road[link->len - 1] == 0) {
@@ -12,9 +13,9 @@ void link_stop(link *link, vehicle *vehicle) {
        * sets car_found to 1 if a car has been found
        * */
       if (i <= 6) {
-        l = link->road[link->len - i];
-        if (l != 0) {
-          vehicle[l - 1].v = i - 1;
+        pos = link->road[link->len - i];
+        if (pos != 0) {
+          vehicle[pos - 1].v = i - 1;
           car_found = 1;
         }
       }
@@ -22,22 +23,21 @@ void link_stop(link *link, vehicle *vehicle) {
         break;
       i++;
     }
-  } else {
-    /*else it stops the car in the last cell*/
-    p = link->road[link->len - 1];
-    vehicle[p - 1].v = 0;
+  } else { /*else it stops the car in the last cell*/
+    pos = link->road[link->len - 1];
+    vehicle[pos - 1].v = 0;
   }
 
 }
 
+/*Checks if the plusbus is near intersection*/
 int check_plusbus(link *link, vehicle *vehicle) {
-  int run = 0, l, plusbus_found = 0, i = 1;
+  int pos, plusbus_found = 0, i = 1;
 
   while (!plusbus_found) {
     if (i <= PLUSBUS_R) {
-      l = link->road[link->len - i];
-      if (l != 0 && vehicle[l - 1].is_plusbus) {
-        run = 1;
+      pos = link->road[link->len - i];
+      if (pos != 0 && vehicle[pos - 1].is_plusbus) {
         plusbus_found = 1;
       }
     }
@@ -46,39 +46,40 @@ int check_plusbus(link *link, vehicle *vehicle) {
     }
     i++;
   }
-  return run;
+  return plusbus_found;
 }
 
+/*Prioritizes plusbus on current link. */
 void prioritize_plusbus(link *link, vehicle *vehicle) {
-  int pb = check_plusbus(link, vehicle);
+  int plusbus_found = check_plusbus(link, vehicle);
   switch (link->intersection->type) {
     case 'c':
-      if (pb == 1 && link->intersection->layout.type_c.data.state == Green && link->intersection->layout.type_c.data.counter < PLUSBUS_R && link->intersection->layout.type_c.data.counter != 0) {
+      if (plusbus_found == 1 && link->intersection->layout.type_c.data.state == Green && link->intersection->layout.type_c.data.counter < PLUSBUS_R && link->intersection->layout.type_c.data.counter != 0) {
         link->intersection->layout.type_c.data.counter -= PLUSBUS_GREEN_ADJUST;
-      } else if (pb == 1 && link->intersection->layout.type_c.data.state == Red) {
+      } else if (plusbus_found == 1 && link->intersection->layout.type_c.data.state == Red) {
         link->intersection->layout.type_c.data.counter += PLUSBUS_RED_ADJUST;
       }
       break;
 
     case 'd':
-      if (pb == 1 && link->intersection->layout.type_d.data.state == Green && link->intersection->layout.type_d.data.counter < PLUSBUS_R && link->intersection->layout.type_d.data.counter != 0) {
+      if (plusbus_found == 1 && link->intersection->layout.type_d.data.state == Green && link->intersection->layout.type_d.data.counter < PLUSBUS_R && link->intersection->layout.type_d.data.counter != 0) {
         link->intersection->layout.type_d.data.counter -= PLUSBUS_GREEN_ADJUST;
-      } else if (pb == 1 && link->intersection->layout.type_d.data.state == Red) {
+      } else if (plusbus_found == 1 && link->intersection->layout.type_d.data.state == Red) {
         link->intersection->layout.type_d.data.counter += PLUSBUS_RED_ADJUST;
       }
       break;
 
     case 'e':
-      if (pb == 1 && link->intersection->layout.type_e.data.state == Green && link->intersection->layout.type_e.data.counter < PLUSBUS_R && link->intersection->layout.type_c.data.counter != 0) {
+      if (plusbus_found == 1 && link->intersection->layout.type_e.data.state == Green && link->intersection->layout.type_e.data.counter < PLUSBUS_R && link->intersection->layout.type_c.data.counter != 0) {
         link->intersection->layout.type_e.data.counter -= PLUSBUS_GREEN_ADJUST;
-      } else if (pb == 1 && link->intersection->layout.type_e.data.state == Red) {
+      } else if (plusbus_found == 1 && link->intersection->layout.type_e.data.state == Red) {
         link->intersection->layout.type_e.data.counter += PLUSBUS_RED_ADJUST;
       }
       break;
   }
 }
 
-/*HARDCODED INTERSECTION AMOUNT*/
+/* Changes lights green/red and resets counter for all intersections */
 void change_state(intersection *intersection) {
   int i;
   for (i = 0; i < 9; i++) {
@@ -141,6 +142,7 @@ light_data* i_data(link *link) {
   }
 }
 
+/*Runs intersection control based on the type of intersection*/
 int traffic_light(link *link, vehicle *vehicle) {
   switch (link->intersection->type) {
     case 'c':
@@ -170,60 +172,61 @@ int traffic_light(link *link, vehicle *vehicle) {
   }
 }
 
+/* Checks which links should be stopped because of red light in type c intersection */
 int intersection_control_type_c(vehicle *vehicle, link *link,
-                              int pb_e1, int pb_e2,int l_e1,int l_e2,int l_e3,int l_e4) {
+                              int pb_l1, int pb_l2,int car_l1,int car_l2,int car_l3,int car_l4) {
   if (link->intersection->layout.type_c.data.state == Red) {
-    /*Runs if current link is one of these roads*/
-    if (link->id == pb_e1 || link->id == pb_e2 || link->id == l_e1 || link->id == l_e2) {
-      /*Runs if current link is a plusbus link*/
-      if (link->id == pb_e1 || link->id == pb_e2)
+    if (link->id == pb_l1 || link->id == pb_l2 || link->id == car_l1 || link->id == car_l2) { /*Runs if current link is one of these roads*/
+      if (link->id == pb_l1 || link->id == pb_l2) /*Runs if current link is a plusbus link*/
         prioritize_plusbus(link, vehicle);
       link_stop(link, vehicle);
-      return 0;
+      return Red;
 
     }
   } else {
-    if (link->id == l_e3 || link->id == l_e4) {
+    if (link->id == car_l3 || link->id == car_l4) {
       link_stop(link, vehicle);
-      return 0;
+      return Red;
     }
   }
-  return 1;
+  return Green;
 }
 
+/* Checks which links should be stopped because of red light in type d intersection */
 int intersection_control_type_d(vehicle *vehicle, link *link,
-                                        int pb_e, int l_e1, int l_e2, int l_e3) {
+                                        int pb_l, int car_l1, int car_l2, int car_l3) {
   if (link->intersection->layout.type_d.data.state == Red) {
-    if (link->id == pb_e || link->id == l_e1 || link->id == l_e2) {
-      if (link->id == pb_e)
+    if (link->id == pb_l || link->id == car_l1 || link->id == car_l2) {
+      if (link->id == pb_l)
         prioritize_plusbus(link, vehicle);
       link_stop(link, vehicle);
-      return 0;
+      return Red;
     }
   } else {
-    if (link->id == l_e3) {
+    if (link->id == car_l3) {
       prioritize_plusbus(link, vehicle);
       link_stop(link, vehicle);
-      return 0;
+      return Red;
     }
   }
-  return 1;
+  return Green;
 }
 
+/* Checks which links should be stopped because of red light in type d intersection */
 int intersection_control_type_e(vehicle *vehicle, link *link,
-                                        int pb_e, int l_e1, int l_e2,int l_e3,int l_e4) {
+                                        int pb_l1, int pb_l2, int car_l1,int car_l2,int car_l3) {
   if (link->intersection->layout.type_e.data.state == Red) {
-    if (link->id == pb_e || link->id == l_e1 || link->id == l_e2) {
-      if (link->id == pb_e || link->id == l_e1)
+    if (link->id == pb_l1 || link->id == pb_l2 || link->id == car_l1) {
+      if (link->id == pb_l1 || link->id == pb_l2)
         prioritize_plusbus(link, vehicle);
       link_stop(link, vehicle);
-      return 0;
+      return Red;
     }
   } else {
-    if (link->id == l_e3 || link->id == l_e4) {
+    if (link->id == car_l2 || link->id == car_l3) {
       link_stop(link, vehicle);
-      return 0;
+      return Red;
     }
   }
-  return 1;
+  return Green;
 }
