@@ -83,7 +83,10 @@ void initialize_actors(vehicle* actors, link* links) {
     }
   }
 
-  links[2].road[0] = 1;
+  if (PLUS_OR_BUS)
+      links[PLUSBUS_START_LINK].road[0] = 1;
+  else
+      links[BUS_START_LINK].road[0] = 1;
 
   for (i = 1; i < AMOUNT_VEHICLES; i++) {
     actors[i].id = i + 1;
@@ -175,11 +178,8 @@ void move(link *link, vehicle *vehicles) {
           if (!vehicles[index].is_bus) {
             next_turn = decide_turn_dir(new_link, vehicles[index].is_plusbus);
 
-            for (int i = 0; i < ROUTE_LEN; i++) {
-              vehicles[index].turn_direction[i] = next_turn;
-            }
+            vehicles[index].turn_direction[0] = next_turn;
           }
-
           vehicles[index].has_moved = 1;
         }
       }

@@ -13,12 +13,12 @@
 /*Bus Data*/
 #define PLUSBUS_ROUTE_LEN 1
 #define BUS_ROUTE_LEN 12
-#define BUS_START_LINK 0
+#define BUS_START_LINK 2
 #define PLUSBUS_START_LINK 2
 #define ROUTE_LEN 1
 
 /*Bus: 0, Plusbus: 1*/
-#define PLUS_OR_BUS 0
+#define PLUS_OR_BUS 1
 
 /*Traffic light Data*/
 #define PLUSBUS_R 10
@@ -27,7 +27,7 @@
 #define PLUSBUS_GREEN_ADJUST 1
 #define PLUSBUS_RED_ADJUST 1
 
-#define DEBUG 0
+#define DEBUG 1
 
 #define N_TYPE_A 8
 #define N_TYPE_B 10
