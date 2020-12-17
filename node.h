@@ -9,10 +9,14 @@
 #define AMOUNT_LINKS 64
 #define AMOUNT_NODES 9
 #define AMT_DEC_LANES 31
-#define AMOUNT_VEHICLES 120
 #define AMT_PLUSBUS_LINKS 16
 #define CELL_LEN 4.629
 #define SECONDS_PER_TIMESTEP 1.667
+
+/*Vehicle Data
+ * INIT_PERCENTAGE: how many cars should be initialised at startup*/
+#define AMOUNT_VEHICLES 500
+#define INIT_PERCENTAGE 0.8
 
 /*Bus Data*/
 #define BUS_START_LINK 0
@@ -24,8 +28,8 @@
  *
  * simulate plusbus: PLUS_OR_PLUSBUS 1
  *                   END_LINK 59 */
-#define PLUS_OR_BUS 1
-#define END_LINK 59
+#define PLUS_OR_BUS 0
+#define END_LINK 58
 
 
 /*Traffic light Data*/
@@ -38,7 +42,7 @@
 
 /* print simulation: DEBUG 1
  * only want simulation status: DEBUG 0*/
-#define DEBUG 0
+#define DEBUG 1
 
 /* Road network data */
 #define N_TYPE_A 8

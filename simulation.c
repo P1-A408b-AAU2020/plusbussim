@@ -75,7 +75,7 @@ void initialize_actors(vehicle* actors, link* links) {
     actors[i].has_moved = 0;
 
     /* initiates half of the vehicles on the road network */
-    if (actors[i].id < AMOUNT_VEHICLES / 2) {
+    if (actors[i].id < AMOUNT_VEHICLES * INIT_PERCENTAGE) {
       do ran_link = rand() % AMOUNT_LINKS;
       while (links[ran_link].plusbus_link);
 

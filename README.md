@@ -13,13 +13,17 @@ To compile the program using the gcc compiler, type the following command in ter
 
 The program can then be run and will display how long the simulation took.
 
-## Change simulation and print
-### Print
+## Setup and changeable variables
+These Variables can be changed for different conditions. All these variables is found in **node.h**:
+
 To print the simulation as the simulation happens assign **DEBUG** to **1** in **node.h**.
 
-### Change simulation
-To change between simulating the bus and the plusbus, the following changes should be made in **node.h**:
+- **Print simulation of roads**: Set **DEBUG** to **1**
 
+- **Changing vehicle amount**: Change **AMOUNT_VEHICLES** to wanted amount
+
+- **Changing how many vehicles should be initiated at startup**: Change **INIT_PERCENTAGE** to **0.X**
+	- Values must not exceed 1
 
 - **Simulate Plusbus**: 
      - **PLUS_OR_BUS** should be assigned to **1**
@@ -29,8 +33,6 @@ To change between simulating the bus and the plusbus, the following changes shou
      - **PLUS_OR_BUS** should be assigned to **0**
      - **END_LINK** should be assigned to **58**
   
-
-
 
 ## Description of files
 
