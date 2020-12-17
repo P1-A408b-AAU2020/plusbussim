@@ -1,16 +1,16 @@
-# plusbussim
-<!-- Link to github page: https://github.com/P1-A408b-AAU2020/plusbussim with a better README file-->
+# README
 
-The purpose of this project is to simulate the Plusbus, a BRT system which opens in Aalborg, Denmark in 2023.
+<!-- Link to github page: https://github.com/P1-A408b-AAU2020/plusbussim with a better README file-->
 
 <a href= "https://github.com/P1-A408b-AAU2020/plusbussim">
 GitHub page
 </a>
 
+
 To compile the program using the gcc compiler, type the following command in terminal:
-<p align = "center">
-gcc simulation.c debug.c debug.h node.c node.h trafficlights.c trafficlights.h
-</p>
+
+- gcc simulation.c debug.c debug.h node.c node.h trafficlights.c trafficlights.h
+
 The program can then be run and will display how long the simulation took.
 
 ## Change simulation and print
