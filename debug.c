@@ -44,9 +44,9 @@ void print_status(struct vehicle* actors, long int seed, int timer) {
         active_cars++;
     }
     inactive_cars = AMOUNT_VEHICLES - active_cars;
-    printf("%s %s %s %s\n%-9s%-.2lf%-5s%-7d%-2c%-20d%ld\n",
-           "Status: ", "Runtime: ", "Active / inactive vehicles: ", "Seed:",
-           "OK", timer * SECONDS_PER_TIMESTEP,
+    printf("%s %s %s %s\n%-11s%-.2lf%-4s%-7d%-2c%-20d%ld\n",
+           "Bus type: ", "Runtime: ", "Active / Inactive vehicles: ", "Seed:",
+           PLUS_OR_BUS == 1 ? "Plusbus" : "Bus", timer * SECONDS_PER_TIMESTEP,
            "s", active_cars, '/', inactive_cars, seed);
 }
 
