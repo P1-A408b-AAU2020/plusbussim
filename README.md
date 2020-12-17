@@ -7,7 +7,7 @@ The purpose of this project is to simulate the Plusbus, a BRT system which opens
 GitHub page
 </a>
 
-To compile the program using the gcc compiler, type the following command in terminal
+To compile the program using the gcc compiler, type the following command in terminal:
 <p align = "center">
 gcc simulation.c debug.c debug.h node.c node.h trafficlights.c trafficlights.h
 </p>
