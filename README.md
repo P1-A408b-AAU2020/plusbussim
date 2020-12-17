@@ -16,14 +16,15 @@ The program can then be run and will display how long the simulation took.
 ## Setup and changeable variables
 These Variables can be changed for different conditions. All these variables is found in **node.h**:
 
-To print the simulation as the simulation happens assign **DEBUG** to **1** in **node.h**.
+- **Print roads and traffic light status**: 
+	- Set **DEBUG** to **1**
 
-- **Print simulation of roads**: Set **DEBUG** to **1**
+- **Changing vehicle amount**: 
+	- Change **AMOUNT_VEHICLES** to wanted amount
 
-- **Changing vehicle amount**: Change **AMOUNT_VEHICLES** to wanted amount
-
-- **Changing how many vehicles should be initiated at startup**: Change **INIT_PERCENTAGE** to **0.X**
-	- Values must not exceed 1
+- **Changing how many vehicles should be initiated at startup**: 
+	- Change **INIT_PERCENTAGE** to **0.X**
+	- **INIT_PERCENTAGE** Value must not exceed 1
 
 - **Simulate Plusbus**: 
      - **PLUS_OR_BUS** should be assigned to **1**
