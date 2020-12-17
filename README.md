@@ -1,4 +1,4 @@
-# README
+# plusbussim
 
 <!-- Link to github page: https://github.com/P1-A408b-AAU2020/plusbussim with a better README file-->
 
