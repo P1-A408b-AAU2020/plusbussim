@@ -78,7 +78,6 @@ void build_network(intersection *intersections, link *links){
         }
         else
           links[i].plusbus_link = 0;
-
     }
     links[fyensgade_east].right_chance       = 100;
     links[bornholmsgade_2_south].left_chance = 100;
@@ -287,7 +286,10 @@ int internal_index(intersection *intersection, int link_id) {
 link* right_turn(intersection *intersection, int link_id) {
   link *result;
   link **links = get_links(intersection);
-  result = links[(internal_index(intersection, link_id) + RIGHT) % 8];
+  if (intersection->type == 'e')
+    result = links[(internal_index(intersection, link_id) == 1) ? 3 : 2];
+  else
+    result = links[(internal_index(intersection, link_id) + RIGHT) % 8];
 
   return result;
 }
@@ -297,6 +299,9 @@ link* right_turn(intersection *intersection, int link_id) {
 link* left_turn(intersection *intersection, int link_id) {
   link *result;
   link **links = get_links(intersection);
+  if (intersection->type == 'e')
+    result = links[(internal_index(intersection, link_id) == 1) ? 5 : 2];
+  else
     result = links[(internal_index(intersection, link_id) + LEFT) % 8];
 
   return result;

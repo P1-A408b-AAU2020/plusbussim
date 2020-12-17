@@ -24,8 +24,8 @@
  *
  * simulate plusbus: PLUS_OR_PLUSBUS 1
  *                   END_LINK 59 */
-#define PLUS_OR_BUS 0
-#define END_LINK 58
+#define PLUS_OR_BUS 1
+#define END_LINK 59
 
 
 /*Traffic light Data*/
@@ -119,8 +119,8 @@ typedef struct link {
   intersection *intersection;
   int spawn_lane;
   double spawn_chance;
-  float right_chance;
-  float left_chance;
+  int right_chance;
+  int left_chance;
   int plusbus_link;
 } link;
 

@@ -72,7 +72,6 @@ void initialize_actors(vehicle* actors, link* links) {
     actors[i].is_bus = 0;
     actors[i].is_plusbus = 0;
     actors[i].intersec_counter = 0;
-    actors[i].turn_direction = forward;
     actors[i].has_moved = 0;
 
     /* initiates half of the vehicles on the road network */
@@ -85,6 +84,7 @@ void initialize_actors(vehicle* actors, link* links) {
       while (links[ran_link].road[num] != 0);
 
       links[ran_link].road[num] = i + 1;
+      actors[i].turn_direction = decide_turn_dir(links+ran_link, actors[i].is_plusbus, actors[i].is_bus);
     }
     else
       actors[i].active = 0;
@@ -244,6 +244,7 @@ void spawn_car(link *link, vehicle *vehicles) {
           link->road[0] = (vehicles+ i)->id;
           vehicles[i].active = 1;
           vehicles[i].v = V_MAX;
+          vehicles[i].turn_direction = decide_turn_dir(link, vehicles[i].is_plusbus, vehicles[i].is_bus);
         }
       }
       car_spawned = 1;
