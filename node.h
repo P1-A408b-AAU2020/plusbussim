@@ -38,7 +38,7 @@
 
 /* print simulation: DEBUG 1
  * only want simulation status: DEBUG 0*/
-#define DEBUG 1
+#define DEBUG 0
 
 /* Road network data */
 #define N_TYPE_A 8
